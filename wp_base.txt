@@ -1,0 +1,7 @@
+"wp_base"
+{
+	"base"		"base"
+	"title"		"wp_base"
+	"maps"		""
+	"menusystem"	"1"
+}
