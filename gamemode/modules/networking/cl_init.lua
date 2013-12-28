@@ -4,8 +4,6 @@ include('protocols.lua')
 network = {}
 network.__index = network
 
-util.AddNetworkString('warpac_nw')
-
 
 function network.New()
 	local nw 		= {}
