@@ -35,12 +35,14 @@ SWEP.Primary.Damage.Value = 13
 SWEP.Primary.FireMode = "auto" -- a "auto", "semi-auto" (TODO: add other firemodes)
 SWEP.Primary.Automatic = true --placeholder for testing
 SWEP.Primary.ClipSize = 30 -- size of clip
-SWEP.Primary.FireRate = .5 -- delay between shots in seconds
+SWEP.Primary.FireRate = .1 -- delay between shots in seconds
 SWEP.Primary.UnderWater = false -- shoot when in water
 SWEP.Primary.Ammo = "smg1"
 
-SWEP.Primary.Spread.Value = .01 -- how much do shots spread
-SWEP.Primary.Recoil.Value = 1 -- how much does the view kick up after shooting
+SWEP.Primary.MuzzleEffect = ""
+
+SWEP.Primary.Spread.Value = .07 -- how much do shots spread
+SWEP.Primary.Recoil.Value = 2 -- how much does the view kick up after shooting
 SWEP.Primary.Spread.AimReduction = .5 -- how much does the spread decrease whem aiming (in %)
 SWEP.Primary.Recoil.AimReduction = .5 -- how much does the recoil decrease whem aiming (in %)
 
@@ -72,9 +74,23 @@ function SWEP:PrimaryAttack()
 	local spread = self.Primary.Spread.Value
 	local recoil = self.Primary.Recoil.Value
 	self:ShootBullet(self.Primary.Damage.Value, 1, spread, recoil)
+	self:FireEffects(recoil)
 	self:TakePrimaryAmmo(1)
 end
 
+function SWEP:CanPrimaryAttack()
+	if self.Weapon:Clip1() <= 0 then
+		return false
+	elseif (!self.UnderWater and self.Owner:WaterLevel() > 2) then
+		return false
+	elseif self:GetNextPrimaryFire() > CurTime() then
+		return false
+	end
+
+	self:SetNextPrimaryFire(CurTime() + self.Primary.FireRate)
+
+	return true
+end
 
 function SWEP:ShootBullet(damage, num, spread, recoil)
 	local bullet = {}
@@ -90,17 +106,19 @@ function SWEP:ShootBullet(damage, num, spread, recoil)
 	self.Owner:FireBullets(bullet)
 end
 
+function SWEP:FireEffects(recoil)
+	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 
-function SWEP:CanPrimaryAttack()
-	if self.Weapon:Clip1() <= 0 then
-		return false
-	elseif (!self.UnderWater and self.Owner:WaterLevel() > 2) then
-		return false
-	elseif self:GetNextPrimaryFire() > CurTime() then
-		return false
-	end
+	self.Owner:SetAnimation(PLAYER_ATTACK1)
+	self.Owner:MuzzleFlash()
 
-	self:SetNextPrimaryFire(CurTime() + self.Primary.FireRate)
+	local upkick = math.Rand(-.4, .15) * recoil --higher chance for upkick than downkick
+	local sidekick = math.Rand(-.15, .15) * recoil --low sidekick
 
-	return true
+	self.Owner:ViewPunch(Angle(upkick, sidekick, 0))
+	--self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick, sidekick, 0)) --kyle wants it to be cs:go like :/ so ne real recoil
+end
+
+function SWEP:SecondaryAttack() --no, because of iron sights
+	return false
 end
