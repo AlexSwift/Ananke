@@ -1,16 +1,12 @@
 AddCSLuaFile('protocols.lua')
 AddCSLuaFile('cl_init.lua')
+AddCSLuaFile('enumerations.lua')
 
-NW_STC		=	0x01
-NW_CTS		=	0x02
-NW_BOTH		=	0x03
-NW_CUSTOM	=	0x04
-
+include('enumerations.lua')
 include('protocols.lua')
 
 network = {}
 network.__index = network
-
 
 util.AddNetworkString('warpac_nw')
 
@@ -61,7 +57,7 @@ function network:Send()
 		else
 			PrintTable(self)
 			for k,v in ipairs(self.Data) do
-				net['Write'..self.Protocol[k]](v)
+				net['Write'..NW_TRANSLAITON[type(v)]](v)
 			end
 		end
 
@@ -83,7 +79,7 @@ net.Receive('warpac_nw',function()
 		data = Datagram.Receive()
 	else
 		for k,v in ipairs(Datagram.Data) do
-			table.insert( data , net['Read'..v] )
+			table.insert( data , net['Read'..NW_TRANSLAITON[v]]() )
 		end
 	end
 	Datagram.Callback(data)

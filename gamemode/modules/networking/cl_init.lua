@@ -1,3 +1,4 @@
+include('enumerations.lua')
 include('protocols.lua')
 
 network = {}
@@ -5,10 +6,6 @@ network.__index = network
 
 util.AddNetworkString('warpac_nw')
 
-NW_STC 	= 0x01
-NW_CTS 	= 0x02
-NW_BOTH = 0x03
-NW_CUSTOM = 0x04
 
 function network.New()
 	local nw 		= {}
