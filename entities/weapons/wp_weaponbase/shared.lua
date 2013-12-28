@@ -39,7 +39,7 @@ SWEP.Primary.FireRate = .5 -- delay between shots in seconds
 SWEP.Primary.UnderWater = false -- shoot when in water
 SWEP.Primary.Ammo = "smg1"
 
-SWEP.Primary.Spread.Value = .1 -- how much do shots spread
+SWEP.Primary.Spread.Value = .01 -- how much do shots spread
 SWEP.Primary.Recoil.Value = 1 -- how much does the view kick up after shooting
 SWEP.Primary.Spread.AimReduction = .5 -- how much does the spread decrease whem aiming (in %)
 SWEP.Primary.Recoil.AimReduction = .5 -- how much does the recoil decrease whem aiming (in %)
@@ -96,7 +96,11 @@ function SWEP:CanPrimaryAttack()
 		return false
 	elseif (!self.UnderWater and self.Owner:WaterLevel() > 2) then
 		return false
-	else
-		return true
+	elseif self:GetNextPrimaryFire() > CurTime() then
+		return false
 	end
+
+	self:SetNextPrimaryFire(CurTime() + self.Primary.FireRate)
+
+	return true
 end
