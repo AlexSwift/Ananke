@@ -167,7 +167,7 @@ function SWEP:CanPrimaryAttack()
 
 		return false
 
-	elseif !self.UnderWater and self.Owner:WaterLevel() >= 2 then
+	elseif (!self.UnderWater and self.Owner:WaterLevel() > 2) then
 
 		return false
 
