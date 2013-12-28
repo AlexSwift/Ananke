@@ -6,13 +6,11 @@ _PROTOCOLS = {}
 
 function protocol.New()
 	local tabl = {}
-	return setmetatable(tabl.protocol)
+	return setmetatable(tabl,protocol)
 end
 
 function protocol:Register()
-	_PROTOCOLS[self.PID] = table.copy(self)
-	self = nil
-	end
+	_PROTOCOLS[self.PID] = table.Copy(self)
 end
 
 function protocol.GetByID(id)
@@ -30,11 +28,11 @@ function protocol.Initialise()
 	for k,v in pairs(f) do
 		if SERVER then
 			print('\t\tLoading ' .. v)
-			AddCSLuaFile(v)
-			include(v)
+			AddCSLuaFile('protocols/'..v)
+			include('protocols/'..v)
 		else
 			print('\t\tLoading ' .. v)
-			include(v)
+			include('protocols/'..v)
 		end
 	end
 end

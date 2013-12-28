@@ -1,3 +1,5 @@
+
+
 Protocol = protocol.New()
 
 Protocol.Name = "nw_variables"
@@ -25,3 +27,17 @@ Protocol.Receive = function()
 end
 
 Protocol:Register()
+
+
+variables =  SERVER and setmetatable({},{
+	__index = function(t,k) end,
+	__newindex = function(t,k,v)
+		local nw = network.New()
+		nw:SetProtocol(0x02)
+		nw:SetDescription('Automatic variable networking')
+		nw:PushData(k)
+		nw:PushData(type(v))
+		nw:PushData(v)
+	nw:Send(nw)
+	end}) or {}
+
