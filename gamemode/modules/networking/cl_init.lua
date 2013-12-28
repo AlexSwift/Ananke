@@ -5,52 +5,62 @@ network.__index = network
 
 util.AddNetworkString('warpac_nw')
 
-NW_STC 	= 1
-NW_CTS 	= 2
-NW_BOTH = 3
-
-NW_CUSTOM = 1
+NW_STC 	= 0x01
+NW_CTS 	= 0x02
+NW_BOTH = 0x03
+NW_CUSTOM = 0x04
 
 function network.New()
 	local nw 		= {}
 	nw.Data 		= {}
-	nw.Protocol 	= {}
+	nw.protocol 	= {}
 	nw.PID 			= 0x00
+	nw.Recipients 	= nil
 	nw.Description 	= ""
 
 	return setmetatable(nw,network)
 end
 
 function network:SetProtocol(id)
+	self.PID = id
 	self.protocol = protocol.GetByID(id)
 end
 
+function network:SetDescription(str)
+	self.Description = str
+end
+
 function network:PushData(data)
-	local Datagram = self.Protocol
-	if Datagram.Data[#self.Data + 1] != type(data) then
+
+	if self.protocol.Data == NW_CUSTOM then
+		self.Data[#self.Data + 0x01] = data
+		return
+	end
+
+	local Datagram = self.protocol
+	if Datagram.Data[#self.Data + 0x01] != type(data) then
 		error('Data type MisMatch : ' .. self.Description)
 	end
-	self.Data[#self.Data + 1] = Data
+	self.Data[#self.Data + 0x01] = data
 end
 
 function network:Send()
 	net.Start('warpac_nw')
-		if self.Send then
-			net.WriteInt(self.PID)
-			self.Send()
+		net.WriteInt(self.PID,0x10)
+		if self.protocol.send then
+			self.protocol.send(self.Data)
 		else
-			net.WriteInt(self.PID)
+			PrintTable(self)
 			for k,v in ipairs(self.Data) do
 				net['Write'..self.Protocol[k]](v)
 			end
 		end
 
 	net.Send()
-	self = nil
 	return
 end
 
-net.Recieve('warpac_nw',function()
+net.Receive('warpac_nw',function()
 	local PID = net.ReadInt()
 	local Datagram = protocol.GetByID(PID)
 	local data = {}

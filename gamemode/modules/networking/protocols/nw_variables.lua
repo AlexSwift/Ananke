@@ -1,5 +1,4 @@
 
-
 Protocol = protocol.New()
 
 Protocol.Name = "nw_variables"
@@ -13,7 +12,7 @@ Protocol.CallBack = function(data)
 	end
 end
 
-Protocol.Send = function(data)
+Protocol.send = function(data)
 	net.WriteString(data[1])
 	net.WriteString(data[2])
 	net['Write' .. data[2]](data[3])
@@ -38,6 +37,6 @@ variables =  SERVER and setmetatable({},{
 		nw:PushData(k)
 		nw:PushData(type(v))
 		nw:PushData(v)
-	nw:Send(nw)
+	nw:Send()
 	end}) or {}
 

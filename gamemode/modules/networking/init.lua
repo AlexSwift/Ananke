@@ -56,9 +56,10 @@ end
 function network:Send()
 	net.Start('warpac_nw')
 		net.WriteInt(self.PID,0x10)
-		if self.Send then
-			self.Send()
+		if self.protocol.send then
+			self.protocol.send(self.Data)
 		else
+			PrintTable(self)
 			for k,v in ipairs(self.Data) do
 				net['Write'..self.Protocol[k]](v)
 			end
