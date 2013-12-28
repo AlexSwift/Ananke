@@ -17,7 +17,7 @@ SWEP.AdminOnly			=	true
 ]]
 
 
-SWEP.ViewModel          =       "models/weapons/cstrike/c_smg_mp5.mdl" --make sure your models are ready for view model hands
+SWEP.ViewModel          =       "models/weapons/cstrike/c_rif_galil.mdl" --make sure your models are ready for view model hands
 SWEP.WorldModel         =       "models/weapons/w_smg_mp5.mdl"
 
 SWEP.UseHands = true
@@ -41,10 +41,15 @@ SWEP.Primary.Ammo = "smg1"
 
 SWEP.Primary.MuzzleEffect = ""
 
+SWEP.IronsightPos = Vector(-6.361, -10.827, 2.72) --make false if there are none
+SWEP.IronsightAng = Vector(0, 0, 0)
+
 SWEP.Primary.Spread.Value = .07 -- how much do shots spread
 SWEP.Primary.Recoil.Value = 2 -- how much does the view kick up after shooting
-SWEP.Primary.Spread.AimReduction = .5 -- how much does the spread decrease whem aiming (in %)
-SWEP.Primary.Recoil.AimReduction = .5 -- how much does the recoil decrease whem aiming (in %)
+SWEP.Primary.Spread.AimReduction = .25 -- how much does the spread decrease whem aiming (in %)
+SWEP.Primary.Recoil.AimReduction = .25 -- how much does the recoil decrease whem aiming (in %)
+
+
 
 --[[
 	SWEP hooks
@@ -54,7 +59,7 @@ SWEP.Primary.Recoil.AimReduction = .5 -- how much does the recoil decrease whem 
 --init
 
 function SWEP:Initialize()
-
+	self.InIronsights = false
 end
 
 function SWEP:Deploy()
@@ -71,8 +76,15 @@ function SWEP:PrimaryAttack()
 	if !self:CanPrimaryAttack() then
 		return
 	end
+
 	local spread = self.Primary.Spread.Value
 	local recoil = self.Primary.Recoil.Value
+
+	if self.InIronsights then
+		spread = spread * self.Primary.Spread.AimReduction
+		recoil = recoil * self.Primary.Recoil.AimReduction
+	end
+
 	self:ShootBullet(self.Primary.Damage.Value, 1, spread, recoil)
 	self:FireEffects(recoil)
 	self:TakePrimaryAmmo(1)
@@ -120,5 +132,35 @@ function SWEP:FireEffects(recoil)
 end
 
 function SWEP:SecondaryAttack() --no, because of iron sights
-	return false
+	if !self.IronsightPos then 
+		return false
+	end
+
+	self.InIronsights = not self.InIronsights
+
+	if self.InIronsights then
+		self.BobScale = .3
+	else
+		self.BobScale = 1
+	end
+end
+
+function SWEP:Reload()
+	self.InIronsights = false
+	self.Weapon:DefaultReload(ACT_VM_RELOAD)
+end
+
+function SWEP:GetViewModelPosition(pos, ang)
+	if !self.IronsightPos or !self.InIronsights then
+		return pos, ang
+	end
+	pos = pos + self.IronsightPos.x * ang:Right()
+	pos = pos + self.IronsightPos.y * ang:Forward()
+	pos = pos + self.IronsightPos.z * ang:Up()
+
+	return pos, ang
+	
+end
+
+function SWEP:Think()
 end
