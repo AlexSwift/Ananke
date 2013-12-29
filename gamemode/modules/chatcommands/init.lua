@@ -43,10 +43,13 @@ hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)
 
 	local tabl = string.explode(" ",text)
 	if !string.gsub(tabl[1],1,1) == self.prefix then return end
+
 	local command = chatcommands.Get(string.TrimLeft(tabl[1],'>'))
 	if !command then return end
+
 	tabl[1] = nil
 	tabl = table.shift(tabl,1) --Remove the '>command' and shift
+
 	local data = {}
 	for k,v in ipairs(command.args) do
 		data[k] = tabl[k] or v[2]
