@@ -18,7 +18,7 @@ SWEP.AdminOnly			=	true
 
 
 SWEP.ViewModel          =       "models/weapons/cstrike/c_rif_galil.mdl" --make sure your models are ready for view model hands
-SWEP.WorldModel         =       "models/weapons/w_smg_mp5.mdl"
+SWEP.WorldModel         =       "models/weapons/w_rif_galil.mdl"
 
 SWEP.UseHands = true
 
@@ -35,7 +35,7 @@ SWEP.Primary.Damage.Value = 13
 SWEP.Primary.FireMode = "auto" -- a "auto", "semi-auto" (TODO: add other firemodes)
 SWEP.Primary.Automatic = true --placeholder for testing
 SWEP.Primary.ClipSize = 30 -- size of clip
-SWEP.Primary.FireRate = .1 -- delay between shots in seconds
+SWEP.Primary.FireRate = .15 -- delay between shots in seconds
 SWEP.Primary.UnderWater = false -- shoot when in water
 SWEP.Primary.Ammo = "smg1"
 
@@ -49,6 +49,18 @@ SWEP.Primary.Recoil.Value = 2 -- how much does the view kick up after shooting
 SWEP.Primary.Spread.AimReduction = .25 -- how much does the spread decrease whem aiming (in %)
 SWEP.Primary.Recoil.AimReduction = .25 -- how much does the recoil decrease whem aiming (in %)
 
+SWEP.Primary.Sound = {}
+SWEP.Primary.Sound.name = "wp_weaponbase_sound"
+SWEP.Primary.Sound.channel = CHAN_AUTO
+SWEP.Primary.Sound.volume = 1
+SWEP.Primary.Sound.pitchstart = 100
+SWEP.Primary.Sound.pitchend = 100
+SWEP.Primary.Sound.sound = "weapons/galil/galil-1.wav"
+
+
+
+sound.Add(SWEP.Primary.Sound)
+
 
 
 --[[
@@ -60,6 +72,7 @@ SWEP.Primary.Recoil.AimReduction = .25 -- how much does the recoil decrease whem
 
 function SWEP:Initialize()
 	self.InIronsights = false
+	util.PrecacheSound(SWEP.Primary.Sound.name)
 end
 
 function SWEP:Deploy()
@@ -80,6 +93,14 @@ function SWEP:PrimaryAttack()
 	local spread = self.Primary.Spread.Value
 	local recoil = self.Primary.Recoil.Value
 
+	--making you more inaccure when walking/falling/moving
+	local velo = self.Owner:GetVelocity():Length()
+	velo = velo*.00076 --approximating when the lerp will be 2 when velo is 200 (normal walkign speed)
+	velo = Lerp(velo, 1, 7.5)
+	print(velo)
+	spread = spread * velo
+	recoil = recoil * velo
+
 	if self.InIronsights then
 		spread = spread * self.Primary.Spread.AimReduction
 		recoil = recoil * self.Primary.Recoil.AimReduction
@@ -92,6 +113,7 @@ end
 
 function SWEP:CanPrimaryAttack()
 	if self.Weapon:Clip1() <= 0 then
+		self.Weapon:DefaultReload(ACT_VM_RELOAD)
 		return false
 	elseif (!self.UnderWater and self.Owner:WaterLevel() > 2) then
 		return false
@@ -120,6 +142,7 @@ end
 
 function SWEP:FireEffects(recoil)
 	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+	self:EmitSound(self.Primary.Sound.name)
 
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	--self.Owner:MuzzleFlash()
@@ -129,7 +152,7 @@ function SWEP:FireEffects(recoil)
 	local sidekick = math.Rand(-.15, .15) * recoil --low sidekick
 
 	self.Owner:ViewPunch(Angle(upkick, sidekick, 0))
-	--self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick, sidekick, 0)) --kyle wants it to be cs:go like :/ so ne real recoil
+	self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick*.5, sidekick*.5, 0)) --kyle wants it to be cs:go like :/ so ne real recoil
 end
 
 function SWEP:FireMuzzleEffects()
@@ -165,7 +188,7 @@ function SWEP:SecondaryAttack() --no, because of iron sights
 	self.InIronsights = not self.InIronsights
 
 	if self.InIronsights then
-		self.BobScale = .3
+		self.BobScale = .5
 	else
 		self.BobScale = 1
 	end
