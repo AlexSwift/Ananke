@@ -6,14 +6,29 @@ Protocol.Type = NW_STC
 Protocol.Data = NW_CUSTOM
 
 Protocol.CallBack = function(data)
-
+	profiles.GetByID(data[1]):Set(data[2],data[3])
 end
 
 Protocol.send = function(data)
+	local entid = data[1] --Number UInt
+	nw:PushData(key)	  --String String
+	nw:PushData(type(v))  --String String
+	nw:PushData(v)        --Unknown
+
+	net.WriteUInt(data[1])
+	net.WriteString(data[2])
+	net.WriteString(data[3])
+	net['Write'..NW_TRANSLATIONS[data[3]]()](data[4])
 
 end
 
 protocol.receive = function()
+
+	local data = {}
+
+	data[1] = net.ReadUInt()
+	data[2] = net.ReadString()
+	data[3] = net['Read'..net.ReadString()]()
 
 	return data
 end

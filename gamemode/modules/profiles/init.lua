@@ -1,5 +1,6 @@
-profiles = {}
-profiles.__index = profiles
+include('shared.lua')
+
+AddCSLuaFile('shared.lua')
 
 function profiles.New()
 	return setmetatable({},profiles)
@@ -9,14 +10,17 @@ function profiles:SetOwner(ply)
 	self.Owner = ply
 end
 
-function profiles:Set(key,value,SendToAll)
+function profiles:Set(key,value,Send,SendToAll)
 	self[key] = value
-	local rf = SendToAll and player.GetAll() or self.Owner
 
+	if !Send then return end
+
+	local rf = SendToAll and player.GetAll() or self.Owner
 	local nw = network.New()
 	nw:SetProtocol(0x03)
 	nw:SetDescription('Sending player variables')
 	nw:SetRecipients(rf)
+	nw:PushData(self.Owner:EntIndex())
 	nw:PushData(key)
 	nw:PushData(type(v))
 	nw:PushData(v)
