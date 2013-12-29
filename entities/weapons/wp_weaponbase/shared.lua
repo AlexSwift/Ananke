@@ -97,7 +97,7 @@ function SWEP:PrimaryAttack()
 	local velo = self.Owner:GetVelocity():Length()
 	velo = velo*.00076 --approximating when the lerp will be 2 when velo is 200 (normal walkign speed)
 	velo = Lerp(velo, 1, 7.5)
-	print(velo)
+	
 	spread = spread * velo
 	recoil = recoil * velo
 
