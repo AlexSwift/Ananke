@@ -1,4 +1,4 @@
-require('tmysql4'
+require('tmysql4')
 
 core.MySQL = {}
 core.MySQL.Authentication = {}
