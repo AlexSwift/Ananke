@@ -50,3 +50,10 @@ function core.MySQL.Process()
 	core.MySQL.InProg = true
 end
 
+function core.MySQL.CollumnNames(DB,tabl,callback)
+	local q = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='"..DB.."' AND `TABLE_NAME`='"..tabl.."';"
+	core.MySQL.Query( q, function(data)
+		callback(data)
+	end)
+end
+
