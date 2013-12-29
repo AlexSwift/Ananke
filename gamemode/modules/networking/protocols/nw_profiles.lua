@@ -10,10 +10,6 @@ Protocol.CallBack = function(data)
 end
 
 Protocol.send = function(data)
-	local entid = data[1] --Number UInt
-	nw:PushData(key)	  --String String
-	nw:PushData(type(v))  --String String
-	nw:PushData(v)        --Unknown
 
 	net.WriteUInt(data[1])
 	net.WriteString(data[2])
