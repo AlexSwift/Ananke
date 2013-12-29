@@ -123,7 +123,7 @@ function SWEP:FireEffects(recoil)
 
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	--self.Owner:MuzzleFlash()
-	if CLIENT then self:FireMuzzleLight() end
+	self:FireMuzzleEffects()
 
 	local upkick = math.Rand(-.4, .15) * recoil --higher chance for upkick than downkick
 	local sidekick = math.Rand(-.15, .15) * recoil --low sidekick
@@ -132,7 +132,7 @@ function SWEP:FireEffects(recoil)
 	--self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick, sidekick, 0)) --kyle wants it to be cs:go like :/ so ne real recoil
 end
 
-function SWEP:FireMuzzleLight()
+function SWEP:FireMuzzleEffects()
 	local vm = self.Owner:GetViewModel()
 	local muzzle = vm:GetAttachment(1) -- TODO FIGURE IT OUT
 
@@ -143,6 +143,7 @@ function SWEP:FireMuzzleLight()
 
 	util.Effect("muzzleflash", muzzlefx)
 
+	if !CLIENT then return end
 	local light = DynamicLight(self.Owner:EntIndex())
 	light.Brightness = math.Rand(3, 5) -- no round is the same
 	light.Decay = 10000
