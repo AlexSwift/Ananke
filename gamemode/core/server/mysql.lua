@@ -20,7 +20,8 @@ function core.MySQL.Initialize()
 	core.MySQL.Loaded = true
 end
 
-function core.MySQL.Query( q, callback, flags, vargs)
+function core.MySQL.Query( q, callback, ...)
+	local flags, vargs =({...}[1] or nil),({...}[2] or nil)
 	table.insert(core.MySQL.Queries, {q, callback, flags, vargs})
 	if not core.MySQL.InProg then
 		core.MySQL.Process()
