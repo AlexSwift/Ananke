@@ -183,20 +183,26 @@ function SWEP:SecondaryAttack() --no, because of iron sights
 	if !self.IronsightPos then 
 		return false
 	end
-
-	self.InIronsights = not self.InIronsights
-
-	if self.InIronsights then
-		self.BobScale = .5
-	else
-		self.BobScale = 1
-	end
+	self:Ironsights(!self:Ironsights())
 end
 
 function SWEP:Reload()
 	if self.Weapon:DefaultReload(ACT_VM_RELOAD) then --only when reloading actually takes place (i.e. clip is not full)
-		self.InIronsights = false
+		self:Ironsights(false)
 	end
+end
+
+function SWEP:Ironsights(change)
+	if change != nil then
+		self.InIronsights = change
+		if self.InIronsights then
+			self.BobScale = .5
+		else
+			self.BobScale = 1
+		end
+	end
+
+	return self.InIronsights
 end
 
 function SWEP:GetViewModelPosition(pos, ang)
