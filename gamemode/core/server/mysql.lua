@@ -46,5 +46,18 @@ function core.MySQL.Process()
 		core.MySQL.Queries[1][2](unpack(tabl))
 	end
 	tmysql.query(core.MySQL.Queries[1][1], callback, core.MySQL.Queries[1][3], core.MySQL.Queries[1][4])
+	core.MySQL.InProg = true
 end
 
+
+----- Set up Authentication here ----
+
+core.MySQL.Authentication['host'] = nil
+core.MySQL.Authentication['user'] =	nil
+core.MySQL.Authentication['pass'] = nil
+core.MySQL.Authentication['daba'] = nil
+core.MySQL.Authentication['port'] = nil
+
+----- 			end				 ----
+
+core.MySQL.Initialize()
