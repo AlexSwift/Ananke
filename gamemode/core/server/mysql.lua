@@ -1,4 +1,4 @@
-require('tmysql4')
+require('tmysql4'
 
 core.MySQL = {}
 core.MySQL.Authentication = {}
@@ -49,15 +49,3 @@ function core.MySQL.Process()
 	core.MySQL.InProg = true
 end
 
-
------ Set up Authentication here ----
-
-core.MySQL.Authentication['host'] = nil
-core.MySQL.Authentication['user'] =	nil
-core.MySQL.Authentication['pass'] = nil
-core.MySQL.Authentication['daba'] = nil
-core.MySQL.Authentication['port'] = nil
-
------ 			end				 ----
-
-core.MySQL.Initialize()
