@@ -134,15 +134,14 @@ end
 
 function SWEP:FireMuzzleLight()
 	local vm = self.Owner:GetViewModel()
-	local attid = vm:LookupAttachment("muzzle")
-	local muzzle = vm:GetAttachment(attid) -- TODO FIGURE IT OUT
+	local muzzle = vm:GetAttachment(1) -- TODO FIGURE IT OUT
 
 	local light = DynamicLight(self.Owner:EntIndex())
 	light.Brightness = math.Rand(3, 5) -- no round is the same
 	light.Decay = 1000 / .1
 	light.DieTime = CurTime() + .1
-	light.Dir = self.Owner:GetAimVector()
-	light.Pos = self.Owner:GetShootPos() + 50 * self.Owner:GetAimVector()
+	light.Dir = muzzle.Ang:Up()
+	light.Pos = muzzle.Pos/*self.Owner:GetShootPos() + 50 * self.Owner:GetAimVector()*/
 	light.Size = 150
 	light.Style = 0
 	light.r = 255
