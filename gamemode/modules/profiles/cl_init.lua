@@ -1,10 +1,10 @@
 include('shared.lua')
 
-function profile:Set(key,value)
+function profiles:Set(key,value)
 	self[key] = value
 end
 
-function profile:Get(key)
+function profiles:Get(key)
 	return self[key] or nil
 end
 
