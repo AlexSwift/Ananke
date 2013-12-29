@@ -122,13 +122,32 @@ function SWEP:FireEffects(recoil)
 	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
-	self.Owner:MuzzleFlash()
+	--self.Owner:MuzzleFlash()
+	if CLIENT then self:FireMuzzleLight() end
 
 	local upkick = math.Rand(-.4, .15) * recoil --higher chance for upkick than downkick
 	local sidekick = math.Rand(-.15, .15) * recoil --low sidekick
 
 	self.Owner:ViewPunch(Angle(upkick, sidekick, 0))
 	--self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick, sidekick, 0)) --kyle wants it to be cs:go like :/ so ne real recoil
+end
+
+function SWEP:FireMuzzleLight()
+	local vm = self.Owner:GetViewModel()
+	local attid = vm:LookupAttachment("muzzle")
+	local muzzle = vm:GetAttachment(attid) -- TODO FIGURE IT OUT
+
+	local light = DynamicLight(self.Owner:EntIndex())
+	light.Brightness = math.Rand(3, 5) -- no round is the same
+	light.Decay = 1000 / .1
+	light.DieTime = CurTime() + .1
+	light.Dir = self.Owner:GetAimVector()
+	light.Pos = self.Owner:GetShootPos() + 50 * self.Owner:GetAimVector()
+	light.Size = 150
+	light.Style = 0
+	light.r = 255
+	light.g = 255
+	light.b = 100
 end
 
 function SWEP:SecondaryAttack() --no, because of iron sights
