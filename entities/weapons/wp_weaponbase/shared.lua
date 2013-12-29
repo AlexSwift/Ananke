@@ -145,11 +145,11 @@ function SWEP:FireMuzzleLight()
 
 	local light = DynamicLight(self.Owner:EntIndex())
 	light.Brightness = math.Rand(3, 5) -- no round is the same
-	light.Decay = 1000 / .1
+	light.Decay = 10000
 	light.DieTime = CurTime() + .1
 	light.Dir = muzzle.Ang:Up()
 	light.Pos = muzzle.Pos/*self.Owner:GetShootPos() + 50 * self.Owner:GetAimVector()*/
-	light.Size = 150
+	light.Size = math.random(100, 125)
 	light.Style = 0
 	light.r = 255
 	light.g = 255
