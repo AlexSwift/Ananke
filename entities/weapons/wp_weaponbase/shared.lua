@@ -136,6 +136,13 @@ function SWEP:FireMuzzleLight()
 	local vm = self.Owner:GetViewModel()
 	local muzzle = vm:GetAttachment(1) -- TODO FIGURE IT OUT
 
+	local muzzlefx = EffectData()
+	muzzlefx:SetScale(.2)
+	muzzlefx:SetOrigin(muzzle.Pos)
+	muzzlefx:SetNormal(muzzle.Ang:Up())
+
+	util.Effect("muzzleflash", muzzlefx)
+
 	local light = DynamicLight(self.Owner:EntIndex())
 	light.Brightness = math.Rand(3, 5) -- no round is the same
 	light.Decay = 1000 / .1
