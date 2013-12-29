@@ -1,6 +1,7 @@
 modules = {}
 modules.functions = {
 	['init.lua'] = function(p)
+		if !SERVER then return end
 		include(p .. "/init.lua")
 	end,
 	['cl_init.lua'] = function(p)
