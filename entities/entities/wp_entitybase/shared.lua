@@ -7,8 +7,17 @@ ENT.Spawnable 		= false
 ENT.AdminOnly 		= false
 ENT.GVars			= {}
 
+local function table.HVIST(tabl,v,k)
+	for key,value in pairs(tabl) do
+		if value[k] == v then
+			return true
+		end
+	end
+	return false
+end
+
 ENT.__index = function(self,k)
-	if string.sub(k,1,3) == "Set" then
+	if string.sub(k,1,3) == "Set" and table.HVIST(self.GVars,1,k) then
 		local func = function(self,v,...)
 			local b_nw = {...}[1] or false
 			self[string.sub(k,4)] = v
@@ -25,7 +34,7 @@ ENT.__index = function(self,k)
 		end
 		return func
 	end
-	if string.sub(k,1,3) == "Get" then
+	if string.sub(k,1,3) == "Get" and table.HVIST(self.GVars,1,k) then
 		local func = function(self)
 			return self[string.sub(k,4)]
 		end
