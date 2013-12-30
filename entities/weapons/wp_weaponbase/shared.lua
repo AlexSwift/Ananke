@@ -1,6 +1,9 @@
 --[[ Weaponbase for WARPAC by Lenny. ]]
 /* Taking inspiration from: The Anathema Weapon Base - Written by wauterboi for the Garry's Mod Community */
 
+
+--lua_run to give the weapon+ammo: lua_run local ply = player.GetAll()[1] ply:Give("wp_weaponbase") ply:SetAmmo(5000, "smg1")
+
 SWEP.PrintName			=	"WARPAC Weaponbase example"
 SWEP.Author				=	"Lenny, WARPAC-team"
 SWEP.Instructions		=	"to be determined."
@@ -59,6 +62,7 @@ SWEP.Primary.Sound.sound = "weapons/galil/galil-1.wav"
 
 
 
+
 sound.Add(SWEP.Primary.Sound)
 
 
@@ -72,16 +76,26 @@ sound.Add(SWEP.Primary.Sound)
 
 function SWEP:Initialize()
 	self.InIronsights = false
-	util.PrecacheSound(SWEP.Primary.Sound.name)
+	util.PrecacheSound(self.Primary.Sound.name)
+	if SERVER then
+		self.flashlight = ents.Create("env_projectedtexture")
+	end
 end
 
 function SWEP:Deploy()
+	self.vm = self.Owner:GetViewModel()
+	self.muzzle = self.vm:GetAttachment(1)
+
+	self.flashlight:SetParent(vm)
+
 	self:SendWeaponAnim(ACT_VM_DRAW)
 	return true
 end
 
 function SWEP:Equip(NewOwner)
+
 	self.SetWeaponHoldType(self.HoldType)
+
 	return true
 end
 
@@ -155,28 +169,33 @@ function SWEP:FireEffects(recoil)
 end
 
 function SWEP:FireMuzzleEffects()
-	local vm = self.Owner:GetViewModel()
-	local muzzle = vm:GetAttachment(1)
 
 	local muzzlefx = EffectData()
 	muzzlefx:SetScale(.2)
-	muzzlefx:SetOrigin(muzzle.Pos)
-	muzzlefx:SetNormal(muzzle.Ang:Up())
+	muzzlefx:SetOrigin(self.muzzle.Pos)
+	muzzlefx:SetNormal(self.muzzle.Ang:Up())
 
 	util.Effect("muzzleflash", muzzlefx)
 
-	if !CLIENT then return end
-	local light = DynamicLight(self.Owner:EntIndex())
+
+	if CLIENT then
+
+	--local light = DynamicLight(self.Owner:EntIndex())
+	local light = {}
 	light.Brightness = math.Rand(3, 5) -- no round is the same
 	light.Decay = 10000
 	light.DieTime = CurTime() + .1
-	light.Dir = muzzle.Ang:Up()
-	light.Pos = muzzle.Pos/*self.Owner:GetShootPos() + 50 * self.Owner:GetAimVector()*/
+	light.Dir = self.muzzle.Ang:Up()
+	light.Pos = self.muzzle.Pos/*self.Owner:GetShootPos() + 50 * self.Owner:GetAimVector()*/
 	light.Size = math.random(100, 125)
 	light.Style = 0
 	light.r = 255
 	light.g = 255
 	light.b = 100
+
+	else
+
+	end
 end
 
 function SWEP:SecondaryAttack() --no, because of iron sights
