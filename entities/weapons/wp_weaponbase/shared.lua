@@ -156,7 +156,7 @@ end
 
 function SWEP:FireMuzzleEffects()
 	local vm = self.Owner:GetViewModel()
-	local muzzle = vm:GetAttachment(1) -- TODO FIGURE IT OUT
+	local muzzle = vm:GetAttachment(1)
 
 	local muzzlefx = EffectData()
 	muzzlefx:SetScale(.2)
@@ -215,6 +215,26 @@ function SWEP:GetViewModelPosition(pos, ang)
 
 	return pos, ang
 	
+end
+
+function SWEP:ViewModelDrawn()
+	/*local vm = self.Owner:GetViewModel()
+	local att = vm:GetAttachment(2)
+	local Vec = vm:GetBonePosition(33)
+	local Ang = vm:GetBoneMatrix(33):GetAngles()
+	for i = 1,  50 do
+		--print(i..": "..vm:GetBoneName(i))
+	end
+	Ang = Angle(Ang.pitch, Ang.yaw+-10, Ang.roll+90)
+	Vec =  Vec + Ang:Up() * -5   + Ang:Right() * -13  + Ang:Forward() * 5
+	print(Vec:ToScreen().x.." "..Vec:ToScreen().y )
+	cam.Start3D2D(Vec, Ang, 2)
+
+	draw.RoundedBox(1, 0, 0, 10, 10, Color(0, 255, 0))
+	draw.DrawText(self.Weapon:Clip1(), "default", 0, 0, Color(255, 0, 0), TEXT_ALIGN_CENTER)
+
+
+	cam.End3D2D()	*/ -- FUCK THIS
 end
 
 function SWEP:Think()
