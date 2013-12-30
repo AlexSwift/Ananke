@@ -16,11 +16,11 @@ ENT.__index = function(self,k)
 				local nw = network.New()
 				nw:SetProtocol(0x04)
 				nw:SetDescription('Automatic accessor variables netowkring')
-				nw:PushData(self) --Is this Efficient?
+				nw:PushData(self:EntIndex())
 				nw:PushData(k)
 				nw:PushData(type(v))
 				nw:PushData(v)
-				nw:Send() --Looks like protocol 0x03 for variables
+				nw:Send()
 			end
 		end
 		return func
@@ -34,12 +34,25 @@ ENT.__index = function(self,k)
 	return self
 end
 
-function ENT:AddGVar( name , ... ) --GVar name , {...}[1] Auto Network?
+function ENT:AddGVar( name , ... )
 	local args = {...}
 	table.insert( self.GVars , { name, args[1] } )
 end
 
-hook.Add( 'PlayerInitialSpawn' , 'wp_gvnw' , function(ply)
-	-- Network current vars here
-end)
+function ENT:Initialize()
+
+	hook.Add( 'PlayerInitialSpawn' , 'wp_gvnw_' .. self:EntIndex() , function(ply)
+		for k,v in pairs(ENT.GVars) do
+			local nw = network.New()
+			nw:SetProtocol(0x04)
+			nw:SetDescription('Automatic accessor variables netowkring')
+			nw:SetRecipient(ply)
+			nw:PushData(self:EntIndex())
+			nw:PushData(v[1])
+			nw:PushData(type(v[2]))
+			nw:PushData(v[2])
+			nw:Send()
+	end)
+
+end
 
