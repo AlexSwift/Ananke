@@ -83,10 +83,29 @@ function SWEP:Initialize()
 end
 
 function SWEP:Deploy()
+	if SERVER then
+	self.flashlight = ents.Create("env_projectedtexture")
+
 	self.vm = self.Owner:GetViewModel()
 	self.muzzle = self.vm:GetAttachment(1)
 
-	self.flashlight:SetParent(vm)
+	--self.flashlight:SetParent(vm)
+	--self.flashlight:SetLocalPos(self.muzzle.Pos-self.vm:GetPos())
+	--self.flashlight:SetLocalAngles(self.muzzle.Ang-self.vm:GetAngles())
+	self.flashlight:SetPos(self.Owner:GetShootPos())
+
+	self.flashlight:SetKeyValue("enableshadows", 1 )
+	self.flashlight:SetKeyValue("farz", 300.0 )
+	self.flashlight:SetKeyValue("nearz", 1.0 )
+	self.flashlight:SetKeyValue("lightfov", 90)
+	self.flashlight:SetKeyValue("lightcolor", Format("%i %i %i 200", 255, 255, 100))
+
+
+	self.flashlight:Spawn()
+	self.flashlight:Input("TurnOff")
+	self.flashlight:Input("FOV", NULL, NULL, "90")
+	self.flashlight:Input("SpotlightTexture", NULL, NULL, "effects/flashlight/soft")
+	end
 
 	self:SendWeaponAnim(ACT_VM_DRAW)
 	return true
@@ -109,8 +128,8 @@ function SWEP:PrimaryAttack()
 
 	--making you more inaccure when walking/falling/moving
 	local velo = self.Owner:GetVelocity():Length()
-	velo = velo*.00076 --approximating when the lerp will be 2 when velo is 200 (normal walkign speed)
-	velo = Lerp(velo, 1, 7.5)
+	velo = velo*.00076 --approximating when the lerp will be 2 when velo is 200 (normal walking speed) TODO: Do the math and figure out the correct value
+	velo = Lerp(velo, 1, 7.5) --7.5 is the limit so we don't make the player randomly do 180s + viewpunch 
 
 	spread = spread * velo
 	recoil = recoil * velo
@@ -169,6 +188,8 @@ function SWEP:FireEffects(recoil)
 end
 
 function SWEP:FireMuzzleEffects()
+	self.vm = self.Owner:GetViewModel()
+	self.muzzle = self.vm:GetAttachment(1)
 
 	local muzzlefx = EffectData()
 	muzzlefx:SetScale(.2)
@@ -180,8 +201,7 @@ function SWEP:FireMuzzleEffects()
 
 	if CLIENT then
 
-	--local light = DynamicLight(self.Owner:EntIndex())
-	local light = {}
+	local light = DynamicLight(self.Owner:EntIndex())
 	light.Brightness = math.Rand(3, 5) -- no round is the same
 	light.Decay = 10000
 	light.DieTime = CurTime() + .1
@@ -194,7 +214,15 @@ function SWEP:FireMuzzleEffects()
 	light.b = 100
 
 	else
-
+		self.vm = self.Owner:GetViewModel()
+		self.muzzle = self.vm:GetAttachment(1)
+		self.flashlight:SetPos(self.muzzle.Pos + Vector( 0, 0, 50))
+		self.flashlight:SetAngles(self.muzzle.Ang:Up():Angle())
+		self.flashlight:SetKeyValue("lightcolor", "255 255 150 255")
+		self.flashlight:Input("TurnOn")
+		timer.Simple(.001, function()
+			self.flashlight:Input("TurnOff")
+		end)
 	end
 end
 
