@@ -34,23 +34,49 @@ ENT.__index = function(self,k)
 	return self
 end
 
-function ENT:AddGVar( name , ... )
+ENT.__newindex = function(self,k,v)
+	for k,v in pairs(self.GVars) do
+		if v[1] == k then
+			local nw = network.New()
+			nw:SetProtocol(0x04)
+			nw:SetDescription('Automatic accessor variables netowkring')
+			nw:PushData(self:EntIndex())
+			nw:PushData(k)
+			nw:PushData(type(v))
+			nw:PushData(v)
+			nw:Send()
+			self[k] = v
+			return
+		else
+			continue
+		end
+	end
+	self[k] = v
+	return
+end
+
+function ENT:AddGVar( name , ... ) -- name, default, b_nw
 	local args = {...}
-	table.insert( self.GVars , { name, args[1] } )
+	table.insert( self.GVars , { name, unpack(args) } )
 end
 
 function ENT:Initialize()
 
 	hook.Add( 'PlayerInitialSpawn' , 'wp_gvnw_' .. self:EntIndex() , function(ply)
 		for k,v in pairs(ENT.GVars) do
+			local default = v[2] or 0
+			local b_nw = v[3]
+
+			if v[3] != true then continue end
+
 			local nw = network.New()
-			nw:SetProtocol(0x04)
-			nw:SetDescription('Automatic accessor variables netowkring')
-			nw:SetRecipient(ply)
-			nw:PushData(self:EntIndex())
-			nw:PushData(v[1])
-			nw:PushData(type(v[2]))
-			nw:PushData(v[2])
+				nw:SetProtocol(0x04)
+				nw:SetDescription('Automatic accessor variables netowkring')
+				nw:SetRecipient(ply)
+				nw:PushData(self:EntIndex())
+				nw:PushData(v[1])
+				nw:PushData(type(default))
+				nw:PushData(default)
 			nw:Send()
 	end)
 
