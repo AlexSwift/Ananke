@@ -8,7 +8,7 @@ ENT.Contact			= ""
 ENT.Base 			= "base_nextbot"
 ENT.GVars			= {}
 
-local function table.HVIST(tabl,v,k)
+function table.HVIST(tabl,v,k)
 	for key,value in pairs(tabl) do
 		if value[k] == v then
 			return true

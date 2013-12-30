@@ -12,10 +12,12 @@ function core.Initialise()
 	for k,v in pairs(f) do
 		if SERVER then
 			print('\tLoading ' .. v)
+			if file.Size('gamemodes/wp_base/gamemode/core/'..v .. '/' .. f,"GAME") == 0 then continue end
 			AddCSLuaFile(v)
 			include(v)
 		else
 			print('\tLoading ' .. v)
+			if file.Size('gamemodes/wp_base/gamemode/core/'..v .. '/' .. f,"GAME") == 0 then continue end
 			include(v)
 		end
 	end
@@ -27,6 +29,7 @@ function core.Initialise()
 		core.Loaded['shared'] = {f,d}
 		print('Loading Server :')
 		for k,v in pairs(f) do
+			if file.Size('gamemodes/wp_base/gamemode/core/'..v .. '/' .. f,"GAME") == 0 then continue end
 			print('\tLoading ' .. v)
 			include(v)
 		end

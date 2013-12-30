@@ -18,7 +18,7 @@ function modules.Initialise()
 	for k,v in pairs(d) do
 		print('\tLoaded module : ' .. v)
 		for f,func in pairs(modules.functions) do
-			if file.Exists('gamemodes/wp_base/gamemode/modules/'..v .. '/' .. f,'GAME') then
+			if file.Exists('gamemodes/wp_base/gamemode/modules/'..v .. '/' .. f,'GAME') and file.Size('gamemodes/wp_base/gamemode/modules/'..v .. '/' .. f,"GAME") != 0 then
 				func(v)
 			end
 		end

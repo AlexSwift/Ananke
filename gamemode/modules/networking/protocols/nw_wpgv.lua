@@ -8,7 +8,7 @@ Protocol.Data = NW_CUSTOM 	--Custom Datagram. Variables won't all be of same typ
 
 Protocol.CallBack = function(data)
 	local ent = Entity(data[1])
-	ent[data[2]] == data[3]
+	ent[data[2]] = data[3]
 end
 
 Protocol.send = function(data)
