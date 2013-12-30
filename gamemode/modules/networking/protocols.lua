@@ -6,7 +6,7 @@ _PROTOCOLS = {}
 
 function protocol.New()
 	local tabl = {}
-	return setmetatable(tabl,protocol)
+	return setmetatable(tabl,table.Copy(protocol))
 end
 
 function protocol:Register()

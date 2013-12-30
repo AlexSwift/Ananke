@@ -3,7 +3,7 @@ include('shared.lua')
 AddCSLuaFile('shared.lua')
 
 function profiles.New()
-	return setmetatable({},profiles)
+	return setmetatable({},table.Copy(profiles))
 end
 
 function profiles:SetOwner(ply)

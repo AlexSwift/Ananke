@@ -12,7 +12,7 @@ function chatcommands.New(command)
 	tabl['callback'] = function() end
 	tabl['precall'] = function(ply) return true end -- Should it actually pass?
 	tabl['postcall'] = function() end
-	return setmetatable({},chatcommands)
+	return setmetatable({},table.Copy(chatcommands))
 end
 
 function chatcommands.Get(command)

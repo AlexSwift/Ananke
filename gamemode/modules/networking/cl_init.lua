@@ -13,7 +13,7 @@ function network.New()
 	nw.Recipients 	= nil
 	nw.Description 	= ""
 
-	return setmetatable(nw,network)
+	return setmetatable(nw,table.Copy(network))
 end
 
 function network:SetProtocol(id)
