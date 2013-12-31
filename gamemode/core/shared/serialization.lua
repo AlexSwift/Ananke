@@ -1,36 +1,3 @@
-/*
-	Let's think about what we are trying to do before starting anything:
-	We need to serialize data into a non human readable string (more compact)
-	and allow for decoding.
-
-	Do we want a header ?
-
-	What happens when there is a table ?
-
-	Let's try and work through all these one by one.
-
-	Proposed format:
-
-	for:
-		{
-			[key] = value,
-			[key] = value,
-			[key] = {
-						[key] = value
-					}
-		}
-
-	[s_start][entry][dt]key[/dt][dt][value][/dt][/entry][s_end]
-
-	where key, and value are serialized and compressed.
-	This perticular example shows this table:
-		{
-			[key] = value
-		}
-	But will include hex charactars so it will be more compact than table.TableToString()
-
-	Let's give it a go!
-*/
 
 core.serialization = {}
 core.serialization.translations = {}
@@ -39,8 +6,8 @@ core.serialization.padding = 30
 function core.serialization.initialize()
 
 	local types = {
-	--	[id]= { types	,encode function,
-	--					 decode function
+	--	[id]= { types	,encode function(data),
+	--					 decode function(s_data)
 	--		}
 		[1] = {'string'	,function( data )
 							return data
@@ -63,8 +30,9 @@ function core.serialization.initialize()
 							return r .. string.char( math.mod(data + core.serialization.padding + 1, 255 ) )
 						end
 						,function( s_data )
-							local t = string.explode( '' , s_data )
-							return ( #t - 1 + t[#t] )
+							local t = string.Explode( '' , s_data )
+							print(string.byte(t[#t]))
+							return ( (#t - 2)*(255-30) + string.byte(t[#t]) - 31)
 						end},
 		[4] = {'Angle'	,function( data )
 							local r = ''
@@ -86,8 +54,8 @@ function core.serialization.initialize()
 						end
 						,function( s_data )
 						end},
-		[6] = {'bool'	,function( data )
-							return string.char(( data and 1 or 0 ) + core.serialization.padding )
+		[6] = {'boolean',function( data )
+							return string.char(( data == true and 1 or 0 ) + core.serialization.padding )
 						end
 						,function( s_data )
 							if (string.byte(s_data) == core.serialization.padding) then
@@ -98,22 +66,33 @@ function core.serialization.initialize()
 		}
 
 	for k,v in pairs(types) do
-		core.serialization.translations['start_' .. v[1]] = { 2*k - 1 , v[2] }
+		core.serialization.translations['start_' .. v[1]] = { 2*k - 1 , v[2] , v[3] }
 		core.serialization.translations['end_' .. v[1]] = 2*k
 	end
 
 end
 
-function core.serialization.__call(data)
-	local t = type(data[1])
-	data[2] = data[2] and data[2] .. string.char(core.serialization.translations['start_'..type(data[1])][1]) or string.char(core.serialization.translations['start_'..type(data[1])][1])
-	data[2] = data[2] .. core.serialization.translations['start_'..type(data[1])][2](data[1],s_data)
-	data[2] = data[2] .. string.char(core.serialization.translations['end_'..type(data[1])])
+function core.serialization.encode(data)
+	local t = type(data)
+	local s_data = ''
+	s_data = s_data and s_data .. string.char(core.serialization.translations['start_'..type(data)][1]) or string.char(core.serialization.translations['start_'..type(data)][1])
+	s_data = s_data .. core.serialization.translations['start_'..type(data)][2](data,s_data)
+	s_data = s_data .. string.char(core.serialization.translations['end_'..type(data)])
 
-	return data[2]
+	return s_data
 end
 
 function core.serialization.decode(s_data)
+
+	local typ = string.byte(string.GetChar(s_data,1)) --start_type data
+	s_data = string.TrimLeft(s_data, string.GetChar(s_data,1) )
+	s_data = string.TrimRight(s_data,string.char(string.byte(string.GetChar(s_data,1)) +1))
+	local data = {}
+	for k,v in pairs(core.serialization.translations) do
+		if type(v) == 'number' then continue end
+		if v[1] != typ then continue end
+		data = v[3](s_data)
+	end
 
 	return data
 end
