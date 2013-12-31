@@ -27,5 +27,6 @@ end
 
 function core.debug.SetActive( b )
 	core.debug.enabled = b
+	core.debug.timestamp = core.debug.enabled and os.time() or 0
 end
 
