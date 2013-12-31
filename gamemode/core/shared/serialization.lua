@@ -34,15 +34,67 @@
 
 core.serialization = {}
 core.serialization.translations = {}
+core.serialization.padding = 30
 
 function core.serialization.initialize()
 
 	local types = {
-		[1] = {'string'	,function( data, s_data ) end},
-		[2] = {'table'	,function( data, s_data ) end},
-		[3] = {'number'	,function( data, s_data ) end},
-		[4] = {'Angle'	,function( data, s_data ) end},
-		[5] = {'Vector'	,function( data, s_data ) end}
+	--	[id]= { types	,encode function,
+	--					 decode function
+	--		}
+		[1] = {'string'	,function( data )
+							return data
+						end
+						,function( s_data )
+							return s_data
+						end},
+		[2] = {'table'	,function( data )
+							-- Hard part
+						end
+						,function( s_data )
+							-- Main decode function
+						end},
+		[3] = {'number'	,function( data )
+							local n = math.floor( (data + core.serialization.padding) / 255 )
+							local r = ''
+							for i = 1,n do
+								r = r .. string.char(255)
+							end
+							return r .. stirng.char( math.mod(data + core.serialization.padding , 255 ) )
+						end
+						,function( s_data )
+							local t = string.explode( '' , s_data )
+							return ( #t - 1 + t[#t] )
+						end},
+		[4] = {'Angle'	,function( data )
+							local r = ''
+							r = r .. core.serialization.translations['number'][1](data.p) .. string.char(2 * #core.serialization.translations)
+							r = r .. core.serialization.translations['number'][1](data.y) .. string.char(2 * #core.serialization.translations)
+							r = r .. core.serialization.translations['number'][1](data.r)
+							return r
+						end
+						,function( s_data )
+							local t = string.explode( string.char( 2 * #core.serialization.translations , s_data )
+							local tabl = {}
+							for i = 1,3 do
+								tabl[i] = core.serialization.translations['number'][2](t[i])
+							end
+							local ang = Angle( unpack(tabl) )
+							return ang
+						end},
+		[5] = {'Vector'	,function( data )
+						end
+						,function( s_data )
+						end},
+		[6] = {'bool'	,function( data )
+							return string.char(( data and 1 or 0 ) + core.serialization.padding ))
+						end
+						,function( s_data )
+							if (string.byte(s_data) == core.serialization.padding) then
+								return false
+							end
+							return true
+						end}
 		}
 
 	for k,v in pairs(types) do
@@ -55,7 +107,7 @@ end
 function core.serialization.__call(data)
 	local t = type(data[1])
 	data[2] = data[2] and data[2] .. string.char(core.serialization.translations['start_'..type(data[1])]) or string.char(core.serialization.translations['start_'..type(data[1])])
-	core.serialization.translations['start_'..type(data[1])](data[1])
+	data[2] = data[2] .. core.serialization.translations['start_'..type(data[1])](data[1],s_data)
 	data[2] = data[2] .. string.char(core.serialization.translations['end_'..type(data[1])])
 
 	return s_data
