@@ -55,12 +55,12 @@ function core.serialization.initialize()
 							-- Main decode function
 						end},
 		[3] = {'number'	,function( data )
-							local n = math.floor( (data + core.serialization.padding) / 255 )
+							local n = math.floor( (data + core.serialization.padding + 1) / 255 )
 							local r = ''
 							for i = 1,n do
 								r = r .. string.char(255)
 							end
-							return r .. stirng.char( math.mod(data + core.serialization.padding , 255 ) )
+							return r .. string.char( math.mod(data + core.serialization.padding + 1, 255 ) )
 						end
 						,function( s_data )
 							local t = string.explode( '' , s_data )
@@ -68,9 +68,9 @@ function core.serialization.initialize()
 						end},
 		[4] = {'Angle'	,function( data )
 							local r = ''
-							r = r .. core.serialization.translations['number'][1](data.p) .. string.char(2 * #core.serialization.translations)
-							r = r .. core.serialization.translations['number'][1](data.y) .. string.char(2 * #core.serialization.translations)
-							r = r .. core.serialization.translations['number'][1](data.r)
+							r = r .. core.serialization.translations['start_number'][2](data.p) .. string.char(2 * #core.serialization.translations + 1)
+							r = r .. core.serialization.translations['start_number'][2](data.y) .. string.char(2 * #core.serialization.translations + 1)
+							r = r .. core.serialization.translations['start_number'][2](data.r)
 							return r
 						end
 						,function( s_data )
@@ -106,11 +106,11 @@ end
 
 function core.serialization.__call(data)
 	local t = type(data[1])
-	data[2] = data[2] and data[2] .. string.char(core.serialization.translations['start_'..type(data[1])]) or string.char(core.serialization.translations['start_'..type(data[1])])
-	data[2] = data[2] .. core.serialization.translations['start_'..type(data[1])](data[1],s_data)
+	data[2] = data[2] and data[2] .. string.char(core.serialization.translations['start_'..type(data[1])][1]) or string.char(core.serialization.translations['start_'..type(data[1])][1])
+	data[2] = data[2] .. core.serialization.translations['start_'..type(data[1])][2](data[1],s_data)
 	data[2] = data[2] .. string.char(core.serialization.translations['end_'..type(data[1])])
 
-	return s_data
+	return data[2]
 end
 
 function core.serialization.decode(s_data)
@@ -118,3 +118,4 @@ function core.serialization.decode(s_data)
 	return data
 end
 
+core.serialization.initialize()
