@@ -20,7 +20,8 @@ end
 ENT.__index = function(self,k)
 	if string.sub(k,1,3) == "Set" and table.HVIST(self.GVars,1,k) then
 		local func = function(self,v,...)
-			local b_nw = {...}[1] or false
+			local args = {...}
+			local b_nw = args[1] or false
 			self[string.sub(k,4)] = v
 			if SERVER and b_nw then
 				local nw = network.New()
