@@ -21,14 +21,15 @@ function core.MySQL.Initialize()
 end
 
 function core.MySQL.Query( q, callback, ...)
-	local flags, vargs =({...}[1] or nil),({...}[2] or nil)
+	local args = {...}
+	local flags, vargs =(args[1] or nil),(args[2] or nil)
 	table.insert(core.MySQL.Queries, {q, callback, flags, vargs})
 	if not core.MySQL.InProg then
 		core.MySQL.Process()
 	end
 end
 
-local function table.shift( tabl , n)
+function table.shift( tabl , n)
 	for k,v in ipairs(tabl) do
 		tabl[k-n] = v
 	end

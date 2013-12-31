@@ -89,6 +89,7 @@ function ENT:Initialize()
 				nw:PushData(type(default))
 				nw:PushData(default)
 			nw:Send()
+		end
 	end)
 
 end

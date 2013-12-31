@@ -70,6 +70,7 @@ function ENT:AddGVar( name , ... ) -- name, default, b_nw
 	table.insert( self.GVars , { name, unpack(args) } )
 end
 
+
 function ENT:Initialize()
 
 	hook.Add( 'PlayerInitialSpawn' , 'wp_gvnw_' .. self:EntIndex() , function(ply)
@@ -88,7 +89,9 @@ function ENT:Initialize()
 				nw:PushData(type(default))
 				nw:PushData(default)
 			nw:Send()
-	end)
+		end
+
+	end )
 
 end
 
