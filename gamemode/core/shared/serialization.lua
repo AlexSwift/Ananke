@@ -74,7 +74,7 @@ function core.serialization.initialize()
 							return r
 						end
 						,function( s_data )
-							local t = string.explode( string.char( 2 * #core.serialization.translations , s_data )
+							local t = string.explode( string.char( 2 * #core.serialization.translations) , s_data )
 							local tabl = {}
 							for i = 1,3 do
 								tabl[i] = core.serialization.translations['number'][2](t[i])
@@ -87,7 +87,7 @@ function core.serialization.initialize()
 						,function( s_data )
 						end},
 		[6] = {'bool'	,function( data )
-							return string.char(( data and 1 or 0 ) + core.serialization.padding ))
+							return string.char(( data and 1 or 0 ) + core.serialization.padding )
 						end
 						,function( s_data )
 							if (string.byte(s_data) == core.serialization.padding) then
