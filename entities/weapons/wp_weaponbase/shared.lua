@@ -48,9 +48,9 @@ SWEP.IronsightPos = Vector(-6.361, -10.827, 2.72) --make false if there are none
 SWEP.IronsightAng = Vector(0, 0, 0)
 
 SWEP.Primary.Spread.Value = .07 -- how much do shots spread
-SWEP.Primary.Recoil.Value = 2 -- how much does the view kick up after shooting
-SWEP.Primary.Spread.AimReduction = .25 -- how much does the spread decrease whem aiming (in %)
-SWEP.Primary.Recoil.AimReduction = .25 -- how much does the recoil decrease whem aiming (in %)
+SWEP.Primary.Recoil.Value = .5 -- how much does the view kick up after shooting
+SWEP.Primary.Spread.AimReduction = .75 -- how much does the spread decrease whem aiming (in %)
+SWEP.Primary.Recoil.AimReduction = .50 -- how much does the recoil decrease whem aiming (in %)
 
 SWEP.Primary.Sound = {}
 SWEP.Primary.Sound.name = "wp_weaponbase_sound"
@@ -135,8 +135,8 @@ function SWEP:PrimaryAttack()
 	recoil = recoil * velo
 
 	if self.InIronsights then
-		spread = spread * self.Primary.Spread.AimReduction
-		recoil = recoil * self.Primary.Recoil.AimReduction
+		spread = spread * (1 - self.Primary.Spread.AimReduction)
+		recoil = recoil * (1 - self.Primary.Recoil.AimReduction)
 	end
 
 	self:ShootBullet(self.Primary.Damage.Value, 1, spread, recoil)
@@ -160,10 +160,14 @@ function SWEP:CanPrimaryAttack()
 end
 
 function SWEP:ShootBullet(damage, num, spread, recoil)
+
+	self.vm = self.Owner:GetViewModel()
+	self.muzzle = self.vm:GetAttachment(1)
+
 	local bullet = {}
 	bullet.Attacker = self.Owner
-	bullet.Src = self.Owner:GetShootPos()
-	bullet.Dir = self.Owner:GetAimVector()
+	bullet.Src = self.muzzle.Pos
+	bullet.Dir = self.muzzle.Ang:Up()
 	bullet.Spread = Vector(spread, spread, 0)
 	bullet.Num = num
 	bullet.Tracer = true
@@ -180,11 +184,25 @@ function SWEP:FireEffects(recoil)
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	self:FireMuzzleEffects()
 
-	local upkick = math.Rand(-.4, .15) * recoil --higher chance for upkick than downkick
-	local sidekick = math.Rand(-.15, .15) * recoil --low sidekick
+	local upordown = math.random(-1, 1)
+	local leftorright = math.random(0, 1)
 
-	self.Owner:ViewPunch(Angle(upkick, sidekick, 0))
-	self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick*.5, sidekick*.5, 0)) --kyle wants it to be cs:go like :/ so ne real recoil
+	if upordown >= 0 then --higher change for up recoil up = 1, down = -1
+		upordown = 1
+	end
+	if leftorright == 0 then -- same chance for both
+		leftorright = -1
+	end
+
+	print(upordown.." "..leftorright)
+
+
+	local upkick = upordown * recoil --higher chance for upkick than downkick
+	local sidekick = leftorright * recoil --low sidekick
+
+	self.Owner:ViewPunch(Angle(upkick, sidekick, sidekick * .25))
+	if !CLIENT then return end
+	self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick*.25, sidekick*.25, 0)) --kyle wants it to be cs:go like :/ so no real recoil (but we do it a tiny bit anyway)
 end
 
 function SWEP:FireMuzzleEffects()
