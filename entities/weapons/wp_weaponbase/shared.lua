@@ -113,7 +113,7 @@ end
 
 function SWEP:Equip(NewOwner)
 
-	self.SetWeaponHoldType(self.HoldType)
+	self:SetWeaponHoldType(self.HoldType)
 
 	return true
 end
