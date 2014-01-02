@@ -28,7 +28,7 @@ SWEP.UseHands = true
 SWEP.ViewModelFOV = 70 -- this is as high as I could get it without the arms clipping in the screen all the time
 SWEP.HoldType = "smg"
 
-SWEP.Primary = {}
+SWEP.Primary = {} 
 SWEP.Primary.Damage = {}
 SWEP.Primary.Recoil = {}
 SWEP.Primary.Spread = {}
@@ -61,9 +61,18 @@ SWEP.Primary.Sound.pitchend = 100
 SWEP.Primary.Sound.sound = "weapons/galil/galil-1.wav"
 
 
-
-
 sound.Add(SWEP.Primary.Sound)
+
+
+
+function SWEP:Lerp( delta, from, to )
+  
+  --if ( delta > 1 ) then return to end             --Why the hell did garry do this?!
+  --if ( delta < 0 ) then return from end
+
+  return from + (to - from) * delta;
+
+end
 
 
 
@@ -128,8 +137,8 @@ function SWEP:PrimaryAttack()
 
 	--making you more inaccure when walking/falling/moving
 	local velo = self.Owner:GetVelocity():Length()
-	velo = velo*.00076 --approximating when the lerp will be 2 when velo is 200 (normal walking speed) TODO: Do the math and figure out the correct value
-	velo = Lerp(velo, 1, 7.5) --7.5 is the limit so we don't make the player randomly do 180s + viewpunch 
+	velo = velo*.005 -- nomral walkign speed is 200 so normally velo/200 but multiplcation is faster than division so we turn it into multiplcation
+	velo = self:Lerp(velo, 1, 2) -- make it twice as high wenn walking
 
 	spread = spread * velo
 	recoil = recoil * velo
@@ -137,6 +146,10 @@ function SWEP:PrimaryAttack()
 	if self.InIronsights then
 		spread = spread * (1 - self.Primary.Spread.AimReduction)
 		recoil = recoil * (1 - self.Primary.Recoil.AimReduction)
+	end
+
+	if InAttackSince > 0 then
+
 	end
 
 	self:ShootBullet(self.Primary.Damage.Value, 1, spread, recoil)
@@ -194,15 +207,13 @@ function SWEP:FireEffects(recoil)
 		leftorright = -1
 	end
 
-	print(upordown.." "..leftorright)
-
 
 	local upkick = upordown * recoil --higher chance for upkick than downkick
 	local sidekick = leftorright * recoil --low sidekick
 
-	self.Owner:ViewPunch(Angle(upkick, sidekick, sidekick * .25))
+	self.Owner:ViewPunch(Angle(sidekick, upkick, sidekick * .25))
 	if !CLIENT then return end
-	self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick*.25, sidekick*.25, 0)) --kyle wants it to be cs:go like :/ so no real recoil (but we do it a tiny bit anyway)
+	--self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick*.25, sidekick*.25, 0)) --kyle wants it to be cs:go like :/ so no real recoil (but we do it a tiny bit anyway)
 end
 
 function SWEP:FireMuzzleEffects()
@@ -304,3 +315,26 @@ end
 
 function SWEP:Think()
 end
+
+
+-- this is fucking ugly
+
+local InAttackSince = false
+local owner = SWEP.Owner
+local function KeyPress(ply, key)
+	if owner == ply then
+		if key == IN_ATTACK then
+			InAttackSince = CurTime()
+		end
+	end
+end
+
+hook.Add("KeyPress", "WPBASEKeyPress", KeyPress)
+
+function KeyRelease(ply, key)
+	if owner == ply then
+		InAttackSince = 0
+	end
+end
+
+hook.Add("KeyRelease", "WPBASEKeyRelease", KeyRelease)
