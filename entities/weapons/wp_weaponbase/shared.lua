@@ -47,8 +47,8 @@ SWEP.Primary.MuzzleEffect = ""
 SWEP.IronsightPos = Vector(-6.361, -10.827, 2.72) --make false if there are none
 SWEP.IronsightAng = Vector(0, 0, 0)
 
-SWEP.Primary.Spread.Value = .07 -- how much do shots spread
-SWEP.Primary.Recoil.Value = .5 -- how much does the view kick up after shooting
+SWEP.Primary.Spread.Value = 1 -- how much do shots spread
+SWEP.Primary.Recoil.Value = .07 -- how much does the view kick up after shooting
 SWEP.Primary.Spread.AimReduction = .75 -- how much does the spread decrease whem aiming (in %)
 SWEP.Primary.Recoil.AimReduction = .50 -- how much does the recoil decrease whem aiming (in %)
 
@@ -160,17 +160,18 @@ function SWEP:PrimaryAttack()
 	if InAttackSince then
 		local ShootingTime = CurTime() - InAttackSince
 		
-		ShootingTime = ShootingTime + .5 -- make sure it's always bigger than 1 since we are dealing with exponents
+		ShootingTime = ShootingTime  -- make sure it's always bigger than 1 since we are dealing with exponents
 
 
-		spread = spread * math.pow(ShootingTime, 2)
-		recoil = recoil * math.pow(ShootingTime, 2)
+		spread = spread * math.pow(ShootingTime, 2) * .5
+		recoil = recoil * math.pow(ShootingTime, 2) * .5
 
-		local spct = 
-		local rpct = 
-		spread = Lerp(spct, 0, .1)
-		recoil = Lerp(rpct, 0, .1) -- limiting the spread/recoil
-		print(spread)
+		local spct = spread/.07
+		local rpct = recoil/.07
+		spread = Lerp(spct, 0, .07)
+		recoil = Lerp(rpct, 0, 1) -- limiting the spread/recoil
+
+		print(spread, recoil)
 	end
 
 	self:ShootBullet(self.Primary.Damage.Value, 1, spread, recoil)
@@ -342,7 +343,9 @@ end
 function KeyRelease(ply, key)
 	if selfowner == ply then
 		if key == IN_ATTACK then
-			InAttackSince = false
+			timer.Simple(.5, function() -- make sure you can't avoid it by tapping
+				InAttackSince =  false
+			end)
 		end
 	end
 end
