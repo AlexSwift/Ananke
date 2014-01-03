@@ -63,7 +63,7 @@ function modules.Unload( name )
 	modules.get( name ):UnLoad()
 end
 
-function C
+function modules.Initialise()
 	for k,v in pairs(_MODULES) do
 		modules.get( k ):OnLoad()
 	end

@@ -10,12 +10,13 @@ function profiles:SetOwner(ply)
 	self.Owner = ply
 end
 
-function profiles:Set(key,value,Send,SendToAll)
+function profiles:Set(key,value,...)
+	local args = {...} --Send,SendToAll
 	self[key] = value
 
-	if !Send then return end
+	if !args[1] then return end
 
-	local rf = SendToAll and player.GetAll() or self.Owner
+	local rf = args[2] and player.GetAll() or self.Owner
 	local nw = network.New()
 	nw:SetProtocol(0x03)
 	nw:SetDescription('Sending player variables')
@@ -31,11 +32,12 @@ function profiles:Get(key)
 	return self[key] or nil
 end
 
-function profiles:Load(id,SendToAll)
+function profiles:Load(id,...)
+	local args = {...}
 	local q = "SELECT * WHERE `id` =" .. id
 	core.MySQL.Query( q, function(data)
 		for k,v in pairs(data[1]) do
-			self:Set(k,v,SendToAll)
+			self:Set(k,v,unpack(args))
 		end
 	end)
 end
