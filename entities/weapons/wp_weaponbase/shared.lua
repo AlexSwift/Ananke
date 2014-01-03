@@ -51,6 +51,9 @@ SWEP.Primary.Spread.Value = 1 -- how much do shots spread
 SWEP.Primary.Recoil.Value = .07 -- how much does the view kick up after shooting
 SWEP.Primary.Spread.AimReduction = .75 -- how much does the spread decrease whem aiming (in %)
 SWEP.Primary.Recoil.AimReduction = .50 -- how much does the recoil decrease whem aiming (in %)
+SWEP.Primary.Spread.CrouchReduction = .75 -- how much does the spread decrease whem crouching (in %)
+SWEP.Primary.Recoil.CrouchReduction = .50 -- how much does the recoil decrease whem crouching (in %)
+
 
 SWEP.Primary.Sound = {}
 SWEP.Primary.Sound.name = "wp_weaponbase_sound"
@@ -157,6 +160,11 @@ function SWEP:PrimaryAttack()
 		recoil = recoil * (1 - self.Primary.Recoil.AimReduction)
 	end
 
+	if self.Owner:Crouching() then
+		spread = spread * (1 - self.Primary.Spread.CrouchReduction)
+		recoil = recoil * (1 - self.Primary.Spread.CrouchReduction)
+	end
+
 	if InAttackSince then
 		local ShootingTime = CurTime() - InAttackSince
 		
@@ -201,7 +209,7 @@ function SWEP:ShootBullet(damage, num, spread, recoil)
 	bullet.Attacker = self.Owner
 	bullet.Src = self.Owner:GetShootPos()
 	bullet.Dir = self.Owner:GetAimVector()
-	bullet.Spread = Vector(spread, spread, 0)
+	bullet.Spread = Vector(spread*.35, spread, 0)
 	bullet.Num = num
 	bullet.Tracer = true
 	bullet.AmmoType = self.Primary.Ammo
@@ -211,8 +219,10 @@ function SWEP:ShootBullet(damage, num, spread, recoil)
 end
 
 function SWEP:FireEffects(recoil)
-	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-	self:EmitSound(self.Primary.Sound.name)
+	if IsFirstTimePredicted() then
+		self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+		self:EmitSound(self.Primary.Sound.name)
+	end
 
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	self:FireMuzzleEffects()

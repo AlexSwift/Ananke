@@ -21,7 +21,7 @@ function modules.new()
 end
 
 function modules:Register()
-	_MODULES[self.name] = table.Copy(self)
+	_MODULES[self.name] = self
 end
 
 function modules.get( name )
@@ -45,8 +45,8 @@ function modules.Load( ... )
 				if file.Exists('gamemodes/wp_base/gamemode/modules/'..v .. '/' .. f,'GAME') and file.Size('gamemodes/wp_base/gamemode/modules/'..v .. '/' .. f,"GAME") != 0 then
 					func(v)
 				end
-			end
-			modules.get( args[1] ):OnLoad()
+			end	
+			modules.get( v ):OnLoad()
 		end
 	else
 		print('\tLoaded module : ' .. v)
