@@ -25,7 +25,7 @@ function modules:Register()
 end
 
 function modules.get( name )
-	return _MODULES[name[
+	return _MODULES[name]
 end
 
 function modules:OnLoad ( )
