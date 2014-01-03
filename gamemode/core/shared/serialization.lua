@@ -16,10 +16,49 @@ function core.serialization.initialize()
 							return s_data
 						end},
 		[2] = {'table'	,function( data )
-							-- Hard part
+							local s_data = ''
+							for k,v in ipairs( data ) do
+
+								s_data = s_data and s_data .. string.char(core.serialization.translations['start_string'][1]) or string.char(core.serialization.translations['start_string'][1])
+								s_data = s_data .. core.serialization.translations['start_string'][2](k,s_data)
+								s_data = s_data .. string.char(core.serialization.translations['end_string'])
+
+								s_data = s_data .. string.char(core.serialization.translations['start_' .. type(v)][1])
+								s_data = s_data .. core.serialization.translations['start_' .. type(v)][2](v,s_data)
+								s_data = s_data .. string.char(core.serialization.translations['end_' .. type(v)])
+
+								s_data = s_data .. string.char(core.serialization.padding + 1)
+
+							end
+
+							s_data = string.TrimRight( s_data , string.char(core.serialization.padding + 1) )
+
+							return s_data
 						end
 						,function( s_data )
-							-- Main decode function
+
+							local data = {}
+
+							local tabl = string.explode( string.char(core.serialization.padding + 1) , s_data )
+							for k,v in ipairs(tabl) do
+								local typ = string.byte(string.GetChar( v , 1 ))
+								local split = 0
+
+								for i = 1, string.len(v) do
+									if string.byte(string.GetChar(v,i)) == typ + 1 then
+										split = i
+										break
+									end
+									continue
+								end
+
+								local key = core.serialization.translations['start_string'][3](string.sub(v , 2 , split - 1))
+								local value = core.serialization.translations[core.serialization.GetTypeFromByte(string.byte(string.GetChar(v,split + 1)))][3](string.sub(v , split + 2 , string.len(v) - 1))
+
+								data[key] = value
+							end
+							return data
+
 						end},
 		[3] = {'number'	,function( data )
 							local n = math.floor( (data + core.serialization.padding + 1) / 255 )
@@ -41,7 +80,6 @@ function core.serialization.initialize()
 							return r
 						end
 						,function( s_data )
-							print(s_data,string.char( 12 ))
 							local t = string.Explode( string.char( 12 ) , s_data )
 							local tabl = {}
 							for i = 1,3 do
@@ -51,8 +89,20 @@ function core.serialization.initialize()
 							return ang
 						end},
 		[5] = {'Vector'	,function( data )
+							local r = ''
+							r = r .. core.serialization.translations['start_number'][2](data.x) .. string.char(12)
+							r = r .. core.serialization.translations['start_number'][2](data.y) .. string.char(12)
+							r = r .. core.serialization.translations['start_number'][2](data.z)
+							return r
 						end
 						,function( s_data )
+							local t = string.Explode( string.char( 12 ) , s_data )
+							local tabl = {}
+							for i = 1,3 do
+								tabl[i] = (core.serialization.translations['start_number'][3](t[i]) <= 0) and (core.serialization.translations['start_number'][3](t[i]) + 255) or (core.serialization.translations['start_number'][3](t[i]))
+							end
+							local vec = Vector( unpack(tabl) )
+							return vec
 						end},
 		[6] = {'boolean',function( data )
 							return string.char(( data == true and 1 or 0 ) + core.serialization.padding )
@@ -82,38 +132,16 @@ function core.serialization.encode(data)
 	return s_data
 end
 
-function core.serialization.decode(s_data)
-	/*
-	local typ = string.GetChar(s_data,1) --start_type data
-	local data = {}
+function core.serialization.GetTypeFromByte( byte )
 	for k,v in pairs(core.serialization.translations) do
-		if v[1] != typ then continue end
-		data = v[3](s_data)
-	end
-	*/
-
-	/*
-	local tabl = string.Explode( '' , s_data )
-	local buffer1 = {} -- [depth] = {startpos , endpos}
-	local buffer2 = {}
-	local j = 1 --depth
-	for i = 1,#tabl do
-		if tabl[i] == string.char(3) then		--New table
-			j = j + 1
-			buffer2[j] = i
-
-		elseif tabl[i] == string.char(4) then	--End of table
-			j = j - 1
-			table.insert(buffer1,{buffer2[j],i})
-			buffer2[j] = nil
+		if type(v) == 'number' then continue end
+		if v[1] == byte then
+			return k
 		end
 	end
-	tabl = nil
-	buffer2[j] = nil
-	for k,v in pairs(s_data) do
-		local tabl = string.Explode( string.char( 2 * #core.serialization.translations) , string.trim( s_data , v[1] , v[2] ))
-	end
-	*/
+end
+
+function core.serialization.decode(s_data)
 
 	local typ = string.byte(string.GetChar(s_data,1)) --start_type data
 	s_data = string.TrimLeft(s_data, string.GetChar(s_data,1) )
