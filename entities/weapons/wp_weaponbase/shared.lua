@@ -169,9 +169,7 @@ function SWEP:PrimaryAttack()
 		local spct = spread/.07
 		local rpct = recoil/.07
 		spread = Lerp(spct, 0, .07)
-		recoil = Lerp(rpct, 0, 1) -- limiting the spread/recoil
-
-		print(spread, recoil)
+		recoil = Lerp(rpct, .3, .75) -- limiting the spread/recoil
 	end
 
 	self:ShootBullet(self.Primary.Damage.Value, 1, spread, recoil)
