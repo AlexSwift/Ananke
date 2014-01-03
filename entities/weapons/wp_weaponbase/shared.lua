@@ -65,9 +65,12 @@ sound.Add(SWEP.Primary.Sound)
 
 
 
+local InAttackSince = false
+local selfowner = selfowner or nil
+
 function SWEP:Lerp( delta, from, to )
   
-  --if ( delta > 1 ) then return to end             --Why the hell did garry do this?!
+  --if ( delta > 1 ) then return to end
   --if ( delta < 0 ) then return from end
 
   return from + (to - from) * delta;
@@ -89,6 +92,7 @@ function SWEP:Initialize()
 	if SERVER then
 		self.flashlight = ents.Create("env_projectedtexture")
 	end
+	selfowner = self.Owner
 end
 
 function SWEP:Deploy()
@@ -129,7 +133,12 @@ end
 
 function SWEP:PrimaryAttack()
 	if !self:CanPrimaryAttack() then
+		InAttackSince = false
 		return
+	end
+
+	if InAttackSince == false then
+		InAttackSince = CurTime()
 	end
 
 	local spread = self.Primary.Spread.Value
@@ -148,8 +157,20 @@ function SWEP:PrimaryAttack()
 		recoil = recoil * (1 - self.Primary.Recoil.AimReduction)
 	end
 
-	if InAttackSince > 0 then
+	if InAttackSince then
+		local ShootingTime = CurTime() - InAttackSince
+		
+		ShootingTime = ShootingTime + .5 -- make sure it's always bigger than 1 since we are dealing with exponents
 
+
+		spread = spread * math.pow(ShootingTime, 2)
+		recoil = recoil * math.pow(ShootingTime, 2)
+
+		local spct = 
+		local rpct = 
+		spread = Lerp(spct, 0, .1)
+		recoil = Lerp(rpct, 0, .1) -- limiting the spread/recoil
+		print(spread)
 	end
 
 	self:ShootBullet(self.Primary.Damage.Value, 1, spread, recoil)
@@ -179,8 +200,8 @@ function SWEP:ShootBullet(damage, num, spread, recoil)
 
 	local bullet = {}
 	bullet.Attacker = self.Owner
-	bullet.Src = self.muzzle.Pos
-	bullet.Dir = self.muzzle.Ang:Up()
+	bullet.Src = self.Owner:GetShootPos()
+	bullet.Dir = self.Owner:GetAimVector()
 	bullet.Spread = Vector(spread, spread, 0)
 	bullet.Num = num
 	bullet.Tracer = true
@@ -219,6 +240,7 @@ end
 function SWEP:FireMuzzleEffects()
 	self.vm = self.Owner:GetViewModel()
 	self.muzzle = self.vm:GetAttachment(1)
+
 
 	local muzzlefx = EffectData()
 	muzzlefx:SetScale(.2)
@@ -314,26 +336,14 @@ function SWEP:ViewModelDrawn()
 end
 
 function SWEP:Think()
+	selfowner = self.Owner --fucking ugly
 end
-
-
--- this is fucking ugly
-
-local InAttackSince = false
-local owner = SWEP.Owner
-local function KeyPress(ply, key)
-	if owner == ply then
-		if key == IN_ATTACK then
-			InAttackSince = CurTime()
-		end
-	end
-end
-
-hook.Add("KeyPress", "WPBASEKeyPress", KeyPress)
 
 function KeyRelease(ply, key)
-	if owner == ply then
-		InAttackSince = 0
+	if selfowner == ply then
+		if key == IN_ATTACK then
+			InAttackSince = false
+		end
 	end
 end
 
