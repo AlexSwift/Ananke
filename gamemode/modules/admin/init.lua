@@ -1,3 +1,6 @@
+local modul = modules.new()
+modul.name = 'admin'
+
 Admin = {}
 Admin.plugins = {}
 Admin.plugins.__index = Admin.plugins
@@ -45,5 +48,10 @@ function Admin.plugins.Initialise()
 
 end
 
+function modul:OnLoad()
 
-Admin.plugins.Initialise() --Load all modules.
+	Admin.plugins.Initialise() --Load all modules.
+
+end
+
+modul:Register()

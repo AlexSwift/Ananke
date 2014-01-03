@@ -1,6 +1,9 @@
 include('enumerations.lua')
 include('protocols.lua')
 
+loca modul = modules.new()
+modul.name = 'networking'
+
 network = {}
 network.__index = network
 
@@ -75,3 +78,9 @@ net.Receive('warpac_nw',function()
 	return
 
 end)
+
+function modul:OnLoad()
+	protocol.Initialise()
+end
+
+modul:Register()

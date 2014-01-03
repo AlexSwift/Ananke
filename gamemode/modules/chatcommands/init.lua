@@ -1,3 +1,6 @@
+local modul = modules.new()
+modul.name = 'chatcommands'
+
 local _CHATCOMMANDS = {}
 
 chatcommands = {}
@@ -62,4 +65,6 @@ hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)
 
 	command.postcall()
 end)
+
+modul:Register()
 

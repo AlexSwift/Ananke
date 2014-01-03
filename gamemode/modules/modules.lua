@@ -63,5 +63,11 @@ function modules.Unload( name )
 	modules.get( name ):UnLoad()
 end
 
+function C
+	for k,v in pairs(_MODULES) do
+		modules.get( k ):OnLoad()
+	end
+end
+
 
 -- Will have to rewrite for use on dedi

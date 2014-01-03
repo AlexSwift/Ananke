@@ -37,5 +37,3 @@ function protocol.Initialise()
 	end
 end
 
-
-protocol.Initialise() --Load all modules.

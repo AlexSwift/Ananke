@@ -5,6 +5,9 @@ AddCSLuaFile('enumerations.lua')
 include('enumerations.lua')
 include('protocols.lua')
 
+local modul = modules.new()
+modul.name = 'networking'
+
 network = {}
 network.__index = network
 
@@ -91,3 +94,9 @@ net.Receive('warpac_nw',function()
 	return
 
 end)
+
+function modul:OnLOad()
+	protocol.Initialise()
+end
+
+modul:Register()
