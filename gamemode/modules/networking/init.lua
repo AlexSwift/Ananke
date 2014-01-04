@@ -95,8 +95,9 @@ net.Receive('warpac_nw',function()
 
 end)
 
-function modul:OnLOad()
+function modul:OnLoad()
 	protocol.Initialise()
 end
+
 
 modul:Register()

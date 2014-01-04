@@ -1,5 +1,6 @@
 protocol = {}
 protocol.__index = protocol
+protocol.Loaded = false
 
 
 _PROTOCOLS = {}
@@ -18,7 +19,7 @@ function protocol.GetByID(id)
 end
 
 function protocol.Initialise()
-
+	if protocol.Loaded then return end
 	local prefix = CLIENT and "lua_temp" or "gamemodes/wp_base/gamemode"
 
 	local f,d = file.Find( prefix .. "/modules/networking/protocols/*.lua", "GAME" )
@@ -28,12 +29,17 @@ function protocol.Initialise()
 	for k,v in pairs(f) do
 		if SERVER then
 			print('\t\tLoading ' .. v)
-			AddCSLuaFile('protocols/'..v)
-			include('protocols/'..v)
+			do
+				AddCSLuaFile('wp_base/gamemode/modules/networking/protocols/'..v)
+				include('wp_base/gamemode/modules/networking/protocols/'..v)
+			end
 		else
 			print('\t\tLoading ' .. v)
-			include('protocols/'..v)
+			do
+				include('wp_base/gamemode/modules/networking/protocols/'..v)
+			end
 		end
 	end
+	protocol.Loaded = true
 end
 

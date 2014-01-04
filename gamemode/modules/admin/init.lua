@@ -15,7 +15,7 @@ end
 
 function Admin.plugins:Register()
 	_PLUGINS[self.Name] = table.Copy(self)
-	local cm = chatcommands.New(string.TrimRight(v,'.lua')
+	local cm = chatcommands.New(string.TrimRight(v,'.lua'))
 	--Register args here
 	cm:Register()
 

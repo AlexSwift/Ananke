@@ -1,5 +1,7 @@
 modules = {}
 modules.__index = {}
+modules.mt = {}
+modules.mt.__index = {}
 
 local _MODULES = {}
 
@@ -17,10 +19,10 @@ modules.functions = {
 	end}
 
 function modules.new()
-	return setmetatable( { } , modules )
+	return setmetatable( modules.mt , modules.mt )
 end
 
-function modules:Register()
+function modules.mt:Register()
 	_MODULES[self.name] = self
 end
 
@@ -28,31 +30,44 @@ function modules.get( name )
 	return _MODULES[name]
 end
 
-function modules:OnLoad ( )
+function modules.mt:OnLoad ( )
 
 end
 
-function modules:UnLoad( )
+function modules.mt:UnLoad( )
 
+end
+
+function table.HasKey( tabl , key )
+	for k,v in pairs(tabl) do
+		if k == key then return true end
+		continue
+	end
+	return false
 end
 
 function modules.Load( ... )
+	print( 'Loading Modules' )
 	local args = {...}
 	if type(args[1]) == 'table' then
 		for k,v in pairs(args[1]) do
 			print('\tLoaded module : ' .. v)
 			for f,func in pairs(modules.functions) do
 				if file.Exists('gamemodes/wp_base/gamemode/modules/'..v .. '/' .. f,'GAME') and file.Size('gamemodes/wp_base/gamemode/modules/'..v .. '/' .. f,"GAME") != 0 then
-					func(v)
+					do
+						func("wp_base/gamemode/modules/"..v)
+					end
 				end
-			end	
-			modules.get( v ):OnLoad()
+			end
 		end
 	else
-		print('\tLoaded module : ' .. v)
+		if !table.HasKey( _MODULES , args[1] ) then return end
+		print('\tLoaded module : ' .. args[1])
 		for f,func in pairs(modules.functions) do
 			if file.Exists('gamemodes/wp_base/gamemode/modules/' ..args[1] .. '/' .. f,'GAME') and file.Size('gamemodes/wp_base/gamemode/modules/'..args[1] .. '/' .. f,"GAME") != 0 then
-				func(args[1])
+				do
+					func( "wp_base/gamemode/modules/"..args[1])
+				end
 			end
 		end
 		modules.get( args[1] ):OnLoad()
@@ -68,6 +83,5 @@ function modules.Initialise()
 		modules.get( k ):OnLoad()
 	end
 end
-
 
 -- Will have to rewrite for use on dedi
