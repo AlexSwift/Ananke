@@ -209,7 +209,7 @@ function SWEP:ShootBullet(damage, num, spread, recoil)
 	bullet.Attacker = self.Owner
 	bullet.Src = self.Owner:GetShootPos()
 	bullet.Dir = self.Owner:GetAimVector()
-	bullet.Spread = Vector(spread*.35, spread, 0)
+	bullet.Spread = Vector(spread*.75, spread, 0)
 	bullet.Num = num
 	bullet.Tracer = true
 	bullet.AmmoType = self.Primary.Ammo
