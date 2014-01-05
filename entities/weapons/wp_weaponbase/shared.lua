@@ -47,6 +47,8 @@ SWEP.Primary.MuzzleEffect = ""
 SWEP.IronsightPos = Vector(-6.361, -10.827, 2.72) --make false if there are none
 SWEP.IronsightAng = Vector(0, 0, 0)
 
+SWEP.Zoom = true --enable sniper like zooming
+
 SWEP.Primary.Spread.Value = 1 -- how much do shots spread
 SWEP.Primary.Recoil.Value = .07 -- how much does the view kick up after shooting
 SWEP.Primary.Spread.AimReduction = .75 -- how much does the spread decrease whem aiming (in %)
@@ -344,6 +346,48 @@ function SWEP:ViewModelDrawn()
 	cam.End3D2D()	*/ -- FUCK THIS
 end
 
+
+local sin,cos,rad = math.sin,math.cos,math.rad
+local function GeneratePoly(x,y,radius,quality)
+    local circle = {};
+    local tmp = 0;
+	local s,c;
+    for i=1,quality do
+        tmp = rad(i*360)/quality;
+		s = sin(tmp);
+		c = cos(tmp);
+        circle[i] = {x = x + c*radius,y = y + s*radius,u = (c+1)/2,v = (s+1)/2};
+    end
+    return circle;
+end
+
+function SWEP:DrawHUD()
+	if !self.InIronsights then return end
+	/*local centerx, centery = ScrW()*.5, ScrH()*.5
+
+	local CamData = {}
+	CamData.angles = self.Owner:GetAimVector():Angle()
+	CamData.origin = self.Owner:GetShootPos()
+	CamData.fov = 10
+	CamData.drawviewmodel = false
+	CamData.x = centerx - 50
+	CamData.y = centery - 50
+	CamData.w = 100
+	CamData.h = 100
+
+	local oldrt = render.GetRenderTarget()
+	local newrt = GetRenderTargetEx("rtScope", 256, 256, RT_SIZE_DEFAULT, MATERIAL_RT_DEPTH_SEPARATE, 1, CREATERENDERTARGETFLAGS_HDR, IMAGE_FORMAT_DEFAULT )
+	render.SetRenderTarget(newrt)
+		--render.SetViewPort( 0, 0, 512, 512 )
+		render.RenderView(CamData)
+	render.SetRenderTarget(oldrt)
+
+	surface.SetTexture()
+	surface.SetDrawColor(Color(255, 0, 0, 100))
+	surface.DrawPoly(GeneratePoly(centerx, centery, 256, 20))*/
+	
+end
+
 function SWEP:Think()
 	selfowner = self.Owner --fucking ugly
 end
@@ -358,4 +402,4 @@ function KeyRelease(ply, key)
 	end
 end
 
-hook.Add("KeyRelease", "WPBASEKeyRelease", KeyRelease)
+hook.Add("KeyRelease", "KeyRelease", KeyRelease)
