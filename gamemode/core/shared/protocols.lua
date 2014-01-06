@@ -22,7 +22,7 @@ function protocol.Initialise()
 	if protocol.Loaded then return end
 	local prefix = CLIENT and "lua_temp" or "gamemodes/wp_base/gamemode"
 
-	local f,d = file.Find( prefix .. "/modules/networking/protocols/*.lua", "GAME" )
+	local f,d = file.Find( prefix .. "/core/shared/protocols/*.lua", "GAME" )
 
 	print('\tLoading Protocols:')
 
@@ -30,13 +30,13 @@ function protocol.Initialise()
 		if SERVER then
 			print('\t\tLoading ' .. v)
 			do
-				AddCSLuaFile('wp_base/gamemode/modules/networking/protocols/'..v)
-				include('wp_base/gamemode/modules/networking/protocols/'..v)
+				AddCSLuaFile('wp_base/gamemode/core/shared/protocols/'..v)
+				include('wp_base/gamemode/core/shared/protocols/'..v)
 			end
 		else
 			print('\t\tLoading ' .. v)
 			do
-				include('wp_base/gamemode/modules/networking/protocols/'..v)
+				include('wp_base/gamemode/core/shared/protocols/'..v)
 			end
 		end
 	end

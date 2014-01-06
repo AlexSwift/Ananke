@@ -1,10 +1,3 @@
-AddCSLuaFile('protocols.lua')
-AddCSLuaFile('cl_init.lua')
-AddCSLuaFile('enumerations.lua')
-
-include('enumerations.lua')
-include('protocols.lua')
-
 local modul = modules.new()
 modul.name = 'networking'
 

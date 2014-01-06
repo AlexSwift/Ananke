@@ -1,7 +1,5 @@
-include('enumerations.lua')
-include('protocols.lua')
 
-loca modul = modules.new()
+local modul = modules.new()
 modul.name = 'networking'
 
 network = {}

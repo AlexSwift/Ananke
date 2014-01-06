@@ -14,24 +14,18 @@ function core.serialization.initialize()
 						end
 						,function( s_data )
 							return s_data
+						end
+						,function( data )
+							return string.len( data )
 						end},
 		[2] = {'table'	,function( data )
 							local s_data = ''
 							for k,v in ipairs( data ) do
 
-								s_data = s_data and s_data .. string.char(core.serialization.translations['start_string'][1]) or string.char(core.serialization.translations['start_string'][1])
-								s_data = s_data .. core.serialization.translations['start_string'][2](k,s_data)
-								s_data = s_data .. string.char(core.serialization.translations['end_string'])
-
-								s_data = s_data .. string.char(core.serialization.translations['start_' .. type(v)][1])
-								s_data = s_data .. core.serialization.translations['start_' .. type(v)][2](v,s_data)
-								s_data = s_data .. string.char(core.serialization.translations['end_' .. type(v)])
-
-								s_data = s_data .. string.char(core.serialization.padding + 1)
+								s_data = s_data .. core.serialization.encode(k)
+								s_data = s_data .. core.serialization.encode(v)
 
 							end
-
-							s_data = string.TrimRight( s_data , string.char(core.serialization.padding + 1) )
 
 							return s_data
 						end
@@ -39,85 +33,107 @@ function core.serialization.initialize()
 
 							local data = {}
 
-							local tabl = string.explode( string.char(core.serialization.padding + 1) , s_data )
-							for k,v in ipairs(tabl) do
-								local typ = string.byte(string.GetChar( v , 1 ))
-								local split = 0
+							local tabl = string.explode( '' , s_data )
+							for i = 1 , #tabl do
+								local typ = string.GetChar( i )
+								local bytes = string.byte(string.GetChar( i + 1))
 
-								for i = 1, string.len(v) do
-									if string.byte(string.GetChar(v,i)) == typ + 1 then
-										split = i
-										break
-									end
-									continue
-								end
+								local key = core.serialization.translations[core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 3, i + 2 + bytes ))
 
-								local key = core.serialization.translations['start_string'][3](string.sub(v , 2 , split - 1))
-								local value = core.serialization.translations[core.serialization.GetTypeFromByte(string.byte(string.GetChar(v,split + 1)))][3](string.sub(v , split + 2 , string.len(v) - 1))
+								typ = string.GetChar( i + 3 + bytes )
+								local bytes2 = string.byte(string.GetChar( i + 4 + bytes))
+
+								local value = core.serialization.translations[core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 4 + bytes, i + 3 + bytes + bytes2))
 
 								data[key] = value
+								i = i + 4 + bytes + bytes2
 							end
 							return data
 
+						end,
+						function( data )
+							return table.Count( data )
 						end},
 		[3] = {'number'	,function( data )
-							local n = math.floor( (data + core.serialization.padding + 1) / 255 )
-							local r = ''
-							for i = 1,n do
-								r = r .. string.char(255)
+							local s_data = ''
+
+							for i = math.ceil(math.log( data ) / math.log( 256 )), 0, -1 do
+								if 256^i <= data then
+									s_data = s_data .. string.char(math.floor(data/(256^i)))
+									data = data - math.floor(data/(256^i)*256^i
+									continue
+								end
 							end
-							return r .. string.char( math.mod(data + core.serialization.padding + 1, 255 ) )
+
+							return s_data
 						end
+
 						,function( s_data )
-							local t = string.Explode( '' , s_data )
-							return ( (#t - 2)*255 + string.byte(t[#t]) - 31)
+
+							local tabl = string.explode( '' , s_data )
+							local data = 0
+							for i = #tabl,0,-1 do
+								data = data + string.byte(tabl[1])*(256^i)
+							end
+
+							return data
+						end
+						,function( data )
+							return math.floor(math.log( data ) / math.log( 256 ))
 						end},
 		[4] = {'Angle'	,function( data )
 							local r = ''
-							r = r .. core.serialization.translations['start_number'][2](data.p) .. string.char(12)
-							r = r .. core.serialization.translations['start_number'][2](data.y) .. string.char(12)
-							r = r .. core.serialization.translations['start_number'][2](data.r)
+							r = r .. core.serialization.translations['number'][2](data.p)
+							r = r .. core.serialization.translations['number'][2](data.y)
+							r = r .. core.serialization.translations['number'][2](data.r)
 							return r
 						end
 						,function( s_data )
-							local t = string.Explode( string.char( 12 ) , s_data )
+							local t = string.Explode('' , s_data )
 							local tabl = {}
-							for i = 1,3 do
-								tabl[i] = (core.serialization.translations['start_number'][3](t[i]) <= 0) and (core.serialization.translations['start_number'][3](t[i]) + 255) or (core.serialization.translations['start_number'][3](t[i]))
+							for i = 1,6,2 do
+								local num = t[i] .. t[i+1]
+								tabl[i] = (core.serialization.translations['number'][3](num) <= 0) and (core.serialization.translations['number'][3](num) + 255) or (core.serialization.translations['number'][3](num))
 							end
 							local ang = Angle( unpack(tabl) )
 							return ang
+						end
+						,function( data )
+							return 6
 						end},
 		[5] = {'Vector'	,function( data )
 							local r = ''
-							r = r .. core.serialization.translations['start_number'][2](data.x) .. string.char(12)
-							r = r .. core.serialization.translations['start_number'][2](data.y) .. string.char(12)
-							r = r .. core.serialization.translations['start_number'][2](data.z)
+							r = r .. core.serialization.translations['number'][2](data.x)
+							r = r .. core.serialization.translations['number'][2](data.y)
+							r = r .. core.serialization.translations['number'][2](data.z)
 							return r
 						end
 						,function( s_data )
-							local t = string.Explode( string.char( 12 ) , s_data )
+							local t = string.Explode( '' , s_data )
 							local tabl = {}
-							for i = 1,3 do
-								tabl[i] = (core.serialization.translations['start_number'][3](t[i]) <= 0) and (core.serialization.translations['start_number'][3](t[i]) + 255) or (core.serialization.translations['start_number'][3](t[i]))
+							for i = 1,6,2 do
+								local num = t[i] .. t[i+1]
+								tabl[i] = (core.serialization.translations['number'][3](num) <= 0) and (core.serialization.translations['number'][3](num]) + 255) or (core.serialization.translations['number'][3](num))
 							end
 							local vec = Vector( unpack(tabl) )
 							return vec
+						end,
+						function( data )
+							return 6
 						end},
 		[6] = {'boolean',function( data )
-							return string.char(( data == true and 1 or 0 ) + core.serialization.padding )
+							return string.char( data == true and 1 or 0 )
 						end
 						,function( s_data )
-							if (string.byte(s_data) == core.serialization.padding) then
-								return false
-							end
-							return true
+							return string.byte(s_data) == 1 and true or false
+						end,
+						function( data )
+							return 1
 						end}
 		}
 
 	for k,v in pairs(types) do
-		core.serialization.translations['start_' .. v[1]] = { 2*k - 1 , v[2] , v[3] }
-		core.serialization.translations['end_' .. v[1]] = 2*k
+		core.serialization.translations[v[1]] = { k , v[2] , v[3], v[4] }
 	end
 
 end
@@ -125,16 +141,15 @@ end
 function core.serialization.encode(data)
 	local t = type(data)
 	local s_data = ''
-	s_data = s_data and s_data .. string.char(core.serialization.translations['start_'..type(data)][1]) or string.char(core.serialization.translations['start_'..type(data)][1])
-	s_data = s_data .. core.serialization.translations['start_'..type(data)][2](data,s_data)
-	s_data = s_data .. string.char(core.serialization.translations['end_'..type(data)])
+	s_data = s_data and s_data .. string.char(core.serialization.translations[type(data)][1]) or string.char(core.serialization.translations[type(data)][1]) --types
+	s_data = s_data .. core.serialization.translations[type(data)][4](data) --Bytes
+	s_data = s_data .. core.serialization.translations[type(data)][2](data,s_data) --Data
 
 	return s_data
 end
 
 function core.serialization.GetTypeFromByte( byte )
 	for k,v in pairs(core.serialization.translations) do
-		if type(v) == 'number' then continue end
 		if v[1] == byte then
 			return k
 		end
@@ -142,16 +157,7 @@ function core.serialization.GetTypeFromByte( byte )
 end
 
 function core.serialization.decode(s_data)
-
-	local typ = string.byte(string.GetChar(s_data,1)) --start_type data
-	s_data = string.TrimLeft(s_data, string.GetChar(s_data,1) )
-	s_data = string.TrimRight(s_data,string.char(string.byte(string.GetChar(s_data,1)) +1))
 	local data = {}
-	for k,v in pairs(core.serialization.translations) do
-		if type(v) == 'number' then continue end
-		if v[1] != typ then continue end
-		data = v[3](s_data)
-	end
 
 	return data
 end
