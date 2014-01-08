@@ -122,10 +122,10 @@ function core.serialization.initialize()
 							return 6
 						end},
 		[6] = {'boolean',function( data )
-							return string.char( data == true and 1 or 0 )
+							return string.char( data == true and 2 or 1 )
 						end
 						,function( s_data )
-							return string.byte(s_data) == 1 and true or false
+							return string.byte(s_data) == 2 and true or false
 						end,
 						function( data )
 							return 1
@@ -157,8 +157,7 @@ function core.serialization.GetTypeFromByte( byte )
 end
 
 function core.serialization.decode(s_data)
-	local data = {}
-
+	local typ = string.
 	return data
 end
 

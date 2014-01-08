@@ -47,7 +47,7 @@ hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)
 	local tabl = string.explode(" ",text)
 	if !string.gsub(tabl[1],1,1) == self.prefix then return end
 
-	local command = chatcommands.Get(string.TrimLeft(tabl[1],'>'))
+	local command = chatcommands.Get(string.TrimLeft(tabl[1],chatcommands.prefix))
 	if !command then return end
 
 	tabl[1] = nil
