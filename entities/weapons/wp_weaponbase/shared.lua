@@ -21,7 +21,7 @@ SWEP.AdminOnly			=	true
 
 
 SWEP.ViewModel          =       "models/weapons/cstrike/c_rif_galil.mdl" --make sure your models are ready for view model hands
-SWEP.WorldModel         =       "models/weapons/w_rif_galil.mdl"
+SWEP.WorldModel         =       "models/weapons/cstrike/c_rif_galil.mdl"
 
 SWEP.UseHands = true
 
@@ -69,7 +69,6 @@ SWEP.Primary.Sound.sound = "weapons/galil/galil-1.wav"
 sound.Add(SWEP.Primary.Sound)
 
 
-
 local InAttackSince = false
 local selfowner = selfowner or nil
 
@@ -98,6 +97,7 @@ function SWEP:Initialize()
 		self.flashlight = ents.Create("env_projectedtexture")
 	end
 	selfowner = self.Owner
+
 end
 
 function SWEP:Deploy()
@@ -327,23 +327,18 @@ function SWEP:GetViewModelPosition(pos, ang)
 end
 
 function SWEP:ViewModelDrawn()
-	/*local vm = self.Owner:GetViewModel()
-	local att = vm:GetAttachment(2)
-	local Vec = vm:GetBonePosition(33)
-	local Ang = vm:GetBoneMatrix(33):GetAngles()
-	for i = 1,  50 do
-		--print(i..": "..vm:GetBoneName(i))
-	end
-	Ang = Angle(Ang.pitch, Ang.yaw+-10, Ang.roll+90)
-	Vec =  Vec + Ang:Up() * -5   + Ang:Right() * -13  + Ang:Forward() * 5
-	print(Vec:ToScreen().x.." "..Vec:ToScreen().y )
-	cam.Start3D2D(Vec, Ang, 2)
 
-	draw.RoundedBox(1, 0, 0, 10, 10, Color(0, 255, 0))
-	draw.DrawText(self.Weapon:Clip1(), "default", 0, 0, Color(255, 0, 0), TEXT_ALIGN_CENTER)
+	local vm = self.Owner:GetViewModel()
+	local att = vm:GetAttachment(1)
+	Vec = att.Pos
+	Vec = att.Pos
+	Ang = att.Ang
+	Ang = Angle(Ang.p+ 180, Ang.y, -Ang.R)
+	cam.Start3D2D(Vec, Ang, .03)
 
+	draw.DrawText(self.Weapon:Clip1().."/"..self.Primary.ClipSize, "AmmoCounter", -250, -100, Color(255, 0, 0), TEXT_ALIGN_CENTER)
 
-	cam.End3D2D()	*/ -- FUCK THIS
+	cam.End3D2D()
 end
 
 
