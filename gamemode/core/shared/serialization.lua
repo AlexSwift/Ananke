@@ -60,7 +60,7 @@ function core.serialization.initialize()
 							for i = math.ceil(math.log( data ) / math.log( 256 )), 0, -1 do
 								if 256^i <= data then
 									s_data = s_data .. string.char(math.floor(data/(256^i)))
-									data = data - math.floor(data/(256^i)*256^i
+									data = data - math.floor(data/(256^i)*256^i)
 									continue
 								end
 							end

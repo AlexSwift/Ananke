@@ -1,6 +1,3 @@
-local modul = modules.new()
-modul.name = 'networking'
-
 network = {}
 network.__index = network
 
@@ -92,5 +89,3 @@ function modul:OnLoad()
 	protocol.Initialise()
 end
 
-
-modul:Register()

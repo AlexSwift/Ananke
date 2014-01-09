@@ -13,11 +13,15 @@ function core.Initialise()
 		if file.Size('gamemodes/wp_base/gamemode/core/shared/'..v ,"GAME") == 0 then continue end
 		if SERVER then
 			print('\tLoading ' .. v)
-			AddCSLuaFile("shared/" .. v)
-			include("shared/" .. v)
+			do
+				AddCSLuaFile("wp_base/gamemode/core/shared/" .. v)
+				include("wp_base/gamemode/core/shared/" .. v)
+			end
 		else
 			print('\tLoading ' .. v)
-			include( "shared/" .. v)
+			do
+				include( "wp_base/gamemode/core/shared/" .. v)
+			end
 		end
 	end
 
@@ -30,7 +34,9 @@ function core.Initialise()
 		for k,v in pairs(f) do
 			if file.Size('gamemodes/wp_base/gamemode/core/server/'..v ,"GAME") == 0 then continue end
 			print('\tLoading ' .. v)
-			include("server/" ..v)
+			do
+				include("wp_base/gamemode/core/server/" ..v)
+			end
 		end
 
 	else
@@ -42,7 +48,9 @@ function core.Initialise()
 		for k,v in pairs(f) do
 			if file.Size('gamemodes/wp_base/gamemode/core/client/'..v ,"GAME") == 0 then continue end
 			print('\tLoading ' .. v)
-			include("client/" .. v)
+			do
+				include("wp_base/gamemode/core/client/" .. v)
+			wns
 		end
 
 	end

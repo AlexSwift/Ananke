@@ -37,12 +37,15 @@ function Admin.plugins.Initialise()
 		if SERVER then
 
 			print('\t\tLoading ' .. v)
-			AddCSLuaFile('plugins/'..v)
-			include('plugins/'..v)
-
+			do
+				AddCSLuaFile('wp_base/gamemode/modules/admin/plugins/'..v)
+				include('wp_base/gamemode/modules/admin/plugins/'..v)
+			end
 		else
 			print('\t\tLoading ' .. v)
-			include('plugins/'..v)
+			do
+				include('wp_base/gamemode/modules/admin/plugins/'..v)
+			end
 		end
 	end
 
