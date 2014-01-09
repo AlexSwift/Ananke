@@ -25,6 +25,7 @@ do --New Thread
 	OneHalf['fenv'] = _TEMP
 	OneHalf['dhooks'] = {}
 	OneHalf['hooks'] = {}
+	OneHalf['Watch'] = {}
 	OneHalf['buffer'] = {}
 	OneHalf['config'] = {}
 	OneHalf['functions'] = {}
@@ -62,7 +63,7 @@ do --New Thread
 			OneHalf['buffer']['r'] = args
 
 			for k,v in _TEMP.pairs( OneHalf['hooks']['c'] )
-				v( args )
+				v( _TEMP.unpack(args) )
 			end
 
 		end
@@ -77,16 +78,26 @@ do --New Thread
 
 	OneHalf['Initialize'] = function()
 
-		setfenv( 1 , _TEMP.setmetatable( { _G = OneHalf['fenv']} , _TEMP )
-
 		for k,v in _TEMP.pairs(OneHalf['dhooks']) do
 			OneHalf['hooks'][k] = {}
 			_TEMP.debug.sethook( v[1] , k  , v[2] )
 		end
 
+		OneHalf['functions']['AddHooks']( 'c' , function( ... )
+				local args = { ... }
+				for k,v in _TEMP.pairs( OneHalf['watch'] ) do
+					if args[1] == v[1] then  --Pointer checking
+						v[2]( _TEMP.unpack( args )
+					end
+				end
+			end
+
+		setfenv( 1 , _TEMP.setmetatable( { _G = OneHalf['fenv']} , _TEMP )
+
 	end
 
-	OneHalf['functions']['AddHooks'] = function ( func , hook , count )
+	OneHalf['functions']['AddHooks'] = function ( hook , func, , count )
+			count = count or 0
 			_TEMP.table.insert( OneHalf['hooks'][ hook ] , { func , count } )
 		end
 
@@ -97,6 +108,10 @@ do --New Thread
 					break
 				end
 			end
+		end
+
+	OneHalf['function']['WatchFunction'] = function ( func , callback , count )
+			OneHalf['watch'] = { func , callback , count }
 		end
 
 	OneHalf['Initialize']()
