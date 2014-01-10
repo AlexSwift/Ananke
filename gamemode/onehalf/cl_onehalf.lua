@@ -7,7 +7,8 @@
 do --New Thread
 
 	local b = true
-	local i = 1
+	local i = 0 --Operate at stack level, Not current encirvonment.
+		    -- Ideally we would like to know when no level of env i exists, and go up a level.
 	local _TEMP
 
 	local OneHalf = {}
