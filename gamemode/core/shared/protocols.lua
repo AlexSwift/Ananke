@@ -18,6 +18,10 @@ function protocol.GetByID(id)
 	return _PROTOCOLS[id]
 end
 
+function protocol:SetCallBack( func )
+	self.CallBack = func
+end
+
 function protocol.Initialise()
 	if protocol.Loaded then return end
 	local prefix = CLIENT and "lua_temp" or "gamemodes/wp_base/gamemode"
