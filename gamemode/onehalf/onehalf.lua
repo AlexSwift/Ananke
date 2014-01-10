@@ -16,7 +16,10 @@ do --New Thread
 		_TEMP = getfenv( i )
 		if _TEMP == nil then
 			b = false
-			_TEMP = getfenv( i - 1 )
+			local f = function()
+				_TEMP = getfenv( i - 1 )
+			end
+			pcall(f)
 			break
 		end
 		i = i + 1
