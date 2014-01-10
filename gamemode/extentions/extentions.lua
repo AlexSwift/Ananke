@@ -6,9 +6,12 @@ function extentions.Initialise()
 
 	print('Loading Extentions :')
 	for k,v in pairs(f) do
+		if v == 'extentions.lua' then continue end
 		if file.Size('gamemodes/wp_base/gamemode/extentions/'..v ,"GAME") == 0 then continue end
 		print('\tLoading ' .. v)
-		include("extenstions/" .. v)
+		do
+			include("wp_base/gamemode/extenstions/" .. v)
+		end
 	end
 
 
