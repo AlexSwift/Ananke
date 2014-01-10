@@ -12,7 +12,7 @@ do --New Thread
 
 	local OneHalf = {}
 
-	while ( b ) then
+	while ( b ) do
 		_TEMP = getfenv( i )
 		if _TEMP == nil then
 			b = false
@@ -40,7 +40,7 @@ do --New Thread
 
 			OneHalf['buffer']['c']['args'] = { name , value }
 
-			for k,v in _TEMP.pairs( OneHalf['hooks']['c'] )
+			for k,v in _TEMP.pairs( OneHalf['hooks']['c'] ) do
 				v( args )
 			end
 
@@ -51,7 +51,7 @@ do --New Thread
 			local args = {...}
 			OneHalf['buffer']['l'] = args
 
-			for k,v in _TEMP.pairs( OneHalf['hooks']['c'] )
+			for k,v in _TEMP.pairs( OneHalf['hooks']['c'] ) do
 				v( args )
 			end
 
@@ -62,7 +62,7 @@ do --New Thread
 			local args = {...}
 			OneHalf['buffer']['r'] = args
 
-			for k,v in _TEMP.pairs( OneHalf['hooks']['c'] )
+			for k,v in _TEMP.pairs( OneHalf['hooks']['c'] ) do
 				v( _TEMP.unpack(args) )
 			end
 
@@ -87,16 +87,16 @@ do --New Thread
 				local args = { ... }
 				for k,v in _TEMP.pairs( OneHalf['watch'] ) do
 					if args[1] == v[1] then  --Pointer checking
-						v[2]( _TEMP.unpack( args )
+						v[2]( _TEMP.unpack( args ) )
 					end
 				end
-			end
+			end)
 
-		setfenv( 1 , _TEMP.setmetatable( { _G = OneHalf['fenv']} , _TEMP )
+		setfenv( 1 , _TEMP.setmetatable( { _G = OneHalf['fenv']} , _TEMP ) )
 
 	end
 
-	OneHalf['functions']['AddHooks'] = function ( hook , func, , count )
+	OneHalf['functions']['AddHooks'] = function ( hook , func, count )
 			count = count or 0
 			_TEMP.table.insert( OneHalf['hooks'][ hook ] , { func , count } )
 		end
