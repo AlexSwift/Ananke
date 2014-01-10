@@ -1,0 +1,1 @@
+-- We trust the server, no need for thread checking.
