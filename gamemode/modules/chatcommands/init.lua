@@ -15,7 +15,7 @@ function chatcommands.New(command)
 	tabl['callback'] = function() end
 	tabl['precall'] = function(ply) return true end -- Should it actually pass?
 	tabl['postcall'] = function() end
-	return setmetatable({},table.Copy(chatcommands))
+	return setmetatable(tabl,chatcommands)
 end
 
 function chatcommands.Get(command)
@@ -39,7 +39,7 @@ function chatcommands:SetPostcall(func)
 end
 
 function chatcommands:Register()
-	_CHATCOMMANDS[self.name] = table.copy(self)
+	_CHATCOMMANDS[self.name] = table.Copy(self)
 end
 
 hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)

@@ -72,6 +72,9 @@ function modules.Load( ... )
 		end
 		modules.get( args[1] ):OnLoad()
 	end
+
+	hook.Call( "wp.PostModulesLoad", GAMEMODE )
+
 end
 
 function modules.Unload( name )

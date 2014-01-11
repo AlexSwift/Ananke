@@ -4,20 +4,22 @@ modul.name = 'admin'
 Admin = {}
 Admin.plugins = {}
 Admin.plugins.__index = Admin.plugins
-
+Admin.plugins.mt = {}
+Admin.plugins.mt.__index = Admin.plugins.mt
 
 local _PLUGINS = {}
 
 function Admin.plugins.New()
 	local tabl = {}
-	return setmetatable(tabl,table.Copy(Admin.plugins))
+	table.Name = ''
+	return setmetatable(tabl,Admin.plugins.mt)
 end
 
-function Admin.plugins:Register()
+function Admin.plugins.mt:Register()
 	_PLUGINS[self.Name] = table.Copy(self)
-	local cm = chatcommands.New(string.TrimRight(v,'.lua'))
-	cm:SetCallback(self['callback'])
-	cm:Register()
+	local cm = chatcommands.New(self.Name)
+	chatcommands.SetCallback(cm ,self['callback'])
+	chatcommands.Register(cm)
 
 end
 
@@ -51,10 +53,10 @@ function Admin.plugins.Initialise()
 
 end
 
-function modul:OnLoad()
+hook.Add("wp.PostModulesLoad", "wp.PostModulesLoad.Admin", function()
 
 	Admin.plugins.Initialise() --Load all modules.
 
-end
+end)
 
 modul:Register()

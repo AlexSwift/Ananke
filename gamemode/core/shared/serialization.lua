@@ -113,7 +113,7 @@ function core.serialization.initialize()
 							local tabl = {}
 							for i = 1,6,2 do
 								local num = t[i] .. t[i+1]
-								tabl[i] = (core.serialization.translations['number'][3](num) <= 0) and (core.serialization.translations['number'][3](num]) + 255) or (core.serialization.translations['number'][3](num))
+								tabl[i] = (core.serialization.translations['number'][3](num) <= 0) and (core.serialization.translations['number'][3](num) + 255) or (core.serialization.translations['number'][3](num))
 							end
 							local vec = Vector( unpack(tabl) )
 							return vec
@@ -157,7 +157,8 @@ function core.serialization.GetTypeFromByte( byte )
 end
 
 function core.serialization.decode(s_data)
-	local typ = string.
+	local data = ''
+	-- local typ = -- Get First byte and return Key for decode function
 	return data
 end
 

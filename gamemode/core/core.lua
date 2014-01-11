@@ -50,7 +50,7 @@ function core.Initialise()
 			print('\tLoading ' .. v)
 			do
 				include("wp_base/gamemode/core/client/" .. v)
-			wns
+			end
 		end
 
 	end

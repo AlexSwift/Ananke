@@ -85,7 +85,5 @@ net.Receive('warpac_nw',function()
 
 end)
 
-function modul:OnLoad()
-	protocol.Initialise()
-end
+protocol.Initialise()
 
