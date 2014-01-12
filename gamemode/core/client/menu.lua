@@ -18,7 +18,7 @@ end
 
 function core.menu.gui.Create( name )
 	local obj = setmetatable( { } , _UI[name] )
-	obj:Init
+	obj:Init()
 	table.insert( core.menu.Elements , obj )
 	return setmetatable( { } , _UI[name] )
 
