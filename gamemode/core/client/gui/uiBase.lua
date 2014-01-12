@@ -4,8 +4,10 @@
 	Description:	Base for all UIObjects in-game
 ]]--
 
-PANEL = {}
+PANEL = core.menu.gui:New();
+PANEL.name = 'UIBase';
 
 function PANEL:Init()
-
 end
+
+PANEL:Register();
