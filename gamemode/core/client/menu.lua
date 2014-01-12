@@ -1,12 +1,14 @@
 core.menu = {}
 core.menu.Enabled = false
 
+_UI = {}
+
 core.menu.gui = {}
 core.menu.gui.__index = {}
 
 function core.menu.gui.New(base)
 	local tabl = core.menu.gui.Get(base) or {}
-	return setmetatable(tabl,table.Copy(core.menu.gui))
+	return setmetatable(tabl,core.menu.gui)
 end
 
 function core.menu.gui.Get( name )
