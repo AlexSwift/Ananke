@@ -25,6 +25,19 @@ function mathsx.matrices.IdentityMatrix( m , n )
 
 end
 
+function mathsx.matrices.InvertedMarix( m , n )
+
+	local r = mathsx.matrices.new()
+	r:SetDimensions(  m , m )
+
+	for i = 0,m-1 do
+		r:SetData( m - i , i)
+	end
+
+	return r
+
+end
+
 function mathsx.matrices.mt:SetDimensions( x , y )
 
 	self.x = x
@@ -168,7 +181,7 @@ function mathsx.matrices.mt:__umn()
 	return -1*self
 end
 
-function mathsx.matrices.mt:__div(d)
+function mathsx.matrices.mt:__div(d)  --Not working
 
 	local det = b:Determinant()
 	local min = b:MinimumValue()
@@ -178,5 +191,9 @@ function mathsx.matrices.mt:__div(d)
 	return self
 
 end
+
+
+-- __div
+-- a * ( 1 / b:Determinant )*( some mother fucking weird ass operation )
 
 
