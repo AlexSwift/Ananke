@@ -178,7 +178,9 @@ function mathsx.matrices.mt:__mul( b )
 end
 
 function mathsx.matrices.mt:__umn()
+
 	return -1*self
+
 end
 
 function mathsx.matrices.mt:__div(d)  --Not working
