@@ -60,6 +60,42 @@ function mathsx.matrices.mt:GetData( x , y )
 
 end
 
+function maths.matrices.mt:Determinant()
+
+	if self.x != self.y then
+		error( 'MATRIX: Matrix is not square' )
+	end
+
+	local s = 0
+
+	for i = 1,self.x do
+		local m = 1
+		local n = 1
+		for j = 1,self.y do
+			m = m*self:GetData( math.mod( j + i, self.x) , math.mod( j , self.x ))
+			n = n*self:GetData( math.mod( self.x - (i + j) , self.x ) , math.mod( j , self.x )
+		end
+		s = s + m - n
+	end
+
+	return s
+
+end
+
+function maths.matrices.mt:MinimumValue()
+
+	local n
+
+	for i = 1, self.x do
+		for j = 1, self.y do
+			n = self:GetData( i , j ) < n and n or n or self:GetData( i , j )
+		end
+	end
+
+	return n
+
+end
+
 function mathsx.matrices.mt:__sub( b )
 
 	if self.x != b.x or self.y != b.y then
@@ -128,6 +164,19 @@ function mathsx.matrices.mt:__mul( b )
 
 end
 
+function mathsx.matrices.mt:__umn()
+	return -1*self
+end
 
+function mathsx.matrices.mt:__div(d)
+
+	local det = b:Determinant()
+	local min = b:MinimumValue()
+
+	self = self * (( b - min)/det)
+
+	return self
+
+end
 
 
