@@ -123,20 +123,48 @@ function mathsx.complex.mt:Conjugate()
 
 end
 
-/*
+function mathsx.complex.mt:Matrix()
+	
+	local r = mathsx.matrix.new()
+	local real = self:GetReal()
+	local imag = self:GetImag()
+	
+	r:Setdimensions( 2 , 2 )
+	
+	r:SetData( 1 , 1 , real )
+	r:SetData( 1 , 2 , -imag )
+	r:SetData( 2 , 1 , imag )
+	r:SetData( 2 , 2 , real )
+	
+	return r
 
-function mathsx.complex.e( )
+end
+
+function mathsx.complex.e( ) --e^(a + bi) = (e^a)*(cos b + i*sin b)
 
 	local mt = table.Copy( mathsx.complex.mt )
 
 	mt:__pow = function(b)
+		
+		if type( b ) == 'number' then  
+			return math.exp(b)
+		else
+		
+			local r = mathsx.complex.new()
 
-		local r = mathsx.complex.new()
+			local real = b:GetReal() or 0
+			local theta = b:GetImag()
 
-		local real = b:GetReal() or b
+			r:SetReal( math.cos( theta ) )
+			r:SetImag( math.sin( theta ) )
+			
+			r = r * math.exp(real)
+			
+			return r
+		end
+	end
+end
 
-		r:SetReal(
 
-*/ --e^(a + bi) = (e^a)*(cos b + i*sin b)
 
 
