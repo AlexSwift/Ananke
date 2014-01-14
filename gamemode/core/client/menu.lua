@@ -1,9 +1,11 @@
 core.menu = {}
+
 core.menu.Enabled = false
 core.menu.MousePos = Vector(0,0,0)
+
 core.menu.Elements = {}
 
-_UI = {}
+local _UI = {}
 
 core.menu.gui = {}
 core.menu.gui.__index = {}
@@ -12,15 +14,25 @@ function core.menu.gui.New(base)
 
 	local tabl = core.menu.gui.Get(base) or {}
 	tabl['MouseInBounds'] = false
+
 	return setmetatable(tabl,core.menu.gui)
 
 end
 
 function core.menu.gui.Create( name )
+
 	local obj = setmetatable( { } , _UI[name] )
 	obj:Init()
+
 	table.insert( core.menu.Elements , obj )
+
 	return setmetatable( { } , _UI[name] )
+
+end
+
+function core.menu.GetActiveElements( )
+
+	return core.menu.Elements , #core.menu.Elements
 
 end
 
@@ -125,11 +137,15 @@ end
 
 function core.menu.Enable( )
 
+	GAMEMODE:PreDrawMenu( ) --USed to create elements
+
 	core.menu.Enabled = true
 
 end
 
 function core.menu.Disable( )
+
+	GAMEMODE:PostDrawMenu() --used to delete elements
 
 	core.menu.Enabled = false
 
