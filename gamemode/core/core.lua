@@ -25,6 +25,23 @@ function core.Initialise()
 		end
 	end
 
+
+	f,d = file.Find( "gamemodes/wp_base/gamemode/core/client/*.lua", "GAME" )
+	
+	core.Loaded['client'] = {f,d}
+	if CLIENT then print('Loading client :') end
+	for k,v in pairs(f) do
+		if file.Size('gamemodes/wp_base/gamemode/core/client/'..v ,"GAME") == 0 then continue end
+		if CLIENT then print('\tLoading ' .. v) end
+		do
+			if SERVER then
+				AddCSLuaFile("wp_base/gamemode/core/client/" .. v)
+			else
+				include("wp_base/gamemode/core/client/" .. v)
+			end
+		end
+	end
+
 	if SERVER then
 
 		f,d = file.Find( "gamemodes/wp_base/gamemode/core/server/*.lua", "GAME" )
@@ -36,20 +53,6 @@ function core.Initialise()
 			print('\tLoading ' .. v)
 			do
 				include("wp_base/gamemode/core/server/" ..v)
-			end
-		end
-
-	else
-
-		f,d = file.Find( "gamemodes/wp_base/gamemode/core/client/*.lua", "GAME" )
-
-		core.Loaded['client'] = {f,d}
-		print('Loading client :')
-		for k,v in pairs(f) do
-			if file.Size('gamemodes/wp_base/gamemode/core/client/'..v ,"GAME") == 0 then continue end
-			print('\tLoading ' .. v)
-			do
-				include("wp_base/gamemode/core/client/" .. v)
 			end
 		end
 
