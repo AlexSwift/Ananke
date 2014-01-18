@@ -31,10 +31,13 @@ function core.menu.gui.Create( name )
 end
 
 function core.menu.GetElements( )
+
 	return core.menu.Elements
+	
 end
 
 function core.menu.GetActiveElements( )
+
 	local enabled = {}
 	
 	for k, v in pairs(core.menu.Elements) do
@@ -44,13 +47,16 @@ function core.menu.GetActiveElements( )
 	end
 	
 	return enabled
+	
 end
 
 ----------------------Hooks-----------------------
 
 function core.menu.gui:OnCursorMoved()
+
 	local mousePos = input.GetCursorPos()
 	core.menu.MousePos = Vector(mousePos.mouseX, mousePos.mouseY, 0)
+	
 end
 
 function core.menu.gui:OnCursorEntered()

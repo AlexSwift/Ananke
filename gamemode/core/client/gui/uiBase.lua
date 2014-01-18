@@ -32,25 +32,31 @@ function PANEL:OnCursorExited()
 
 end
 
---[[
 function PANEL:SetPosition(x, y)
 
 end
 
 function PANEL:SetParent(parent)
+
 	self.parent = parent
-	parent.children[#children + 1] = self
+	table.insert(parent.children, self)
+	
 end 
 
 function PANEL:GetParent()
+
 	return self.parent
+	
 end
 
 function PANEL:IsEnabled()
+
 	return IsEnabled
+	
 end
 
 function PANEL:Enable()
+
 	self.IsEnabled = true
 	
 	local children = self.children
@@ -59,9 +65,11 @@ function PANEL:Enable()
 			children[k].Enable()
 		end
 	end
+	
 end
 
 function PANEL:Disable()
+
 	self.IsEnabled = false
 	
 	local children = self.children
@@ -70,8 +78,8 @@ function PANEL:Disable()
 			children[k].Disable()
 		end
 	end
+	
 end
---]]
 
 function PANEL:Draw()
 end
