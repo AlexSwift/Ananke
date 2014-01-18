@@ -1,6 +1,6 @@
 
-local modul = modules.new()
-modul.name = 'networking'
+/*local modul = modules.new()
+modul.name = 'networking'*/
 
 network = {}
 network.__index = network
@@ -77,8 +77,8 @@ net.Receive('warpac_nw',function()
 
 end)
 
-function modul:OnLoad()
+/*function modul:OnLoad()
 	protocol.Initialise()
 end
 
-modul:Register()
+modul:Register()*/
