@@ -26,20 +26,31 @@ function core.menu.gui.Create( name )
 
 	table.insert( core.menu.Elements , obj )
 
-	return setmetatable( { } , _UI[name] )
+	return setmetatable( { } , _UI[name] ) -- Don't we want to 'return obj'?
 
 end
 
+function core.menu.GetElements( )
+	return core.menu.Elements
+end
+
 function core.menu.GetActiveElements( )
-
-	return core.menu.Elements , #core.menu.Elements
-
+	local enabled = {}
+	
+	for k, v in pairs(core.menu.Elements) do
+		if core.menu.Elements[k].IsEnabled() then
+			table.insert( enabled, core.menu.Elements[k] )
+		end
+	end
+	
+	return enabled
 end
 
 ----------------------Hooks-----------------------
 
 function core.menu.gui:OnCursorMoved()
-
+	local mousePos = input.GetCursorPos()
+	core.menu.MousePos = Vector(mousePos.mouseX, mousePos.mouseY, 0)
 end
 
 function core.menu.gui:OnCursorEntered()
