@@ -1,9 +1,9 @@
 local plugin = Admin.plugins.New()
 
-plugin.Name = "ban"
+plugin.Name = "kick"
 
-local function ban(ply, length, reason)
-	
+local function kick(ply, reason)
+	ply:Kick(reason)
 end
 
 local function callback(ply, data)
@@ -14,12 +14,13 @@ local function callback(ply, data)
 		ply:ChatPrint("Found multiple players with that name: "..table.concat(names))
 		return end
 	else
-		ban(ply, data[2], data[3])
+		table.remove(data, 1)
+		kick(ply, data[2])
 	end
 end
 
 plugin['args'] = {['p'] = {'string','Default'}}
 plugin['callback'] = function(data) print(data['p']) end
-plugin['data']['minargs'] = 3
+plugin['data']['minargs'] = 2
 
 plugin:Register()
