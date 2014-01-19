@@ -8,7 +8,7 @@ core.menu.Elements = {}
 local _UI = {}
 
 core.menu.gui = {}
-core.menu.gui.__index = {}
+core.menu.gui.__index = core.menu.gui
 
 function core.menu.gui.New(base)
 
