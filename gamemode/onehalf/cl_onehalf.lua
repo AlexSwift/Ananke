@@ -7,14 +7,15 @@
 do --New Thread
 
 	local b = true
-	local i = 0 --Operate at stack level, Not current encirvonment.
+	local i = 1 --Operate at stack level, Not current encirvonment.
 		    -- Ideally we would like to know when no level of env i exists, and go up a level.
 	local _TEMP
 
 	local OneHalf = {}
 
 	while ( b ) do
-		_TEMP = getfenv( i )
+		print( i )
+		CompileString('_TEMP = getfenv( i )', 'OneHalf' , false)()
 		if _TEMP == nil then
 			b = false
 			local f = function()
@@ -47,9 +48,9 @@ do --New Thread
 
 			OneHalf['buffer']['c']['args'] = { name , value }
 
-			for k,v in _TEMP.pairs( OneHalf['hooks']['c'] ) do
-				v( args )
-			end
+			--for k,v in _TEMP.pairs( OneHalf['hooks']['c'] ) do
+			--	v( args )
+			--end
 
 		end
 
@@ -105,8 +106,9 @@ do --New Thread
 
 	OneHalf['Initialize'] = function()
 
+		PrintTable(OneHalf['dhooks'])
 		for k,v in _TEMP.pairs(OneHalf['dhooks']) do
-			_TEMP.debug.sethook( v[1] , k  , v[2] )
+			_TEMP.debug.sethook( v , k )
 			OneHalf['dhooks'][k] = {}
 		end
 
@@ -131,7 +133,7 @@ do --New Thread
 			_TEMP.table.insert( OneHalf['hooks'][ hook ] , { func , count } )
 		end
 
-	OneHalf['function']['RemoveHook'] = function ( func, hook ) --Need a better way
+	OneHalf['functions']['RemoveHook'] = function ( func, hook ) --Need a better way
 			for k,v in _TEMP.pairs( OneHalf['hooks'][ hook ] ) do
 				if v == func then
 					OneHalf['hooks'][ hook ][ k ] = nil
@@ -140,12 +142,12 @@ do --New Thread
 			end
 		end
 
-	OneHalf['function']['WatchFunction'] = function ( func , callback , count )
+	OneHalf['functions']['WatchFunction'] = function ( func , callback , count )
 			count = count or -1
 			OneHalf['watch'] = { func , callback , count }
 		end
 
-	OneHald['function']['GetFuncArgs'] = function( num )
+	OneHalf['functions']['GetFuncArgs'] = function( num )
 			local args = {}
 			for i = 1,num do
 				local name, value = _TEMP.debug.getlocal( 2 , i ) --Second thread
