@@ -13,7 +13,7 @@ function chatcommands.New(command)
 	tabl['name'] = command
 	tabl['args'] = {}
 	tabl['callback'] = function() end
-	tabl['precall'] = function(ply) return true end -- Should it actually pass?
+	tabl['precall'] = function(ply, data) return true end -- Should it actually pass?
 	tabl['postcall'] = function() end
 	return setmetatable(tabl,chatcommands)
 end
@@ -57,7 +57,7 @@ hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)
 		data[k] = tabl[k] or v[2]
 	end
 
-	local shouldpass = command.precall(ply)
+	local shouldpass = command.precall(ply, data)
 	if !shouldpass then return end
 
 	command.callback(data)
