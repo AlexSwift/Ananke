@@ -11,9 +11,10 @@ core.menu.gui = {}
 core.menu.gui.__index = {}
 
 function core.menu.gui.New(base)
-
-	local tabl = core.menu.gui.Get(base) or {}
+	
+	local tabl = core.menu.gui.Create(base) or {}
 	tabl['MouseInBounds'] = false
+	tabl['name'] = base
 
 	return setmetatable(tabl,core.menu.gui)
 
@@ -22,11 +23,12 @@ end
 function core.menu.gui.Create( name )
 
 	local obj = setmetatable( { } , _UI[name] )
+	
 	obj:Init()
 
 	table.insert( core.menu.Elements , obj )
 
-	return setmetatable( { } , _UI[name] ) -- Don't we want to 'return obj'?
+	return obj
 
 end
 
@@ -68,7 +70,11 @@ function core.menu.gui:OnCursorExited()
 end
 
 function core.menu.gui:Draw()
-
+	for k, v in pairs(core.menu.Elements) do
+		if v.IsEnabled() then
+			v.Draw()
+		end
+	end
 end
 
 function core.menu.gui:Init()
@@ -113,11 +119,8 @@ function core.menu.Initialise()
 	local f,d = file.Find( prefix .. "/core/client/gui/*.lua", "GAME" )
 
 	print('\tLoading Gui:')
-
 	for k,v in pairs(f) do
-		print('\t\tLoading ' .. v)
 		include('gui/'..v)
-
 	end
 
 	hook.Add( 'Draw' , 'core.menu.draw' , function( )
@@ -135,7 +138,7 @@ function core.menu.Initialise()
 
 		for k,v in pairs(core.menu.Elements) do
 
-			if vector.InBounds( v:GetParam( 'pos' ) , v:GetParam( 'pos' ) + v:GetParam( 'size' ) , core.menu.MousePos )
+			if vector.InBounds( v:GetParam( 'pos' ) , v:GetParam( 'pos' ) + v:GetParam( 'size' ) , core.menu.MousePos ) then
 				v:OnCursorEntered()
 				v['MouseInBounds'] = true
 			elseif v['MouseInBounds'] then
@@ -167,7 +170,6 @@ function core.menu.Disable( )
 	core.menu.Enabled = false
 
 end
-
 
 core.menu.Initialise()
 
