@@ -4,15 +4,15 @@
 	Description:	Base for all UIObjects in-game
 ]]--
 
-PANEL = core.menu.gui.New();
-PANEL.name = 'UIBase';
+PANEL = core.menu.gui.New('UIBase');
+-- PANEL.name = 'UIBase';
 
 function PANEL:Init()
 
 	self.MouseInBounds = false
 	self.IsEnabled = false
-	self.parent = false
-	self.children = {}
+	self.uiParent = false
+	self.uiChildren = {}
 
 end
 
@@ -38,8 +38,8 @@ end
 
 function PANEL:SetParent(parent)
 
-	self.parent = parent
-	table.insert(parent.children, self)
+	self.uiParent = parent
+	table.insert(parent.uiChildren, self)
 	
 end 
 
@@ -82,6 +82,7 @@ function PANEL:Disable()
 end
 
 function PANEL:Draw()
+	--surface.DrawRect((surface.ScreenWidth * 0.5) - 50, (surface.ScreenHeight * 0.5) - 50, 100, 100)
 end
 
 PANEL:Register();

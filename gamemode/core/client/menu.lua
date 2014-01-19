@@ -11,9 +11,10 @@ core.menu.gui = {}
 core.menu.gui.__index = {}
 
 function core.menu.gui.New(base)
-
+	
 	local tabl = core.menu.gui.Create(base) or {}
 	tabl['MouseInBounds'] = false
+	tabl['name'] = base
 
 	return setmetatable(tabl,core.menu.gui)
 
@@ -27,7 +28,7 @@ function core.menu.gui.Create( name )
 
 	table.insert( core.menu.Elements , obj )
 
-	return setmetatable( { } , _UI[name] ) -- Don't we want to 'return obj'?
+	return obj
 
 end
 
@@ -69,7 +70,11 @@ function core.menu.gui:OnCursorExited()
 end
 
 function core.menu.gui:Draw()
-
+	for k, v in pairs(core.menu.Elements) do
+		if v.IsEnabled() then
+			v.Draw()
+		end
+	end
 end
 
 function core.menu.gui:Init()
@@ -165,7 +170,6 @@ function core.menu.Disable( )
 	core.menu.Enabled = false
 
 end
-
 
 core.menu.Initialise()
 
