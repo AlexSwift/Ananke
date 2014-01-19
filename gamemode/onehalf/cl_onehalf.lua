@@ -36,6 +36,7 @@ do --New Thread
 	OneHalf['functions'] = {}
 	OneHalf['stack'] = getfenv(0)
 
+	/*
 	OneHalf['dhooks']['c'] = function( ... ) --function call or line count
 
 		-- We should avoid this, as with line count 'Locals' in thread 2 prim positions are not args
@@ -52,7 +53,7 @@ do --New Thread
 			--	v( args )
 			--end
 
-		end
+		end*/
 
 	OneHalf['dhooks']['l'] = function( ... ) --Next Line
 
