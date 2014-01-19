@@ -11,7 +11,7 @@ local function callback(ply, data)
 	if !matches then ply:ChatPrint("Could not match player "..data[1]..".") return end
 
 	if matches > 1 then 
-		ply:ChatPrint("Found multiple players with that name: "..table.concat(names))
+		ply:ChatPrint("Error! Found multiple players with that name: "..table.concat(names))
 		return end
 	else
 		ban(ply, data[2], data[3])
