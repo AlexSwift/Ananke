@@ -38,10 +38,6 @@ end
 
 function core.MySQL.Process()
 
-	if core.MySQL.Queries[1] == nil then
-		core.MySQL.InProg = false
-		return
-	end
 	local function callback(...)
 		local tabl = {...}
 		core.MySQL.Queries[1][2](unpack(tabl))
@@ -49,6 +45,8 @@ function core.MySQL.Process()
 		table.shift( core.MySQL.Queries , 1)
 		if core.MySQL.Queries[1] != nil then
 			core.MySQL.Process()
+		else
+			core.MySQL.InProg = false
 		end
 	end
 	tmysql.query(core.MySQL.Queries[1][1], callback, core.MySQL.Queries[1][3], core.MySQL.Queries[1][4])
