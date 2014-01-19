@@ -1,11 +1,4 @@
-local modul = modules.new()
-modul.name = 'utils'
-
 utils = {}
-
-function utils.Initialise()
-
-end
 
 function utils.FindPlayersByName(name)
 	local results = {}
@@ -26,11 +19,3 @@ function utils.FindPlayersByName(name)
 	return results, names
 
 end
-
-function modul:OnLoad()
-	mathsx.Initialise()
-end
-
-
-
-modul:Register()
