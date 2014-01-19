@@ -37,12 +37,12 @@ function table.shift( tabl , n)
 end
 
 function core.MySQL.Process()
-	table.shift( core.MySQL.Queries , 1)
 	if core.MySQL.Queries[1] == nil then
 		core.MySQL.InProg = false
 		return
 	end
 	local function callback(...)
+		table.remove( core.MySQL.Queries , 1)
 		local tabl = {...}
 		core.MySQL.Process()
 		core.MySQL.Queries[1][2](unpack(tabl))
