@@ -37,15 +37,19 @@ function table.shift( tabl , n)
 end
 
 function core.MySQL.Process()
+
 	if core.MySQL.Queries[1] == nil then
 		core.MySQL.InProg = false
 		return
 	end
 	local function callback(...)
-		table.remove( core.MySQL.Queries , 1)
 		local tabl = {...}
-		core.MySQL.Process()
 		core.MySQL.Queries[1][2](unpack(tabl))
+		core.MySQL.Queries[1] = nil
+		table.shift( core.MySQL.Queries , 1)
+		if core.MySQL.Queries[1] != nil then
+			core.MySQL.Process()
+		end
 	end
 	tmysql.query(core.MySQL.Queries[1][1], callback, core.MySQL.Queries[1][3], core.MySQL.Queries[1][4])
 	core.MySQL.InProg = true
