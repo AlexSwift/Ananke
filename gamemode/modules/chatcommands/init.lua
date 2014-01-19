@@ -50,8 +50,7 @@ hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)
 	local command = chatcommands.Get(string.TrimLeft(tabl[1],chatcommands.prefix))
 	if !command then return end
 
-	tabl[1] = nil
-	tabl = table.shift(tabl,1) --Remove the '>command' and shift
+	table.remove(tabl, 1) --Remove the '>command' and shift
 
 	local data = {}
 	for k,v in ipairs(command.args) do
