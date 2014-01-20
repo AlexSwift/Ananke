@@ -13,6 +13,12 @@ function PANEL:Init()
 	self.IsEnabled = false
 	self.uiParent = false
 	self.uiChildren = {}
+	
+	self.pos = Vector( (surface.ScreenWidth * 0.5) - 100, (surface.ScreenHeight * 0.5) - 50, 1 )
+	self.dims = Vector( 200, 100, 0 )
+	self.scale = Vector( 1.0, 1.0, 1.0 )
+	
+	
 
 end
 
@@ -81,8 +87,19 @@ function PANEL:Disable()
 
 end
 
+function PANEL:Toggle()
+
+	if self.IsEnabled then
+		return self:Disable()
+	end
+
+	return self:Enable()
+	
+end
+
 function PANEL:Draw()
 	--surface.DrawRect((surface.ScreenWidth * 0.5) - 50, (surface.ScreenHeight * 0.5) - 50, 100, 100)
 end
 
+PANEL:RegisterMenuKey(KEY_M)
 PANEL:Register();

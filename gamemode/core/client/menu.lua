@@ -6,6 +6,7 @@ core.menu.MousePos = Vector(0,0,0)
 core.menu.Elements = {}
 
 local _UI = {}
+local _KEYS = {}
 
 core.menu.gui = {}
 core.menu.gui.__index = core.menu.gui
@@ -55,9 +56,6 @@ end
 
 function core.menu.gui:OnCursorMoved()
 
-	local mousePos = input.GetCursorPos()
-	core.menu.MousePos = Vector(mousePos.mouseX, mousePos.mouseY, 0)
-
 end
 
 function core.menu.gui:OnCursorEntered()
@@ -66,6 +64,12 @@ end
 
 function core.menu.gui:OnCursorExited()
 
+end
+
+function core.menu.gui:OnMenuKeyPress(keyCode)
+	if _KEYS[keyCode] then
+		_KEYS[keyCode].Toggle()
+	end
 end
 
 function core.menu.gui:Draw()
@@ -85,6 +89,12 @@ end
 function core.menu.gui:Register()
 
 	_UI[self.name] = table.Copy(self)
+
+end
+
+function core.menu.gui:RegisterMenuKey( keyCode )
+
+	_KEYS[keyCode] = self
 
 end
 
@@ -122,20 +132,22 @@ function core.menu.Initialise()
 		include('gui/'..v)
 	end
 
-	hook.Add( 'Draw' , 'core.menu.draw' , function( )
+	hook.Add( 'HUDPaint' , 'core.menu.draw' , function( )
 		if !core.menu.Enabled then return end
-
+		
+		local elements = core.menu.GetActiveElements()
+		
 		local mp = Vector(0,0,0)
 		mp.x,mp.y = gui.MousePos()
 		if core.menu.MousePos != mp then
-			for k,v in pairs(core.menu.Elements) do
+			for k,v in pairs(elements) do
 				v:OnCursorMoved()
 			end
 		end
 
 		core.menu.MousePos = mp
 
-		for k,v in pairs(core.menu.Elements) do
+		for k,v in pairs(elements) do
 
 			if vector.InBounds( v:GetParam( 'pos' ) , v:GetParam( 'pos' ) + v:GetParam( 'size' ) , core.menu.MousePos ) then
 				v:OnCursorEntered()
@@ -151,6 +163,8 @@ function core.menu.Initialise()
 
 		return
 	end)
+	
+	hook.Add( 'OnKeyCodePressed', 'core.menu.keyPress', core.menu.gui.OnMenuKeyPress )
 
 end
 
