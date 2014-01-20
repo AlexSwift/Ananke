@@ -68,7 +68,7 @@ end
 
 function core.menu.gui:OnMenuKeyPress(keyCode)
 	if _KEYS[keyCode] then
-		_KEYS[keyCode].Toggle()
+		_KEYS[keyCode]:Toggle()
 	end
 end
 
