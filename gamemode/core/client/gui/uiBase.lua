@@ -14,11 +14,7 @@ function PANEL:Init()
 	self.uiParent = false
 	self.uiChildren = {}
 	
-	self.pos = Vector( (surface.ScreenWidth * 0.5) - 100, (surface.ScreenHeight * 0.5) - 50, 1 )
 	self.dims = Vector( 200, 100, 0 )
-	self.scale = Vector( 1.0, 1.0, 1.0 )
-	
-	
 
 end
 
@@ -35,23 +31,6 @@ end
 function PANEL:OnCursorExited()
 
 	self.MouseInBounds = false
-
-end
-
-function PANEL:SetPosition(x, y)
-
-end
-
-function PANEL:SetParent(parent)
-
-	self.uiParent = parent
-	table.insert(parent.uiChildren, self)
-
-end
-
-function PANEL:GetParent()
-
-	return self.parent
 
 end
 
