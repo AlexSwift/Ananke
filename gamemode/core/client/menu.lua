@@ -20,11 +20,13 @@ function core.menu.gui.New(base)
 
 end
 
-function core.menu.gui.Create( name )
+function core.menu.gui.Create( name , parent )
 
 	local obj = setmetatable( { } , _UI[name] )
-
-	obj:Init()
+	if parent then
+		obj:SetParent( parent )
+	end
+	obj:Init( )
 
 	table.insert( core.menu.Elements , obj )
 
@@ -66,6 +68,54 @@ function core.menu.gui:OnCursorExited()
 
 end
 
+function core.menu.gui:SetParent( parent )
+	
+	self['parent'] = parent
+	
+end
+
+function core.menu.gui:GetParent( )
+	
+	local parent = self['parent'] or nil
+	return parent
+	
+end
+
+function core.menu.gui:SetPos( x , y )
+	
+	local parent = core.menu.gui:GetParent( )
+	
+	if parent then
+		
+		local px , py = parent:GetPos( )
+		x = x + px
+		y = y + py
+		
+	end
+	
+	self['x'] = x
+	self['y'] = y
+	
+end
+
+function core.menu.gui:GetPos( real ) --Real coordinates or relative ?
+	
+	local parent =  core.menu.gui:GetParent( )
+	if real and parent then
+		
+		local px , py = parent:GetPos( true )
+		local x = self['x']
+		local y = self['y']
+		
+		return (px + x) , (py + y)
+		
+	else
+		
+		return self['x'] , self['y']
+		
+	end
+end
+
 function core.menu.gui:OnMenuKeyPress(keyCode)
 	if _KEYS[keyCode] then
 		_KEYS[keyCode]:Toggle()
@@ -98,7 +148,7 @@ function core.menu.gui:RegisterMenuKey( keyCode )
 
 end
 
-function core.menu.gui:AddParam( ... )
+function core.menu.gui:AddParam( ... ) --DEPRECATE
 
 	local args = {...}
 
@@ -112,7 +162,7 @@ function core.menu.gui:AddParam( ... )
 
 end
 
-function core.menu.gui:GetParam( key , ... ) --Key, Default
+function core.menu.gui:GetParam( key , ... ) --Key, Default --DEPRECATE
 
 	local args = {...}
 	local ret = self[key] and self[key] or args[1]
