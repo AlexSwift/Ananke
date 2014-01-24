@@ -4,8 +4,8 @@
 
 --lua_run to give the weapon+ammo: lua_run local ply = player.GetAll()[1] ply:Give("wp_weaponbase") ply:SetAmmo(5000, "smg1")
 
-SWEP.PrintName			=	"WARPAC Weaponbase example"
-SWEP.Author				=	"Lenny, WARPAC-team"
+SWEP.PrintName			=	"Ananke Weaponbase example"
+SWEP.Author				=	"Lenny, Ananke-team"
 SWEP.Instructions		=	"to be determined."
 
 --[[

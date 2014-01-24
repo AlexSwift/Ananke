@@ -1,11 +1,10 @@
-if SERVER then
-	AddCSLuaFile()
-end
-
-ENT.Name			= "wp_nextbotbase"
+ENT.Name			= "ananke_entitybase"
 ENT.Author			= "Alex Swift, WARPAC Team"
 ENT.Contact			= ""
-ENT.Base 			= "base_nextbot"
+ENT.Base 			= "base_entity"
+ENT.Type 			= "anim"
+ENT.Spawnable 		= false
+ENT.AdminOnly 		= false
 ENT.GVars			= {}
 
 function table.HVIST(tabl,v,k)
@@ -71,6 +70,7 @@ function ENT:AddGVar( name , ... ) -- name, default, b_nw
 	table.insert( self.GVars , { name, unpack(args) } )
 end
 
+
 function ENT:Initialize()
 
 	hook.Add( 'PlayerInitialSpawn' , 'wp_gvnw_' .. self:EntIndex() , function(ply)
@@ -90,7 +90,8 @@ function ENT:Initialize()
 				nw:PushData(default)
 			nw:Send()
 		end
-	end)
+
+	end )
 
 end
 
