@@ -100,7 +100,7 @@ end
 
 function core.menu.gui:GetPos( real ) --Real coordinates or relative ?
 	
-	local parent =  core.menu.gui:GetParent( )
+	local parent = core.menu.gui:GetParent( )
 	if real and parent then
 		
 		local px , py = parent:GetPos( true )
@@ -123,11 +123,13 @@ function core.menu.gui:OnMenuKeyPress(keyCode)
 end
 
 function core.menu.gui:Draw()
-	for k, v in pairs(core.menu.Elements) do
-		if v.IsEnabled() then
-			v.Draw()
+	for k, v in pairs( self:GetChildren( ) ) do
+		if v.IsEnabled( ) then
+			v:Draw()
 		end
 	end
+
+	self:Draw()
 end
 
 function core.menu.gui:Init()
@@ -145,29 +147,6 @@ end
 function core.menu.gui:RegisterMenuKey( keyCode )
 
 	_KEYS[keyCode] = self
-
-end
-
-function core.menu.gui:AddParam( ... ) --DEPRECATE
-
-	local args = {...}
-
-	if type(args[1]) == 'table' then
-		for k,v in pairs(args[1]) do
-			self[key] = value
-		end
-	else
-		self[args[1]] = args[2]
-	end
-
-end
-
-function core.menu.gui:GetParam( key , ... ) --Key, Default --DEPRECATE
-
-	local args = {...}
-	local ret = self[key] and self[key] or args[1]
-
-	return ret
 
 end
 
