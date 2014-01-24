@@ -34,6 +34,7 @@ function utils.TimeFromString(str)
 	local tabl.total = 0
 	for v, k in string.gmatch(str, "(%d+)(%a+)") do
 		v = tonumber(v) or 0
+		if !coefficients[k] then continue end
 		tabl.total = tabl.total + v * coefficients[k]
 		
 		tabl[k] = v
