@@ -3,8 +3,8 @@ utils = {}
 function utils.FindPlayersByName(name)
 	local results = {}
 	for _, v in pairs(player.GetAll()) do
-		if string.find(v:name, name) then
-			table.insert(results, name)
+		if string.find(v:name(), name) then
+			table.insert(results, v)
 		end
 	end
 

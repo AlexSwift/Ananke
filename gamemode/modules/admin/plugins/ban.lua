@@ -4,8 +4,9 @@ plugin.Name = "ban"
 
 --active stuff
 
-local function ban(ply, length, reason)
-	
+local function ban(former, ply, length, reason)
+	if !ply:IsValid() then former:ChatPrint("The player you entered is invalid") end
+	local banlength = utils.TimeFromString(length).total
 end
 
 local function callback(ply, data)
@@ -16,7 +17,7 @@ local function callback(ply, data)
 		ply:ChatPrint("Error! Found multiple players with that name: "..table.concat(names))
 		return end
 	else
-		ban(ply, data[2], data[3])
+		ban(ply, matches[1], data[2], data[3])
 	end
 end
 
