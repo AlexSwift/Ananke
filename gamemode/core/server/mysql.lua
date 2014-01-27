@@ -17,7 +17,6 @@ function core.MySQL.Initialize()
 
 	--Test query to check if connected?
 
-	core.MySQL.Query("CREATE SCHEMA IF NOT EXISTS ´ananke´;", 
 	core.MySQL.Loaded = true
 end
 
