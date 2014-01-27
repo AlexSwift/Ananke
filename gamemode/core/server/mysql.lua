@@ -16,7 +16,20 @@ function core.MySQL.Initialize()
 	tmysql.initialize(host, user, pass, daba, port)
 
 	--Test query to check if connected?
-
+	local function setup(data)
+		core.MySQL.Query("CREATE TABLE IF NOT EXISTS `ananke`.`bans` (
+  `steamid` CHAR(25) NOT NULL,
+  `steamid64` INT(20) NOT NULL,
+  `unban` INT(12) NOT NULL,
+  `reason` TEXT NULL,
+  `num` INT(4) NOT NULL DEFAULT 1,
+  `altof` CHAR(25) NOT NULL,
+  PRIMARY KEY (`steamid`),
+  UNIQUE INDEX `steamid_UNIQUE` (`steamid` ASC),
+  UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
+")
+	end
+	core.MySQL.Query("CREATE SCHEMA IF NOT EXISTS ´ananke´;", 
 	core.MySQL.Loaded = true
 end
 
