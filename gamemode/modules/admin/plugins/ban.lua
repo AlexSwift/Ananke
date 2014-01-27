@@ -24,6 +24,19 @@ end
 
 --passive stuff
 
+local function MySQLSetup()
+	core.MySQL.Query("CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
+  `steamid` CHAR(25) NOT NULL,
+  `steamid64` INT(20) NOT NULL,
+  `unban` INT(12) NOT NULL,
+  `reason` TEXT NULL,
+  `num` INT(4) NOT NULL DEFAULT 1,
+  `altof` CHAR(25) NOT NULL,
+  PRIMARY KEY (`steamid`),
+  UNIQUE INDEX `steamid_UNIQUE` (`steamid` ASC),
+  UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
+"))
+end
 
 local function CheckBan(id)
 	local mysqlresult --query for steamid in ban list
