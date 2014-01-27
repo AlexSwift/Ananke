@@ -71,7 +71,7 @@ class "protocol" {
 function protocols.Initialise()
 	if protocol.Loaded then return end
 
-	local f,d = file.Find( "wp_base/gamemode/core/shared/networking/protocols/*.lua", "LUA" )
+	local f,d = file.Find( GM.Name .. "/gamemode/core/shared/networking/protocols/*.lua", "LUA" )
 
 	print('\tLoading Protocols:')
 
@@ -79,13 +79,13 @@ function protocols.Initialise()
 		if SERVER then
 			print('\t\tLoading ' .. v)
 			do
-				AddCSLuaFile('wp_base/gamemode/core/shared/protocols/'..v)
-				include('wp_base/gamemode/core/shared/protocols/'..v)
+				AddCSLuaFile( GM.Name .. '/gamemode/core/shared/protocols/' .. v )
+				include( GM.Name .. '/gamemode/core/shared/protocols/' .. v )
 			end
 		else
 			print('\t\tLoading ' .. v)
 			do
-				include('wp_base/gamemode/core/shared/protocols/'..v)
+				include( GM.Name .. '/gamemode/core/shared/protocols/'.. v)
 			end
 		end
 	end

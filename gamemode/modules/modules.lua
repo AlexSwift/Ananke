@@ -1,7 +1,6 @@
 modules = {}
-modules.__index = {}
 modules.mt = {}
-modules.mt.__index = {}
+modules.mt.__index = modules.mt
 
 local _MODULES = {}
 
@@ -53,9 +52,9 @@ function modules.Load( ... )
 		for k,v in pairs(args[1]) do
 			print('\tLoaded module : ' .. v)
 			for f,func in pairs(modules.functions) do
-				if file.Exists('wp_base/gamemode/modules/'..v .. '/' .. f,'LUA') and file.Size('wp_base/gamemode/modules/'..v .. '/' .. f,"LUA") != 0 then
+				if file.Exists( GM.Name .. '/gamemode/modules/'..v .. '/' .. f,'LUA') and file.Size( GM.Name ..'/gamemode/modules/'..v .. '/' .. f,"LUA") != 0 then
 					do
-						func("wp_base/gamemode/modules/"..v)
+						func( GM.Name .. "/gamemode/modules/"..v)
 					end
 				end
 			end
@@ -64,9 +63,9 @@ function modules.Load( ... )
 		if !table.HasKey( _MODULES , args[1] ) then return end
 		print('\tLoaded module : ' .. args[1])
 		for f,func in pairs(modules.functions) do
-			if file.Exists('wp_base/gamemode/modules/' ..args[1] .. '/' .. f,'LUA') and file.Size('wp_base/gamemode/modules/'..args[1] .. '/' .. f,"LUA") != 0 then
+			if file.Exists( GM.Name .. '/gamemode/modules/' ..args[1] .. '/' .. f,'LUA') and file.Size( GM.Name .. '/gamemode/modules/'..args[1] .. '/' .. f,"LUA") != 0 then
 				do
-					func( "wp_base/gamemode/modules/"..args[1])
+					func( GM.Name .. "/gamemode/modules/"..args[1])
 				end
 			end
 		end

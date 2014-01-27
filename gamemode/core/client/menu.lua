@@ -152,9 +152,7 @@ end
 
 function core.menu.Initialise()
 
-	local prefix = CLIENT and "lua_temp" or "gamemodes/wp_base/gamemode"
-
-	local f,d = file.Find( prefix .. "/core/client/gui/*.lua", "GAME" )
+	local f,d = file.Find( GM.Name .. "/gamemode/core/client/gui/*.lua", "LUA" )
 
 	print('\tLoading Gui:')
 	for k,v in pairs(f) do

@@ -1,13 +1,10 @@
 core = {}
 
-core.FileSystem = {}
-core.FileSystem.Data = {}
-
 function core.Initialise()
 
 	core.Loaded = {}
 
-	local f,d = file.Find( "wp_base/gamemode/core/shared/*.lua", "LUA" )
+	local f,d = file.Find( GM.Name .. "/gamemode/core/shared/*.lua", "LUA" )
 
 	core.Loaded['shared'] = {f,d}
 	print('Loading Shared :')
@@ -36,10 +33,10 @@ function core.Initialise()
 		for k,v in pairs(f) do
 			do
 				if SERVER then
-					AddCSLuaFile("wp_base/gamemode/core/client/" .. v)
-					AddCSLuaFile( "wp_base/gamemode/core/client/" .. v )
+					AddCSLuaFile( GM.Name .. "/gamemode/core/client/" .. v)
+					AddCSLuaFile( GM.Name .. "/gamemode/core/client/" .. v )
 				else
-					include("wp_base/gamemode/core/client/" .. v)
+					include( GM.Name .. "/gamemode/core/client/" .. v)
 				end
 			end
 		end
@@ -47,15 +44,15 @@ function core.Initialise()
 
 	if SERVER then
 
-		f,d = file.Find( "wp_base/gamemode/core/server/*.lua", "LUA" )
+		f,d = file.Find( GM.Name .. "/gamemode/core/server/*.lua", "LUA" )
 
 		core.Loaded['server'] = {f,d}
 		print('Loading Server :')
 		for k,v in pairs(f) do
-			if file.Size('gamemodes/wp_base/gamemode/core/server/'..v ,"GAME") == 0 then continue end
+			if file.Size( GM.Name .. '/gamemode/core/server/'..v , "LUA") == 0 then continue end
 			print('\tLoading ' .. v)
 			do
-				include("wp_base/gamemode/core/server/" ..v)
+				include( GM.Name .. "/gamemode/core/server/" ..v)
 			end
 		end
 

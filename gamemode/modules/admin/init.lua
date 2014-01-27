@@ -3,9 +3,8 @@ modul.name = 'admin'
 
 Admin = {}
 Admin.plugins = {}
-Admin.plugins.__index = Admin.plugins
 Admin.plugins.mt = {}
-Admin.plugins.mt.__index = Admin.plugins.mt
+Admin.plugins.mt.__index = Admin.plugins
 
 local _PLUGINS = {}
 
@@ -30,9 +29,7 @@ end
 
 function Admin.plugins.Initialise()
 
-	local prefix = CLIENT and "lua_temp" or "gamemodes/wp_base/gamemode"
-
-	local f,d = file.Find( prefix .. "/modules/admin/plugins/*.lua", "GAME" )
+	local f,d = file.Find( GM.Name .. "/gamemode/modules/admin/plugins/*.lua", "LUA" )
 
 	print('\tLoading plugins:')
 
@@ -41,13 +38,13 @@ function Admin.plugins.Initialise()
 
 			print('\t\tLoading ' .. v)
 			do
-				AddCSLuaFile('wp_base/gamemode/modules/admin/plugins/'..v)
-				include('wp_base/gamemode/modules/admin/plugins/'..v)
+				AddCSLuaFile( GM.Name .. '/gamemode/modules/admin/plugins/'..v)
+				include( GM.Name .. '/gamemode/modules/admin/plugins/'..v)
 			end
 		else
 			print('\t\tLoading ' .. v)
 			do
-				include('wp_base/gamemode/modules/admin/plugins/'..v)
+				include(GM.Name .. '/gamemode/modules/admin/plugins/'..v)
 			end
 		end
 	end

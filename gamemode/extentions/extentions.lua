@@ -2,15 +2,15 @@ extentions = {}
 
 function extentions.Initialise()
 
-	f,d = file.Find( "wp_base/gamemode/extentions/*.lua", "LUA" )
+	f,d = file.Find( GM.Name .. "/gamemode/extentions/*.lua", "LUA" )
 
 	print('Loading Extentions :')
 	for k,v in pairs(f) do
 		if v == 'extentions.lua' then continue end
-		if file.Size('wp_base/gamemode/extentions/'..v ,"LUA") == 0 then continue end
+		if file.Size( GM.Name .. '/gamemode/extentions/'..v ,"LUA") == 0 then continue end
 		print('\tLoading ' .. v)
 		do
-			include("wp_base/gamemode/extenstions/" .. v)
+			include( GM.Name .."/gamemode/extenstions/" .. v)
 		end
 	end
 
