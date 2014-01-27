@@ -53,7 +53,7 @@ function modules.Load( ... )
 		for k,v in pairs(args[1]) do
 			print('\tLoaded module : ' .. v)
 			for f,func in pairs(modules.functions) do
-				if file.Exists('gamemodes/wp_base/gamemode/modules/'..v .. '/' .. f,'GAME') and file.Size('gamemodes/wp_base/gamemode/modules/'..v .. '/' .. f,"GAME") != 0 then
+				if file.Exists('wp_base/gamemode/modules/'..v .. '/' .. f,'LUA') and file.Size('wp_base/gamemode/modules/'..v .. '/' .. f,"LUA") != 0 then
 					do
 						func("wp_base/gamemode/modules/"..v)
 					end
@@ -64,7 +64,7 @@ function modules.Load( ... )
 		if !table.HasKey( _MODULES , args[1] ) then return end
 		print('\tLoaded module : ' .. args[1])
 		for f,func in pairs(modules.functions) do
-			if file.Exists('gamemodes/wp_base/gamemode/modules/' ..args[1] .. '/' .. f,'GAME') and file.Size('gamemodes/wp_base/gamemode/modules/'..args[1] .. '/' .. f,"GAME") != 0 then
+			if file.Exists('wp_base/gamemode/modules/' ..args[1] .. '/' .. f,'LUA') and file.Size('wp_base/gamemode/modules/'..args[1] .. '/' .. f,"LUA") != 0 then
 				do
 					func( "wp_base/gamemode/modules/"..args[1])
 				end

@@ -1,29 +1,29 @@
 
 Protocol = protocol.New()
 
-Protocol.Name = "nw_wpgv"
-Protocol.PID  = 0x04
-Protocol.Type = NW_STC 		--0x01 - Server to Client
-Protocol.Data = NW_CUSTOM 	--Custom Datagram. Variables won't all be of same type.
+Protocol:SetName( "nw_wpgv" )
+Protocol:SetPID ( 0x04 )
+Protocol:SetType( NW_STC )		--0x01 - Server to Client
+Protocol:SetData( NW_CUSTOM )	--Custom Datagram. Variables won't all be of same type.
 
-Protocol.CallBack = function(data)
+Protocol:SetCallBack( function(data)
 	local ent = Entity(data[1])
 	ent[data[2]] = data[3]
-end
+end )
 
-Protocol.send = function(data)
+Protocol:SetSend( function(data)
 	net.WriteUInt(data[1])
 	net.WriteString(data[2])
 	net['Write' .. data[2]](data[3])
-end
+end )
 
-Protocol.Receive = function()
+Protocol:SetReceive( function()
 	local id = net.ReadUInt()
 	local key = net.ReadString()
 	local value = net['Read'..net.ReadString()]()
 
 	return { id , key , value }
-end
+end )
 
 Protocol:Register()
 
