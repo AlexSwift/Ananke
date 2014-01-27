@@ -9,9 +9,7 @@ function extentions.Initialise()
 		if v == 'extentions.lua' then continue end
 		if file.Size( GM.Name .. '/gamemode/extentions/'..v ,"LUA") == 0 then continue end
 		print('\tLoading ' .. v)
-		do
-			include( GM.Name .."/gamemode/extenstions/" .. v)
-		end
+		include( v)
 	end
 
 

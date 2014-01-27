@@ -19,10 +19,10 @@ class "protocol" {
 		
 		SetSend = function( self , func )
 			self.send = func
-		end
+		end;
 		
 		GetSend = function( self )
-			return self.send
+			return self.send[1]
 		end;
 		
 		SetReceive = function( self, func )
@@ -30,15 +30,15 @@ class "protocol" {
 		end;
 		
 		GetReceive = function( self )
-			return self.receive
-		end
+			return self.receive[1]
+		end;
 		
 		SetCallBack = function( self , func )
 			self.CallBack = func
 		end;
 		
 		GetCallBack = function( self )
-			return self.CallBack
+			return self.CallBack[1]
 		end;
 		
 		SetData = function( self , DT )
@@ -49,6 +49,14 @@ class "protocol" {
 			return self.Data
 		end;
 		
+		SetType = function( self , DT )
+			self.Type = DT
+		end;
+		
+		GetType = function( self )
+			return self.Type
+		end;
+		
 		SetPID = function( self , PID )
 			self.PID = PID
 		end;
@@ -57,13 +65,13 @@ class "protocol" {
 			return self.PID
 		end
 	};
-	private {
+	public {
 		Name = '';
 		PID = 0x00;
 		Type = '';
-		CallBack = function() end;
-		send = function() end;
-		receive = function() end;
+		CallBack = {};
+		send = {};
+		receive = {};
 		Data = ''
 	};
 }
@@ -79,13 +87,13 @@ function protocols.Initialise()
 		if SERVER then
 			print('\t\tLoading ' .. v)
 			do
-				AddCSLuaFile( GM.Name .. '/gamemode/core/shared/protocols/' .. v )
-				include( GM.Name .. '/gamemode/core/shared/protocols/' .. v )
+				AddCSLuaFile( GM.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
+				include( GM.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
 			end
 		else
 			print('\t\tLoading ' .. v)
 			do
-				include( GM.Name .. '/gamemode/core/shared/protocols/'.. v)
+				include( GM.Name .. '/gamemode/core/shared/networking/protocols/'.. v)
 			end
 		end
 	end

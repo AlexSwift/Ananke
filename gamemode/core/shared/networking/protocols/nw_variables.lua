@@ -1,28 +1,28 @@
-Protocol = protocol.New()
+Protocol = protocol.new()
 
 Protocol:SetName( "nw_variables" )
 Protocol:SetPID( 0x02 )
 Protocol:SetType( NW_STC )		--0x01 - Server to Client
 Protocol:SetData( NW_CUSTOM ) 	--Custom Datagram. Variables won't all be of same type.
 
-Protocol:SetCallBack( function(data)
+Protocol:SetCallBack( {function(data)
 	for k,v in pairs(data) do
 		variables[k] = v
 	end
-end )
+end })
 
-Protocol:SetSend( function(data)
+Protocol:SetSend( {function(data)
 	net.WriteString(data[1])
 	net.WriteString(data[2])
 	net['Write' .. data[2]](data[3])
-end)
+end})
 
-Protocol:SetReceive( function()
+Protocol:SetReceive( {function()
 	local key = net.ReadString()
 	local value = net['Read'..net.ReadString()]()
 
 	return { [key] = value }
-end)
+end})
 
 Protocol:Register()
 

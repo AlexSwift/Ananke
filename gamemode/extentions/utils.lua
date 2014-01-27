@@ -31,7 +31,7 @@ function utils.TimeFromString(str)
 		['s'] = 1
 	}
 	local tabl = {}
-	local tabl.total = 0
+	tabl.total = 0
 	for v, k in string.gmatch(str, "(%d+)(%a+)") do
 		if !coefficients[k] then continue end
 		

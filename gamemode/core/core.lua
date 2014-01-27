@@ -13,35 +13,33 @@ function core.Initialise()
 		if SERVER then
 			print('\tLoading ' .. v)
 			do
-				AddCSLuaFile("wp_base/gamemode/core/shared/" .. v)
-				AddCSLuaFile( "wp_base/gamemode/core/shared/" .. v )
-				include("wp_base/gamemode/core/shared/" .. v)
+				AddCSLuaFile( GM.Name .. "/gamemode/core/shared/" .. v)
+				AddCSLuaFile( GM.Name .. "/gamemode/core/shared/" .. v )
+				include( GM.Name .. "/gamemode/core/shared/" .. v)
 			end
 		else
 			print('\tLoading ' .. v)
 			do
-				include( "wp_base/gamemode/core/shared/" .. v)
+				include( GM.Name .. "/gamemode/core/shared/" .. v)
 			end
 		end
 	end
 
 
-	f,d = file.Find( "wp_base/gamemode/core/client/*.lua", "LUA" )
+	f,d = file.Find( GM.Name .. "/gamemode/core/client/*.lua", "LUA" )
 	
 	core.Loaded['client'] = {f,d}
 	print('Loading client :') 
-		for k,v in pairs(f) do
-			do
-				if SERVER then
-					AddCSLuaFile( GM.Name .. "/gamemode/core/client/" .. v)
-					AddCSLuaFile( GM.Name .. "/gamemode/core/client/" .. v )
-				else
-					include( GM.Name .. "/gamemode/core/client/" .. v)
-				end
+	for k,v in pairs(f) do
+		do
+			if SERVER then
+				AddCSLuaFile( GM.Name .. "/gamemode/core/client/" .. v)
+			else
+				include( GM.Name .. "/gamemode/core/client/" .. v)
 			end
 		end
 	end
-
+		
 	if SERVER then
 
 		f,d = file.Find( GM.Name .. "/gamemode/core/server/*.lua", "LUA" )

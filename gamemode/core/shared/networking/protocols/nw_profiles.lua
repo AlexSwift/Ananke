@@ -1,24 +1,24 @@
-Protocol = protocol.New()
+Protocol = protocol.new()
 
 Protocol:SetName( "Profiles" )
 Protocol:SetPID( 0x03 )
 Protocol:SetType( NW_STC )
 Protocol:SetData( NW_CUSTOM )
 
-Protocol:SetCallBack( function(data)
+Protocol:SetCallBack( {function(data)
 	profiles.GetByID(data[1]):Set(data[2],data[3])
-end )
+end} )
 
-Protocol:SetSend( function(data)
+Protocol:SetSend( {function(data)
 
 	net.WriteUInt(data[1])
 	net.WriteString(data[2])
 	net.WriteString(data[3])
 	net['Write'..NW_TRANSLATIONS[data[3]]()](data[4])
 
-end)
+end } )
 
-protocol:SetReceive( function()
+Protocol:SetReceive( {function()
 
 	local data = {}
 
@@ -27,6 +27,6 @@ protocol:SetReceive( function()
 	data[3] = net['Read'..net.ReadString()]()
 
 	return data
-end )
+end} )
 
 Protocol:Register()
