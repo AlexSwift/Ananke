@@ -28,6 +28,7 @@ local function MySQLSetup()
 	core.MySQL.Query("CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
   `steamid` CHAR(25) NOT NULL,
   `steamid64` INT(20) NOT NULL,
+  `name` CHAR(50) NULL,
   `unban` INT(12) NOT NULL,
   `reason` TEXT NULL,
   `num` INT(4) NOT NULL DEFAULT 1,
@@ -37,39 +38,6 @@ local function MySQLSetup()
   UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
 "))
 end
-
-local function CheckBan(id)
-	local mysqlresult --query for steamid in ban list
-	if mysqlresult then
-		local tabl = {}
-		tabl.reason = mysqlresult.reason
-		tabl.data = mysqlresult.unbandate
-		tabl.timeleft = 0 --TODO DO THIS!
-		return table
-	end
-
-	mysqlresult --query for IP
-	if mysqlresult then
-		local tabl
-		tabl.suspecalt = 1
-		return tabl
-	end
-end
-
-local function AuthBan(data)
-	if data.bot == 1 then return end
-
-	local bandata = CheckBan(data.networkid)
-	if bandata.banned then
-		RunConsoleCommand("kickid", data.userid, "You are banned: "..bandata.reason.."\n".."Ban lift date: "..bandata.date.." Time remaining: "..bandata.timeleft)
-	elseif bandata.suspecalt then
-		--raise alt suspection
-	end
-end
-
-gameevent.Listen("player_connect")
-hook.Add("player_connect", "BanCheck", AuthBan)
-
 
 
 plugin['args'] = {['p'] = {'string','Default'}}
