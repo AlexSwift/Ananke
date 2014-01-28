@@ -34,12 +34,6 @@ local function IsBanned64(id)
 	end
 end
 
-local function KickForFamilyAlt(body)
-	local json = util.JSONToTable(body)
-	local nam = json.personaname
-	local id64 = json.steamid
-end
-
 local function CheckFamilySharing(body)
 	local json = util.JSONToTable(body)
 	if json.lender_steamid != 0 then
