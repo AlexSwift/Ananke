@@ -145,8 +145,14 @@ function Ananke.binds.GetBinds( ... )
 	local args = {...}
 	local k = args[1] and args[1] or nil
 	
-	if k then
+	if k and type(k) == 'number' then
 		return Ananke.binds._BINDS[k]
+	elseif k and type(k) == 'table' then
+		local t = {}
+		for key,value in pairs( k ) do -- k = {KEY , KEY , JEY }
+			t[value] =  Ananke.binds._BINDS[value]
+		end
+		return t
 	else
 		return Ananke.binds._BINDS
 	end
