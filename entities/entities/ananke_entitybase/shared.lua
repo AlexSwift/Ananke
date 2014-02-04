@@ -7,15 +7,6 @@ ENT.Spawnable 		= false
 ENT.AdminOnly 		= false
 ENT.GVars			= {}
 
-function table.HVIST(tabl,v,k)
-	for key,value in pairs(tabl) do
-		if value[k] == v then
-			return true
-		end
-	end
-	return false
-end
-
 ENT.__index = function(self,k)
 	if string.sub(k,1,3) == "Set" and table.HVIST(self.GVars,1,k) then
 		local func = function(self,v,...)

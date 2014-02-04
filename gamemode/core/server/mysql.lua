@@ -29,13 +29,6 @@ function core.MySQL.Query( q, callback, ...)
 	end
 end
 
-function table.shift( tabl , n)
-	for k,v in ipairs(tabl) do
-		tabl[k-n] = v
-	end
-	return tabl
-end
-
 function core.MySQL.Process()
 
 	local function callback(...)
