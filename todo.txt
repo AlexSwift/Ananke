@@ -1,34 +1,34 @@
 
 ANANKE
 
-- convert remaining meta tables to the simploo system
-- Extend the mathsx lib
-- Prefix all public tables with Ananke.
-- Start on sockets communications
-- Menu system objects
-- Menu system drawing 
-- bind system
-- Items
-- Inventory
-- Test serialization for BLOB data encoding
-- Prevent flamily sharing ban bypass
+-		convert remaining meta tables to the simploo system
+- 		Extend the mathsx lib
+- 		Prefix all public tables with Ananke.
+- 		Start on sockets communications
+- 		Menu system objects
+- 		Menu system drawing 
+- (DONE) 	bind system
+- 		Items
+- 		Inventory
+- 		Test serialization for BLOB data encoding
+- 		Prevent family sharing ban bypass
 
-- MySQL testing, and planning MySQL table layouts
-- Create a Touchevent system for map triggers
-- Allow for easier debugging
+- 		MySQL testing, and planning MySQL table layouts
+- (DONE)	Create a Touchevent system for map triggers
+- 		Allow for easier debugging
 
-- Create a dynamic Ananke.<system>.Load(dir)
-- fix directory inheritence
+- 		Create a dynamic Ananke.<system>.Load(dir)
+- 		fix directory inheritence
 
 
 
 WARPAC
 
-- Start on menu
-- Prevent player from spawning on join
-- Redo the weapon base
+- 		Start on menu
+- 		Prevent player from spawning on join
+- 		Redo the weapon base
 
 
 ONEHALF
 
--start over from scratch
+-		start over from scratch
