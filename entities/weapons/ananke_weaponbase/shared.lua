@@ -120,6 +120,17 @@ end
 
 function SWEP:Deploy()
 	if SERVER then
+		self:InitFlashlight
+	end
+
+	self:SendWeaponAnim(ACT_VM_DRAW)
+
+	self.vm = self.Owner:GetViewModel()
+	self.muzzle = self.vm:GetAttachment(1)
+	return true
+end
+
+function SWEP:InitFlashlight()
 	self.flashlight = ents.Create("env_projectedtexture")
 
 	self.vm = self.Owner:GetViewModel()
@@ -141,16 +152,10 @@ function SWEP:Deploy()
 	self.flashlight:Input("TurnOff")
 	self.flashlight:Input("FOV", NULL, NULL, "90")
 	self.flashlight:Input("SpotlightTexture", NULL, NULL, "effects/flashlight/soft")
-	end
-
-	self:SendWeaponAnim(ACT_VM_DRAW)
-	return true
 end
 
 function SWEP:Equip(NewOwner)
-
 	self:SetWeaponHoldType(self.HoldType)
-
 	return true
 end
 
@@ -164,6 +169,14 @@ function SWEP:PrimaryAttack()
 		InAttackSince = CurTime()
 	end
 
+	local spread, recoil = self:CalcSpreadRecoil()
+
+	self:ShootBullet(self.Primary.Damage.Value, 1, spread, recoil)
+	self:FireEffects(recoil)
+	self:TakePrimaryAmmo(1)
+end
+
+function SWEP:CalcSpreadRecoil()
 	local spread = self.Primary.Spread.Value
 	local recoil = self.Primary.Recoil.Value
 
@@ -200,9 +213,7 @@ function SWEP:PrimaryAttack()
 		recoil = Lerp(rpct, .3, .75) -- limiting the spread/recoil
 	end
 
-	self:ShootBullet(self.Primary.Damage.Value, 1, spread, recoil)
-	self:FireEffects(recoil)
-	self:TakePrimaryAmmo(1)
+	return spread, recoil
 end
 
 function SWEP:CanPrimaryAttack()
@@ -221,10 +232,6 @@ function SWEP:CanPrimaryAttack()
 end
 
 function SWEP:ShootBullet(damage, num, spread, recoil)
-
-	self.vm = self.Owner:GetViewModel()
-	self.muzzle = self.vm:GetAttachment(1)
-
 	local bullet = {}
 	bullet.Attacker = self.Owner
 	bullet.Src = self.Owner:GetShootPos()
@@ -244,9 +251,13 @@ function SWEP:FireEffects(recoil)
 		self:EmitSound(self.Primary.Sound.name)
 	end
 
-	self.Owner:SetAnimation(PLAYER_ATTACK1)
+	self:FireAnimation()
 	self:FireMuzzleEffects()
+	if !CLIENT then return end
+	--self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick*.25, sidekick*.25, 0)) --kyle wants it to be cs:go like :/ so no real recoil (but we do it a tiny bit anyway)
+end
 
+function SWEP:ViewPunch()
 	local upordown = math.random(-1, 1)
 	local leftorright = math.random(0, 1)
 
@@ -262,37 +273,17 @@ function SWEP:FireEffects(recoil)
 	local sidekick = leftorright * recoil --low sidekick
 
 	self.Owner:ViewPunch(Angle(sidekick, upkick, sidekick * .25))
-	if !CLIENT then return end
-	--self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(upkick*.25, sidekick*.25, 0)) --kyle wants it to be cs:go like :/ so no real recoil (but we do it a tiny bit anyway)
+end
+
+function SWEP:FireAnimation()
+	self.Owner:SetAnimation(PLAYER_ATTACK1)
 end
 
 function SWEP:FireMuzzleEffects()
-	self.vm = self.Owner:GetViewModel()
-	self.muzzle = self.vm:GetAttachment(1)
-
-
-	local muzzlefx = EffectData()
-	muzzlefx:SetScale(.2)
-	muzzlefx:SetOrigin(self.muzzle.Pos)
-	muzzlefx:SetNormal(self.muzzle.Ang:Up())
-
-	util.Effect("muzzleflash", muzzlefx)
-
+	self:MuzzleFlashFire()
 
 	if CLIENT then
-
-	local light = DynamicLight(self.Owner:EntIndex())
-	light.Brightness = math.Rand(3, 5) -- no round is the same
-	light.Decay = 10000
-	light.DieTime = CurTime() + .1
-	light.Dir = self.muzzle.Ang:Up()
-	light.Pos = self.muzzle.Pos/*self.Owner:GetShootPos() + 50 * self.Owner:GetAimVector()*/
-	light.Size = math.random(100, 125)
-	light.Style = 0
-	light.r = 255
-	light.g = 255
-	light.b = 100
-
+		self:MuzzleDynLight()
 	else
 		self.vm = self.Owner:GetViewModel()
 		self.muzzle = self.vm:GetAttachment(1)
@@ -304,6 +295,39 @@ function SWEP:FireMuzzleEffects()
 			self.flashlight:Input("TurnOff")
 		end)
 	end
+end
+
+function SWEP:MuzzleFlashFire()
+	local muzzlefx = EffectData()
+	muzzlefx:SetScale(.2)
+	muzzlefx:SetOrigin(self.muzzle.Pos)
+	muzzlefx:SetNormal(self.muzzle.Ang:Up())
+
+	util.Effect("muzzleflash", muzzlefx)
+end
+
+function SWEP:MuzzleDynLight()
+	local light = DynamicLight(self.Owner:EntIndex())
+	light.Brightness = math.Rand(3, 5) -- no round is the same
+	light.Decay = 10000
+	light.DieTime = CurTime() + .1
+	light.Dir = self.muzzle.Ang:Up()
+	light.Pos = self.muzzle.Pos/*self.Owner:GetShootPos() + 50 * self.Owner:GetAimVector()*/
+	light.Size = math.random(100, 125)
+	light.Style = 0
+	light.r = 255
+	light.g = 255
+	light.b = 100
+end
+
+function SWEP:MuzzleProjTexture()
+		self.flashlight:SetPos(self.muzzle.Pos + Vector( 0, 0, 50))
+		self.flashlight:SetAngles(self.muzzle.Ang:Up():Angle())
+		self.flashlight:SetKeyValue("lightcolor", "255 255 150 255")
+		self.flashlight:Input("TurnOn")
+		timer.Simple(.001, function()
+			self.flashlight:Input("TurnOff")
+		end)
 end
 
 function SWEP:SecondaryAttack() --no, because of iron sights
