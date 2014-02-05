@@ -1,57 +1,50 @@
-core = {}
+Ananke.core = {}
 
-function core.Initialise()
+function Ananke.core.Initialise()
 
-	core.Loaded = {}
+	Ananke.core.Loaded = {}
 
-	local f,d = file.Find( GM.Name .. "/gamemode/core/shared/*.lua", "LUA" )
+	local f,d = file.Find( Ananke.Name .. "/gamemode/core/shared/*.lua", "LUA" )
 
-	core.Loaded['shared'] = {f,d}
+	Ananke.core.Loaded['shared'] = {f,d}
 	print('Loading Shared :')
 
 	for k,v in pairs(f) do
 		if SERVER then
 			print('\tLoading ' .. v)
-			do
-				AddCSLuaFile( GM.Name .. "/gamemode/core/shared/" .. v)
-				AddCSLuaFile( GM.Name .. "/gamemode/core/shared/" .. v )
-				include( GM.Name .. "/gamemode/core/shared/" .. v)
-			end
+			AddCSLuaFile( Ananke.Name .. "/gamemode/core/shared/" .. v )
+			Ananke.include( Ananke.Name .. "/gamemode/core/shared/" .. v)
 		else
 			print('\tLoading ' .. v)
-			do
-				include( GM.Name .. "/gamemode/core/shared/" .. v)
-			end
+			Ananke.include( Ananke.Name .. "/gamemode/core/shared/" .. v)
 		end
 	end
 
 
-	f,d = file.Find( GM.Name .. "/gamemode/core/client/*.lua", "LUA" )
+	f,d = file.Find( Ananke.Name .. "/gamemode/core/client/*.lua", "LUA" )
 	
-	core.Loaded['client'] = {f,d}
+	Ananke.core.Loaded['client'] = {f,d}
 	print('Loading client :') 
 	for k,v in pairs(f) do
 		do
 			if SERVER then
-				AddCSLuaFile( GM.Name .. "/gamemode/core/client/" .. v)
+				AddCSLuaFile( Ananke.Name .. "/gamemode/core/client/" .. v)
 			else
-				include( GM.Name .. "/gamemode/core/client/" .. v)
+				Ananke.include( Ananke.Name .. "/gamemode/core/client/" .. v)
 			end
 		end
 	end
 		
 	if SERVER then
 
-		f,d = file.Find( GM.Name .. "/gamemode/core/server/*.lua", "LUA" )
+		f,d = file.Find( Ananke.Name .. "/gamemode/core/server/*.lua", "LUA" )
 
-		core.Loaded['server'] = {f,d}
+		Ananke.core.Loaded['server'] = {f,d}
 		print('Loading Server :')
 		for k,v in pairs(f) do
-			if file.Size( GM.Name .. '/gamemode/core/server/'..v , "LUA") == 0 then continue end
+			if file.Size( Ananke.Name .. '/gamemode/core/server/'..v , "LUA") == 0 then continue end
 			print('\tLoading ' .. v)
-			do
-				include( GM.Name .. "/gamemode/core/server/" ..v)
-			end
+			Ananke.include( Ananke.Name .. "/gamemode/core/server/" ..v)
 		end
 
 	end
