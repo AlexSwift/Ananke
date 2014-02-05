@@ -64,6 +64,7 @@ SWEP.Primary.Sound.volume = 1
 SWEP.Primary.Sound.pitchstart = 100
 SWEP.Primary.Sound.pitchend = 100
 SWEP.Primary.Sound.sound = "weapons/galil/galil-1.wav"
+SWEP.Primary.MuzzleAttachment = 1
 
 
 sound.Add(SWEP.Primary.Sound)
@@ -120,13 +121,13 @@ end
 
 function SWEP:Deploy()
 	if SERVER then
-		self:InitFlashlight
+		self:InitFlashlight()
 	end
 
 	self:SendWeaponAnim(ACT_VM_DRAW)
 
 	self.vm = self.Owner:GetViewModel()
-	self.muzzle = self.vm:GetAttachment(1)
+	self.muzzle = self.vm:GetAttachment(self.Primary.MuzzleAttachment)
 	return true
 end
 
