@@ -109,7 +109,7 @@ class "core.menu.gui" {
 
 function core.menu.gui.Create( name , parent )
 
-	local obj = setmetatable( { } , _UI[name] )
+	local obj = core.menu.gui[name].new()
 	if parent then
 		obj:SetParent( parent )
 	end
