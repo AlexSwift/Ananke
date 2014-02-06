@@ -57,7 +57,7 @@ class "core.menu.gui.uiBase" {
 			local _, pY = self.parent and self.parent:GetPosition() or 0.0, 0.0
 			local _, pHeight = self.parent and self.parent:GetDimensions() or 0.0, surface.ScreenHeight
 			
-			self.relY = 1.0 - ((pY + offset) / pHeight)
+			self.relY = 1.0 - ((pY + offset + self.height) / pHeight)
 		end;
 		
 		AlignLeft = function(self, offset)
@@ -71,7 +71,7 @@ class "core.menu.gui.uiBase" {
 			local pX = self.parent and self.parent:GetPosition() or 0.0
 			local pWidth = self.parent and self.parent:GetDimensions() or surface.ScreenWidth
 		
-			self.relX = 1.0 - ((pX + offset) / pWidth)
+			self.relX = 1.0 - ((pX + offset + self.width) / pWidth)
 		end;
 		
 		SetWidth = function(self, w)
