@@ -15,6 +15,26 @@ class "core.menu.gui.uiBase" {
 
 	protected {
 		
+		-- Initialise
+		__construct = function(self, parent)
+			if parent != nil then
+				self:SetParent(parent)
+			end
+			
+			relX = surface.ScreenWidth * 0.45
+			relY = surface.ScreenHeight * 0.45
+			
+			width = surface.ScreenWidth * 0.1
+			height = surface.ScreenWidth * 0.1
+			
+			scaleX = 1.0
+			scaleY = 1.0
+		end;
+		
+		__finalize = function(self)
+		
+		end;
+		
 		SetParent = function(self, parent)
 			if self.parent then
 				self.parent:RemoveChild(self)
@@ -39,6 +59,7 @@ class "core.menu.gui.uiBase" {
 			self:AlignTop(y)
 		end;
 		
+		-- Always returns absolute screen coordinates
 		GetPosition = function(self)
 			local pX, pY = self.parent and self.parent:GetPosition() or 0.0, 0.0
 			local pW, pH = self.parent and self.parent:GetDimensions() or surface.ScreenWidth, surface.ScreenHeight
@@ -47,31 +68,27 @@ class "core.menu.gui.uiBase" {
 		end;
 		
 		AlignTop = function(self, offset)
-			local _, pY = self.parent and self.parent:GetPosition() or 0.0, 0.0
 			local _, pHeight = self.parent and self.parent:GetDimensions() or 0.0, surface.ScreenHeight
 			
-			self.relY = (pY + offset) / pHeight
+			self.relY = offset / pHeight
 		end;
 		
 		AlignBottom = function(self, offset)
-			local _, pY = self.parent and self.parent:GetPosition() or 0.0, 0.0
 			local _, pHeight = self.parent and self.parent:GetDimensions() or 0.0, surface.ScreenHeight
 			
-			self.relY = 1.0 - ((pY + offset + self.height) / pHeight)
+			self.relY = 1.0 - (offset + self.height) / pHeight
 		end;
 		
 		AlignLeft = function(self, offset)
-			local pX = self.parent and self.parent:GetPosition() or 0.0
 			local pWidth = self.parent and self.parent:GetDimensions() or surface.ScreenWidth
 		
-			self.relX = (pX + offset) / pWidth
+			self.relX = offset / pWidth
 		end;
 		
 		AlignRight = function(self, offset)
-			local pX = self.parent and self.parent:GetPosition() or 0.0
 			local pWidth = self.parent and self.parent:GetDimensions() or surface.ScreenWidth
 		
-			self.relX = 1.0 - ((pX + offset + self.width) / pWidth)
+			self.relX = 1.0 - (offset + self.width) / pWidth
 		end;
 		
 		SetWidth = function(self, w)
@@ -139,22 +156,6 @@ class "core.menu.gui.uiBase" {
 	
 	public {
 	
-		-- Initialise
-		__construct = function(self)
-			relX = surface.ScreenWidth * 0.45
-			relY = surface.ScreenHeight * 0.45
-			
-			width = surface.ScreenWidth * 0.1
-			height = surface.ScreenWidth * 0.1
-			
-			scaleX = 1.0
-			scaleY = 1.0
-		end;
-		
-		__finalize = function(self)
-		
-		end;
-	
 		Draw = PANEL.Draw;
 	};
 	
@@ -175,6 +176,3 @@ class "core.menu.gui.uiBase" {
 function PANEL.Draw(self)
 	--surface.DrawRect((surface.ScreenWidth * 0.5) - 50, (surface.ScreenHeight * 0.5) - 50, 100, 100)
 end
-
-PANEL:Register();
-
