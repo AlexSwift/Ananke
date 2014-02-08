@@ -69,25 +69,6 @@ SWEP.Primary.MuzzleAttachment = 1
 
 sound.Add(SWEP.Primary.Sound)
 
-surface.CreateFont( "AmmoCounter", {
-	font = "Arial",
-	size = 100,
-	weight = 500,
-	blursize = 0,
-	scanlines = 0,
-	antialias = true,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = false,
-} )
-
-
-
 local InAttackSince = false
 local selfowner = selfowner or nil
 
@@ -111,7 +92,6 @@ function SWEP:Initialize()
 		self.flashlight = ents.Create("env_projectedtexture")
 	end
 	selfowner = self.Owner
-
 end
 
 function SWEP:Deploy()
