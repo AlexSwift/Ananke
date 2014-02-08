@@ -1,7 +1,6 @@
 --[[ Weaponbase for WARPAC by Lenny. ]]
 /* Taking inspiration from: The Anathema Weapon Base - Written by wauterboi for the Garry's Mod Community */
 
-
 --lua_run to give the weapon+ammo: lua_run local ply = player.GetAll()[1] ply:Give("wp_weaponbase") ply:SetAmmo(5000, "smg1")
 
 SWEP.PrintName			=	"Ananke Weaponbase example"
