@@ -16,11 +16,6 @@ end
 
 function Admin.plugins.mt:Register()
 	_PLUGINS[self.Name] = table.Copy(self)
-	local cm = chatcommands.New(self.Name)
-	chatcommands.SetCallback(cm, self['callback'])
-	chatcommands.SetValidateCall(cm, self['data']['minargs'])
-	chatcommands.Register(cm)
-
 end
 
 function Admin.plugins.GetByName(name)
