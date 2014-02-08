@@ -32,7 +32,7 @@ local function MySQLSetup()
   `unban` INT(12) NOT NULL,
   `reason` TEXT NULL,
   `num` INT(4) NOT NULL DEFAULT 1,
-  `altof` CHAR(25) NOT NULL,
+  `altof` CHAR(25) NULL,
   PRIMARY KEY (`steamid`),
   UNIQUE INDEX `steamid_UNIQUE` (`steamid` ASC),
   UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
