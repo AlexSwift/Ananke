@@ -3,7 +3,7 @@ Ananke.core.debug.data = {}
 Ananke.core.debug.Errors = {}
 
 Ananke.core.debug.enabled = false
-Ananke.core.debug.timestamp = core.debug.enabled and os.time() or 0
+Ananke.core.debug.timestamp = Ananke.core.debug.enabled and os.time() or 0
 
 function Ananke.core.debug.Add()
 
@@ -14,7 +14,7 @@ function Ananke.core.debug.Add()
 	
 	Ananke.core.debug.data[info.short_src] = Ananke.core.debug.data[info.short_src] or {}
 	Ananke.core.debug.data[info.short_src][info.linedefined] = Ananke.core.debug.data[info.short_src][info.linedefined] or {}
-	Ananke.core.debug.data[info.short_src][info.linedefined] = { i , info , i / (os.time() - core.debug.timestamp) }
+	Ananke.core.debug.data[info.short_src][info.linedefined] = { i , info , i / (os.time() - Ananke.core.debug.timestamp) }
 	
 end
 
@@ -37,7 +37,7 @@ end
 function Ananke.core.debug.SetActive( b )
 
 	Ananke.core.debug.enabled = b
-	Ananke.core.debug.timestamp = core.debug.enabled and os.time() or 0
+	Ananke.core.debug.timestamp = Ananke.core.debug.enabled and os.time() or 0
 	
 end
 

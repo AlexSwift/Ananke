@@ -6,7 +6,7 @@ Ananke.core.MySQL.Queries = {}
 Ananke.core.MySQL.Loaded = false
 Ananke.core.MySQL.InProg = false
 
-function core.MySQL.Initialize()
+function Ananke.core.MySQL.Initialize()
 	local host = Ananke.core.MySQL.Authentication['host'] or '127.0.0.1'
 	local user = Ananke.core.MySQL.Authentication['user'] or 'root'
 	local pass = Ananke.core.MySQL.Authentication['pass'] or ''
@@ -17,7 +17,7 @@ function core.MySQL.Initialize()
 
 	--Test query to check if connected?
 
-	core.MySQL.Loaded = true
+	Ananke.core.MySQL.Loaded = true
 end
 
 function Ananke.core.MySQL.Query( q, callback, ...)
@@ -29,7 +29,7 @@ function Ananke.core.MySQL.Query( q, callback, ...)
 	end
 end
 
-function core.MySQL.Process()
+function Ananke.core.MySQL.Process()
 
 	local function callback(...)
 		local tabl = {...}
@@ -46,7 +46,7 @@ function core.MySQL.Process()
 	Ananke.core.MySQL.InProg = true
 end
 
-function core.MySQL.CollumnNames(DB,tabl,callback)
+function Ananke.core.MySQL.CollumnNames(DB,tabl,callback)
 	local q = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='"..DB.."' AND `TABLE_NAME`='"..tabl.."';"
 	Ananke.core.MySQL.Query( q, function(data)
 		callback(data)

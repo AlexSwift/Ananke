@@ -1,14 +1,14 @@
 
-function profiles.New()
-	return setmetatable({},table.Copy(profiles))
+function Ananke.core.profiles.New()
+	return setmetatable({},table.Copy(Ananke.core.profiles))
 end
 
-function profiles:SetOwner(ply)
+function Ananke.core.profiles:SetOwner(ply)
 	self.Owner = ply
 end
 
-function profiles:Set(key,value,...)
-	if !profiles['types'][key] then return end
+function Ananke.core.profiles:Set(key,value,...)
+	if !Ananke.core.profiles['types'][key] then return end
 	local args = {...} --Send,SendToAll
 	self['data'][key] = value
 
@@ -18,7 +18,7 @@ function profiles:Set(key,value,...)
 	self:Network(rf)
 end
 
-function profiles:Network(rf)
+function Ananke.core.profiles:Network(rf)
 	local rf = rf and rf or self.Owner
 	for k,v in pairs(self['data']) do
 		local nw = network.New()
@@ -33,8 +33,8 @@ function profiles:Network(rf)
 	end
 end
 
-function profiles:Get(key)
-	if !profiles['types'][key] then return end
+function Ananke.core.profiles:Get(key)
+	if !Ananke.core.profiles['types'][key] then return end
 	return self['data'][key] or nil
 end
 
@@ -42,7 +42,7 @@ function profiles:Load(id,...)
 	local args = {...}
 	local q = "SELECT * WHERE `id` = `" .. id .. "`;"
 	core.MySQL.Query( q, function(data)
-		local d = core.serialization.decode(data[1])
+		local d = Ananke.core.serialization.decode(data[1])
 		for k,v in pairs(d) do
 			self:Set(k,v,unpack(args))
 		end
@@ -50,17 +50,17 @@ function profiles:Load(id,...)
 	self.ID = id
 end
 
-function profiles:Save()
+function Ananke.core.profiles:Save()
 
-	local s_data = core.serialization.encode(self['data'])
+	local s_data = Ananke.core.serialization.encode(self['data'])
 
 	local q = "UPDATE 'wp_profiles' SET `s_data`=`" .. s_data .. "` WHERE `id` =`" .. self.ID .."`;"
-	core.MySQL.Query( q )
+	Ananke.core.MySQL.Query( q )
 
 end
 
-function profiles.LoadPlayer(ply)
-	local profile = profiles.New()
+function Ananke.core.profiles.LoadPlayer(ply)
+	local profile = Ananke.core.profiles.New()
 	profile:Load(ply:SteamID())
 	profile:SetOwner(ply)
 	profile:Network()
