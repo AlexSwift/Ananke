@@ -435,8 +435,8 @@ SIMPLOO.CLASS_MT = {
 			-- ...
 			if const then
 				error(string.format("access violation <%s>: cannot write to const member '%s'", invokedOn, mKey))
-			elseif isfunc then
-				error(string.format("access violation <%s>: cannot modify member function '%s' during runtime", invokedOn, mKey))
+			--elseif isfunc then
+			--	error(string.format("access violation <%s>: cannot modify member function '%s' during runtime", invokedOn, mKey))
 			end
 			
 			-- Redirect statics

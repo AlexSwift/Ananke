@@ -1,28 +1,115 @@
 core.menu = {}
 
 core.menu.Enabled = false
-core.menu.MousePos = Vector(0,0,0)
+core.menu.MousePos = { x = 0 , y = 0 }
 
-core.menu.Elements = {}
+core.menu.ActiveElements = {}
+core.menu.Objects = {}
 
-local _UI = {}
-local _KEYS = {}
+class "core.menu.gui" {
 
-core.menu.gui = {}
-core.menu.gui.__index = core.menu.gui
+	public {
+		OnCursorMoved = function()
+		end;
+		
+		OnCursorEntered = function()
+		end;
+		
+		OnCursorExited = function()
+		end;
+		
+		AddChild = function( obj )
+			table.insert( self.Children , obj )
+		end;
+		
+		RemoveChild = function( obj )
+			for k,v in pairs( self.Children ) do
+				if v == obj then
+					table.remove( self.Children , obj )
+				end
+			end
+		end;
+		
+		SetParent = function( parent )
+			if self['parent'] then
+				self['parent']:RemoveChild( self )
+			end
+			self['parent'] = parent
+			parent:AddChild( self )
+		end;
+		
+		GetParent = function( )
+			local parent = self['parent'] or nil
+			return parent
+		end;
+		
+		SetPos = function( x , y )
+			local parent = core.menu.gui:GetParent( )
+			if parent then
+				
+				local px , py = parent:GetPos( )
+				x = x + px
+				y = y + py
+				
+			end
+			self['x'] = x
+			self['y'] = y
+	
+		end;
+		
+		GetPos = function( real ) --Real coordinates or relative ?
+			local parent = core.menu.gui:GetParent( )
+			if real and parent then
+				local px , py = parent:GetPos( true )
+				local x = self['x']
+				local y = self['y']
+				
+				return (px + x) , (py + y)
+			else
+				return self['x'] , self['y']
+			end
+		end;
+		
+		Draw = function()
+			for k, v in pairs( self:GetChildren( ) ) do
+				if v.IsEnabled( ) then
+					v:Draw()
+				end
+			end
 
-function core.menu.gui.New(base)
+			self:Draw()
+		end;
+		
+		Init = function()
+		end;
+		
+		GetChildren = function()
+			return self['Children']
+		end;
+		
+		Register = function()
+			local t = table.Copy(self)
+			core.menu.Objects[t.name] = t
+		end;
+		
+	};
 
-	local tabl = base and core.menu.gui.Create(base) or {}
-	tabl['MouseInBounds'] = false
+	private {
+		MouseInBounds = false;
+		parent = nil -- <class> core.menu.gui;
+		x = 0;
+		y = 0;
+		SizeX = 0;
+		SizeY = 0;
+		Children = {}
+		
+	};
+}
 
-	return setmetatable(tabl,core.menu.gui)
-
-end
 
 function core.menu.gui.Create( name , parent )
 
-	local obj = setmetatable( { } , _UI[name] )
+	local obj = core.menu.gui[name].new()
 	if parent then
 		obj:SetParent( parent )
 	end
@@ -45,108 +132,12 @@ function core.menu.GetActiveElements( )
 	local enabled = {}
 
 	for k, v in pairs(core.menu.Elements) do
-		if core.menu.Elements[k].IsEnabled() then
+		if core.menu.Elements[k]:IsEnabled() then
 			table.insert( enabled, core.menu.Elements[k] )
 		end
 	end
 
 	return enabled
-
-end
-
-----------------------Hooks-----------------------
-
-function core.menu.gui:OnCursorMoved()
-
-end
-
-function core.menu.gui:OnCursorEntered()
-
-end
-
-function core.menu.gui:OnCursorExited()
-
-end
-
-function core.menu.gui:SetParent( parent )
-	
-	self['parent'] = parent
-	
-end
-
-function core.menu.gui:GetParent( )
-	
-	local parent = self['parent'] or nil
-	return parent
-	
-end
-
-function core.menu.gui:SetPos( x , y )
-	
-	local parent = core.menu.gui:GetParent( )
-	
-	if parent then
-		
-		local px , py = parent:GetPos( )
-		x = x + px
-		y = y + py
-		
-	end
-	
-	self['x'] = x
-	self['y'] = y
-	
-end
-
-function core.menu.gui:GetPos( real ) --Real coordinates or relative ?
-	
-	local parent = core.menu.gui:GetParent( )
-	if real and parent then
-		
-		local px , py = parent:GetPos( true )
-		local x = self['x']
-		local y = self['y']
-		
-		return (px + x) , (py + y)
-		
-	else
-		
-		return self['x'] , self['y']
-		
-	end
-end
-
-function core.menu.gui:OnMenuKeyPress(keyCode)
-	if _KEYS[keyCode] then
-		_KEYS[keyCode]:Toggle()
-	end
-end
-
-function core.menu.gui:Draw()
-	for k, v in pairs( self:GetChildren( ) ) do
-		if v.IsEnabled( ) then
-			v:Draw()
-		end
-	end
-
-	self:Draw()
-end
-
-function core.menu.gui:Init()
-
-end
-
----------------------------------------------------
-
-function core.menu.gui:Register()
-
-	_UI[self.name] = table.Copy(self)
-
-end
-
-function core.menu.gui:RegisterMenuKey( keyCode )
-
-	_KEYS[keyCode] = self
 
 end
 
@@ -158,40 +149,6 @@ function core.menu.Initialise()
 	for k,v in pairs(f) do
 		include('gui/'..v)
 	end
-
-	hook.Add( 'HUDPaint' , 'core.menu.draw' , function( )
-		if !core.menu.Enabled then return end
-		
-		local elements = core.menu.GetActiveElements()
-		
-		local mp = Vector(0,0,0)
-		mp.x,mp.y = gui.MousePos()
-		if core.menu.MousePos != mp then
-			for k,v in pairs(elements) do
-				v:OnCursorMoved()
-			end
-		end
-
-		core.menu.MousePos = mp
-
-		for k,v in pairs(elements) do
-
-			if vector.InBounds( v:GetParam( 'pos' ) , v:GetParam( 'pos' ) + v:GetParam( 'size' ) , core.menu.MousePos ) then
-				v:OnCursorEntered()
-				v['MouseInBounds'] = true
-			elseif v['MouseInBounds'] then
-				v:OnCursorExited()
-				v['MouseInBounds'] = false
-			end
-
-		end
-
-		GAMEMODE:DrawMenu( )
-
-		return
-	end)
-	
-	hook.Add( 'OnKeyCodePressed', 'core.menu.keyPress', core.menu.gui.OnMenuKeyPress )
 
 end
 
@@ -212,6 +169,28 @@ function core.menu.Disable( )
 end
 
 core.menu.Initialise()
+
+hook.Add( 'HUDPaint' , 'core.menu.draw' , function( )
+	if !core.menu.Enabled then return end
+	
+	local mp = { x = 0 , y = 0 }
+	
+	if gui.MousePos() != mp then
+		for k,v in pairs(core.menu.ActiveElements) do
+			v:OnCursorMoved()
+		end
+	end
+
+	core.menu.MousePos = mp
+	mp = nil; -- __gc
+
+	for i = 1 , #elements do
+		
+
+	GAMEMODE:DrawMenu( )
+
+	return
+end)
 
 --				Usage:
 -- local gui = core.menu.gui.Get( 'text' )

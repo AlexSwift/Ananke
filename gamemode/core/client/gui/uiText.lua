@@ -1,59 +1,60 @@
-PANEL = core.menu.gui.New('UIBase');
-PANEL.name = 'UIText';
 
-function PANEL:SetText( str )
-
-	self.Text = str or ''
-
-end
-
-function PANEL:GetText( )
-
-	return self.Text or ''
-
-end
-
-function PANEL:SetFont( font )
-
-	self.Font = font or 'Default'
-
-end
-
-function PANEL:GetFont( )
-
-	return self.Font or 'Default'
-
-end
-
-function PANEL:SetSize( num )
+class "core.menu.gui.uiText" extends "core.menu.gui.uiBase" {
 	
-	self['size'] = num
+	private {
 	
-end
+		Text = '';
+		Font = '';
+		Color = Color( 0 , 0 , 0 , 0);
+		Size = 1
+		
+	};
+	
+	protected {
+	
+		SetText = function( self, str )
+			self.Text = str or ''
+		end;
+		
+		GetText = function( self )
+			return self.Text or ''
+		end;
+		
+		SetFont = function( self, font )
+			self.Font = font or 'Default'
+		end;
+		
+		GetFont = function( self )
+			return self.Font or 'Default'
+		end;
+		
+		SetSize = function( self, num )
+			self.Size = num
+		end;
+		
+		GetSize = function( self )
+			return self.Size
+		end;
+		
+		SetColor = function( self, c )
+			self.Color = c
+		end;
+		
+		GetColor = function( self )	
+			return self.Color
+		end;
+		
+		Draw = Draw;
+	
+	}
+	
+}
 
-function PANEL:GetSize( )
-	
-	return self['size']
-	
-end
-
-function PANEL:SetColor( c )
-	
-	self['color'] = c
-	
-end
-
-function PANEL:GetColor( )
-	
-	return self['color']
-	
-end
-
-function PANEL:Draw()
+local Draw = function ()
 
 	local x, y = self:GetPos( )
 	local size = self:GetSize( )
-	local color = self:GetColor or Colour( 255 , 255 , 255 , 255 )
+	local color = self:GetColor() or Color( 255 , 255 , 255 , 255 )
 	local font = self:GetFont()
 
 	surface.SetTextPos( x , y )
@@ -62,5 +63,3 @@ function PANEL:Draw()
 	surface.DrawText( self:GetText() )
 
 end
-
-PANEL:Register();

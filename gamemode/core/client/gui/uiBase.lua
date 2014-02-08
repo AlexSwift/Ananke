@@ -4,9 +4,6 @@
 	Description:	Base for all UIObjects in-game
 ]]--
 
-PANEL = {}
-PANEL.name = 'uiBase';
-
 class "core.menu.gui.uiBase" {
 
 	meta {
@@ -21,14 +18,14 @@ class "core.menu.gui.uiBase" {
 				self:SetParent(parent)
 			end
 			
-			relX = surface.ScreenWidth * 0.45
-			relY = surface.ScreenHeight * 0.45
+			self.relX = surface.ScreenWidth * 0.45
+			self.relY = surface.ScreenHeight * 0.45
 			
-			width = surface.ScreenWidth * 0.1
-			height = surface.ScreenWidth * 0.1
+			self.width = surface.ScreenWidth * 0.1
+			self.height = surface.ScreenWidth * 0.1
 			
-			scaleX = 1.0
-			scaleY = 1.0
+			self.scaleX = 1.0
+			self.scaleY = 1.0
 		end;
 		
 		__finalize = function(self)
@@ -45,36 +42,13 @@ class "core.menu.gui.uiBase" {
 		end;
 		
 		GetParent = function(self)
-			local ret = self.parent or nil -- Is this necessary?
-			return ret
+			return self.parent or nil
 		end;
 	
 		SetPosition = function(self, x, y)
 			local pX, pY = self.parent and self.parent:GetPosition() or 0.0, 0.0 -- if no parent, we default to screen coordinates
 			
-			x = math.abs(x - pX)
-			y = math.abs(y - pY)
-			
-			self:AlignLeft(x)
-			self:AlignTop(y)
-		end;
-		
-		-- Always returns absolute screen coordinates
-		GetPosition = function(self)
-			local pX, pY = self.parent and self.parent:GetPosition() or 0.0, 0.0
-			local pW, pH = self.parent and self.parent:GetDimensions() or surface.ScreenWidth, surface.ScreenHeight
-			
-			return (self.relX * pW) + pX, (self.relY * pH) + pY
-		end;
-		
-		AlignTop = function(self, offset)
-			local _, pHeight = self.parent and self.parent:GetDimensions() or 0.0, surface.ScreenHeight
-			
-			self.relY = offset / pHeight
-		end;
-		
-		AlignBottom = function(self, offset)
-			local _, pHeight = self.parent and self.parent:GetDimensions() or 0.0, surface.ScreenHeight
+			local x , y = math.abs(x - pX), math.abs(y - pY)local _, pHeight = self.parent and self.parent:GetDimensions() or 0.0, surface.ScreenHeight
 			
 			self.relY = 1.0 - (offset + self.height) / pHeight
 		end;
@@ -156,7 +130,7 @@ class "core.menu.gui.uiBase" {
 	
 	public {
 	
-		Draw = PANEL.Draw;
+		Draw = Draw;
 	};
 	
 	private {
@@ -173,6 +147,6 @@ class "core.menu.gui.uiBase" {
 	};
 }
 
-function PANEL.Draw(self)
+local function Draw(self)
 	--surface.DrawRect((surface.ScreenWidth * 0.5) - 50, (surface.ScreenHeight * 0.5) - 50, 100, 100)
 end
