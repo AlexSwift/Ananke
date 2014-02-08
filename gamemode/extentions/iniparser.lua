@@ -1,5 +1,3 @@
-INIParser = { }
-
 class "INIParser" {
 
 	private {
