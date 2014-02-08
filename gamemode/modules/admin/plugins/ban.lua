@@ -25,23 +25,19 @@ end
 --passive stuff
 
 local function MySQLSetup()
-	core.MySQL.Query("CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
+	core.MySQL.Query([[CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
   `steamid` CHAR(25) NOT NULL,
   `steamid64` INT(20) NOT NULL,
   `name` CHAR(50) NULL,
   `unban` INT(12) NOT NULL,
   `reason` TEXT NULL,
   `num` INT(4) NOT NULL DEFAULT 1,
-  `altof` CHAR(25) NOT NULL,
+  `altof` CHAR(25) NULL,
   PRIMARY KEY (`steamid`),
   UNIQUE INDEX `steamid_UNIQUE` (`steamid` ASC),
   UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
-"))
+]]))
 end
-
-
-plugin['args'] = {['p'] = {'string','Default'}}
-plugin['callback'] = function(data) print(data['p']) end
-plugin['data']['minargs'] = 3
+MySQLSetup()
 
 plugin:Register()

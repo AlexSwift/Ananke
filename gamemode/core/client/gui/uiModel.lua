@@ -1,7 +1,7 @@
 
 local PANEL = {}
 
-class "core.menu.gui.uiModel" extends "core.menu.gui" {
+class "core.menu.gui.uiModel" extends "core.menu.gui.uiBase" {
 	
 	protected {
 	

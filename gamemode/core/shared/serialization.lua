@@ -1,9 +1,9 @@
 
-core.serialization = {}
-core.serialization.translations = {}
-core.serialization.padding = 30
+Ananke.core.serialization = {}
+Ananke.core.serialization.translations = {}
+Ananke.core.serialization.padding = 30
 
-function core.serialization.initialize()
+function Ananke.core.serialization.initialize()
 
 	local types = {
 	--	[id]= { types	,encode function(data),
@@ -22,8 +22,8 @@ function core.serialization.initialize()
 							local s_data = ''
 							for k,v in ipairs( data ) do
 
-								s_data = s_data .. core.serialization.encode(k)
-								s_data = s_data .. core.serialization.encode(v)
+								s_data = s_data .. Ananke.core.serialization.encode(k)
+								s_data = s_data .. Ananke.core.serialization.encode(v)
 
 							end
 
@@ -38,12 +38,12 @@ function core.serialization.initialize()
 								local typ = string.GetChar( i )
 								local bytes = string.byte(string.GetChar( i + 1))
 
-								local key = core.serialization.translations[core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 3, i + 2 + bytes ))
+								local key = Ananke.core.serialization.translations[core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 3, i + 2 + bytes ))
 
 								typ = string.GetChar( i + 3 + bytes )
 								local bytes2 = string.byte(string.GetChar( i + 4 + bytes))
 
-								local value = core.serialization.translations[core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 4 + bytes, i + 3 + bytes + bytes2))
+								local value = Ananke.core.serialization.translations[core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 4 + bytes, i + 3 + bytes + bytes2))
 
 								data[key] = value
 								i = i + 4 + bytes + bytes2
@@ -83,9 +83,9 @@ function core.serialization.initialize()
 						end},
 		[4] = {'Angle'	,function( data )
 							local r = ''
-							r = r .. core.serialization.translations['number'][2](data.p)
-							r = r .. core.serialization.translations['number'][2](data.y)
-							r = r .. core.serialization.translations['number'][2](data.r)
+							r = r .. Ananke.core.serialization.translations['number'][2](data.p)
+							r = r .. Ananke.core.serialization.translations['number'][2](data.y)
+							r = r .. Ananke.core.serialization.translations['number'][2](data.r)
 							return r
 						end
 						,function( s_data )
@@ -93,7 +93,7 @@ function core.serialization.initialize()
 							local tabl = {}
 							for i = 1,6,2 do
 								local num = t[i] .. t[i+1]
-								tabl[i] = (core.serialization.translations['number'][3](num) <= 0) and (core.serialization.translations['number'][3](num) + 255) or (core.serialization.translations['number'][3](num))
+								tabl[i] = (Ananke.core.serialization.translations['number'][3](num) <= 0) and (core.serialization.translations['number'][3](num) + 255) or (core.serialization.translations['number'][3](num))
 							end
 							local ang = Angle( unpack(tabl) )
 							return ang
@@ -103,9 +103,9 @@ function core.serialization.initialize()
 						end},
 		[5] = {'Vector'	,function( data )
 							local r = ''
-							r = r .. core.serialization.translations['number'][2](data.x)
-							r = r .. core.serialization.translations['number'][2](data.y)
-							r = r .. core.serialization.translations['number'][2](data.z)
+							r = r .. Ananke.core.serialization.translations['number'][2](data.x)
+							r = r .. Ananke.core.serialization.translations['number'][2](data.y)
+							r = r .. Ananke.core.serialization.translations['number'][2](data.z)
 							return r
 						end
 						,function( s_data )
@@ -113,7 +113,7 @@ function core.serialization.initialize()
 							local tabl = {}
 							for i = 1,6,2 do
 								local num = t[i] .. t[i+1]
-								tabl[i] = (core.serialization.translations['number'][3](num) <= 0) and (core.serialization.translations['number'][3](num) + 255) or (core.serialization.translations['number'][3](num))
+								tabl[i] = (Ananke.core.serialization.translations['number'][3](num) <= 0) and (Ananke.core.serialization.translations['number'][3](num) + 255) or (Ananke.core.serialization.translations['number'][3](num))
 							end
 							local vec = Vector( unpack(tabl) )
 							return vec
@@ -133,22 +133,22 @@ function core.serialization.initialize()
 		}
 
 	for k,v in pairs(types) do
-		core.serialization.translations[v[1]] = { k , v[2] , v[3], v[4] }
+		Ananke.core.serialization.translations[v[1]] = { k , v[2] , v[3], v[4] }
 	end
 
 end
 
-function core.serialization.encode(data)
+function Ananke.core.serialization.encode(data)
 	local t = type(data)
 	local s_data = ''
-	s_data = s_data and s_data .. string.char(core.serialization.translations[type(data)][1]) or string.char(core.serialization.translations[type(data)][1]) --types
-	s_data = s_data .. core.serialization.translations[type(data)][4](data) --Bytes
-	s_data = s_data .. core.serialization.translations[type(data)][2](data,s_data) --Data
+	s_data = s_data and s_data .. string.char(Ananke.core.serialization.translations[type(data)][1]) or string.char(Ananke.core.serialization.translations[type(data)][1]) --types
+	s_data = s_data .. Ananke.core.serialization.translations[type(data)][4](data) --Bytes
+	s_data = s_data .. Ananke.core.serialization.translations[type(data)][2](data,s_data) --Data
 
 	return s_data
 end
 
-function core.serialization.GetTypeFromByte( byte )
+function Ananke.core.serialization.GetTypeFromByte( byte )
 	for k,v in pairs(core.serialization.translations) do
 		if v[1] == byte then
 			return k
@@ -156,10 +156,10 @@ function core.serialization.GetTypeFromByte( byte )
 	end
 end
 
-function core.serialization.decode(s_data)
+function Ananke.core.serialization.decode(s_data)
 	local data = ''
 	-- local typ = -- Get First byte and return Key for decode function
 	return data
 end
 
-core.serialization.initialize()
+Ananke.core.serialization.initialize()
