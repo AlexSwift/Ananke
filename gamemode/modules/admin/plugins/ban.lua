@@ -25,7 +25,7 @@ end
 --passive stuff
 
 local function MySQLSetup()
-	core.MySQL.Query("CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
+	core.MySQL.Query([[CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
   `steamid` CHAR(25) NOT NULL,
   `steamid64` INT(20) NOT NULL,
   `name` CHAR(50) NULL,
@@ -36,7 +36,7 @@ local function MySQLSetup()
   PRIMARY KEY (`steamid`),
   UNIQUE INDEX `steamid_UNIQUE` (`steamid` ASC),
   UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
-"))
+]]))
 end
 MySQLSetup()
 
