@@ -1,9 +1,9 @@
 
 ANANKE
 
--		convert remaining meta tables to the simploo system
+- (DOING)(Alex) convert remaining meta tables to the simploo system
 - 		Extend the mathsx lib
-- 		Prefix all public tables with Ananke.
+- (DOING)(Alex)	Prefix all public tables with Ananke.
 - 		Start on sockets communications
 - 		Menu system objects
 - 		Menu system drawing 
@@ -15,7 +15,7 @@ ANANKE
 
 - 		MySQL testing, and planning MySQL table layouts
 - (DONE)	Create a Touchevent system for map triggers
-- 		Allow for easier debugging
+- (DOING)(Alex) Allow for easier debugging
 
 - 		Create a dynamic Ananke.<system>.Load(dir)
 - 		fix directory inheritence
