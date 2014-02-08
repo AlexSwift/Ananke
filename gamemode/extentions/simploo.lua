@@ -694,9 +694,9 @@ do
 				error("you cannot instantiate an instance!")
 			end
 			
-			if self.___abstract then
+			--if self.___abstract then
 				SIMPLOO.FUNCTIONS.____find_unimplemented_abstract(self)
-			end
+			--end
 			
 			-- Duplicate
 			local instance = SIMPLOO.FUNCTIONS.___instantiate(self)
