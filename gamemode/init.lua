@@ -2,10 +2,8 @@ AddCSLuaFile( "shared.lua" )
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "core/core.lua")
 AddCSLuaFile( "modules/modules.lua")
-AddCSLuaFile( "onehalf/cl_onehalf.lua")
 AddCSLuaFile( "extentions/extentions.lua" )
 
-include('onehalf/onehalf.lua')
 include('shared.lua')
 include('modules/modules.lua')
 

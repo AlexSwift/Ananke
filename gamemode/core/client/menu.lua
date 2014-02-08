@@ -1,10 +1,10 @@
-core.menu = {}
+Ananke.core.menu = {}
 
-core.menu.Enabled = false
-core.menu.MousePos = { x = 0 , y = 0 }
+Ananke.core.menu.Enabled = false
+Ananke.core.menu.MousePos = { x = 0 , y = 0 }
 
-core.menu.ActiveElements = {}
-core.menu.Objects = {}
+Ananke.core.menu.ActiveElements = {}
+Ananke.core.menu.Objects = {}
 
 class "core.menu.gui" {
 
@@ -96,7 +96,7 @@ class "core.menu.gui" {
 
 	private {
 		MouseInBounds = false;
-		parent = nil -- <class> core.menu.gui;
+		parent = nil; -- <class> core.menu.gui;
 		x = 0;
 		y = 0;
 		SizeX = 0;
@@ -188,7 +188,7 @@ hook.Add( 'HUDPaint' , 'core.menu.draw' , function( )
 		
 
 	GAMEMODE:DrawMenu( )
-
+	end
 	return
 end)
 
