@@ -38,10 +38,6 @@ local function MySQLSetup()
   UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
 "))
 end
-
-
-plugin['args'] = {['p'] = {'string','Default'}}
-plugin['callback'] = function(data) print(data['p']) end
-plugin['data']['minargs'] = 3
+MySQLSetup()
 
 plugin:Register()
