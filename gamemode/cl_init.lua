@@ -2,6 +2,15 @@ include('shared.lua')
 include('core/core.lua')
 include('modules/modules.lua')
 
+print("---------")
+print("---------")
+print("---------")
+print("---------")
+print("TEST")
+print("---------")
+print("---------")
+print("---------")
+print("---------")
 
 function GM:PostDrawViewModel( vm, ply, weapon )
 
