@@ -45,7 +45,7 @@ function Ananke.talos.CheckFamilySharing(body)
 end
 
 local currentlyauthing = ""
-local function Ananke.talos.Auth(data)
+function Ananke.talos.Auth(data)
 	if Ananke.talos.data.bot == 1 then return end
 	if Ananke.talos.IsBanned(data.networkid) then
 		RunConsoleCommand("kickid", data.userid, "You are banned: "..Ananke.talos.bans.id.reason.."\n".."Ban lift date: "..os.date("%A, %D - %T", Ananke.talos.bans.id.unban).." Time remaining: "..os.difftime(os.time(), bans.id.unban)/86400.." days")

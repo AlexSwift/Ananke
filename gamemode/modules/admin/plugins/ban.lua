@@ -7,6 +7,15 @@ plugin.Name = "ban"
 local function ban(former, ply, length, reason)
 	if !ply:IsValid() then former:ChatPrint("The player you entered is invalid") end
 	local banlength = utils.TimeFromString(length).total
+	local unban = math.Round(CurTime() + banlength)
+	local name = tmysql.Escape(ply:Name())
+	reason = tmysql.Escape(reason)
+	core.MySQL.Query([[INSERT INTO `ananke`.`bans`
+(`steamid`, `steamid64`, `name`, `unban`, `reason`, `num`, `altof`)
+VALUES
+(]]..ply:SteamID()..[[, ]]..ply:SteamID64()..[[, ]]..name..[[, ]]..unban..[[, ]]..reason..[[, DEFAULT, NULL)
+ON DUPLICATE KEY
+UPDATE `name` = ]]..name..[[, `unban` = ]]..unban..[[, `reason` = ]]..reason..[[, `num` = `num` + 1]])
 end
 
 local function callback(ply, data)
