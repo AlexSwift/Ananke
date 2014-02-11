@@ -1,6 +1,3 @@
-network = {}
-network.__index = network
-
 util.AddNetworkString('warpac_nw')
 
 class 'network' {
@@ -9,7 +6,7 @@ class 'network' {
 	
 		SetProtocol = function( self , id )
 			self.PID = id
-			self.protocol = protocol.GetByID(id)
+			self.protocol = Ananke.core.protocol.GetByID(id)
 		end;
 		
 		SetDescription = function( self, str )	
@@ -66,9 +63,9 @@ class 'network' {
 }
 
 net.Receive('warpac_nw',function()
-	local PID = net.ReadInt()
-	local Datagram = protocol.GetByID(PID)
+	local Datagram = Ananke.core.protocol.GetByID( net.ReadInt() )
 	local data = {}
+	
 	if Datagram.Type == NW_CUSTOM then
 		data = Datagram.Receive()
 	else
@@ -76,13 +73,8 @@ net.Receive('warpac_nw',function()
 			table.insert( data , net['Read'..NW_TRANSLAITON[v]()]() )
 		end
 	end
+	
 	Datagram:GetCallBack()(data)
-
-	PID = nil
-	Datagram = nil
-	data = nil
-
-	return
 
 end)
 

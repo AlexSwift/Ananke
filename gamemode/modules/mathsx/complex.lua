@@ -1,5 +1,3 @@
-
-
 class "mathsx.complex" {
 	
 	private {

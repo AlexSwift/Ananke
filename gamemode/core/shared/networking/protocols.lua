@@ -1,12 +1,12 @@
-protocols = {}
-protocols.Loaded = false
+Ananke.core.protocols = {}
+Ananke.core.protocols.Loaded = false
+Ananke.core.protocols._data = {}
 
-_PROTOCOLS = {}
-
-class "protocol" {
+class "Ananke.core.protocol" {
 	public {
 		Register = function( self )
-			_PROTOCOLS[self.PID] = self
+			Ananke.core.protocols._data[self.PID] = self
+			self = nil
 		end;
 		
 		SetName = function( self , name )
@@ -22,7 +22,7 @@ class "protocol" {
 		end;
 		
 		GetSend = function( self )
-			return self.send[1]
+			return self.send
 		end;
 		
 		SetReceive = function( self, func )
@@ -30,7 +30,7 @@ class "protocol" {
 		end;
 		
 		GetReceive = function( self )
-			return self.receive[1]
+			return self.receive
 		end;
 		
 		SetCallBack = function( self , func )
@@ -38,7 +38,7 @@ class "protocol" {
 		end;
 		
 		GetCallBack = function( self )
-			return self.CallBack[1]
+			return self.CallBack
 		end;
 		
 		SetData = function( self , DT )
@@ -63,21 +63,25 @@ class "protocol" {
 		
 		GetPID = function( self )
 			return self.PID
+		end;
+		
+		GetByID = function( PID )
+			return Ananke.core.protocols._data[PID]
 		end
 	};
 	public {
 		Name = '';
 		PID = 0x00;
 		Type = '';
-		CallBack = {};
-		send = {};
-		receive = {};
+		CallBack = function() end;
+		send = function() end;
+		receive = function() end;
 		Data = ''
 	};
 }
 
-function protocols.Initialise()
-	if protocol.Loaded then return end
+function Ananke.core.protocols.Initialise()
+	if Ananke.core.protocols.Loaded then return end
 
 	local f,d = file.Find( GM.Name .. "/gamemode/core/shared/networking/protocols/*.lua", "LUA" )
 
@@ -86,16 +90,12 @@ function protocols.Initialise()
 	for k,v in pairs(f) do
 		if SERVER then
 			print('\t\tLoading ' .. v)
-			do
-				AddCSLuaFile( GM.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
-				include( GM.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
-			end
+			Ananke.AddCSLuaFile( GM.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
+			Ananke.include( GM.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
 		else
 			print('\t\tLoading ' .. v)
-			do
-				include( GM.Name .. '/gamemode/core/shared/networking/protocols/'.. v)
-			end
+			Ananke.include( GM.Name .. '/gamemode/core/shared/networking/protocols/'.. v)
 		end
 	end
-	protocols.Loaded = true
+	Ananke.core.protocols.Loaded = true
 end

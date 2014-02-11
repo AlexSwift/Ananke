@@ -166,8 +166,8 @@ class "LinkedList" {
 			local anchor = Find(obj)
 			
 			if(anchor == nil) then anchor = 0 end
-			if(anchor == -1) then Error("LinkedList does not contain specified object.") end
-			if(anchor + index > count) then Error("Index out of range.") end
+			if(anchor == -1) then Ananke.core.debug.Error("LinkedList does not contain specified object.", true) end
+			if(anchor + index > count) then Ananke.core.debug.Error("Index out of range.", true) end
 			
 			local curr = head
 			for i=0, anchor + index do
@@ -186,7 +186,7 @@ class "LinkedList" {
 		
 		DecreaseSize = function(self, num) -- Optional number to decrease count by
 			local def = num and num or 1
-			self['count'] = self['count'] - dec
+			self['count'] = self['count'] - def
 		end;
 	};
 	

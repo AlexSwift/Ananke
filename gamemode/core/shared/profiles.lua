@@ -1,4 +1,3 @@
-
 Ananke.core.profiles = {}
 Ananke.core.profiles['types'] = {}
 Ananke.core.profiles.__index = profiles

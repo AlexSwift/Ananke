@@ -1,10 +1,10 @@
 local modul = modules.new()
-modul.name = 'maths'
+modul.name = 'MathsX'
 
 mathsx = {}
 
 function mathsx.Initialise()
-
+	
 end
 
 function modul:OnLoad()
