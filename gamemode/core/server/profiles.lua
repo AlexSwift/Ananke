@@ -38,7 +38,7 @@ function Ananke.core.profiles:Get(key)
 	return self['data'][key] or nil
 end
 
-function profiles:Load(id,...)
+function Ananke.core.profiles:Load(id,...)
 	local args = {...}
 	local q = "SELECT * WHERE `id` = `" .. id .. "`;"
 	core.MySQL.Query( q, function(data)

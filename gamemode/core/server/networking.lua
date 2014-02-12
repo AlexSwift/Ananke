@@ -78,5 +78,5 @@ net.Receive('warpac_nw',function()
 
 end)
 
-protocols.Initialise()
+Ananke.core.protocols.Initialise()
 
