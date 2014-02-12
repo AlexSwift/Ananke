@@ -1,89 +1,96 @@
-modules = {}
-modules.mt = {}
-modules.mt.__index = modules.mt
+Ananke._MODULES = {}
 
-local _MODULES = {}
-
-modules.functions = {
-	['init.lua'] = function(p)
-		if !SERVER then return end
-		include(p .. "/init.lua")
-	end,
-	['cl_init.lua'] = function(p)
-		if SERVER then
-			AddCSLuaFile(p .. '/cl_init.lua')
-		else
-			include(p .. "/cl_init.lua")
-		end
-	end}
-
-function modules.new()
-	return setmetatable( modules.mt , modules.mt )
-end
-
-function modules.mt:Register()
-	_MODULES[self.name] = self
-end
-
-function modules.get( name )
-	return _MODULES[name]
-end
-
-function modules.mt:OnLoad ( )
-
-end
-
-function modules.mt:UnLoad( )
-
-end
-
-function table.HasKey( tabl , key )
-	for k,v in pairs(tabl) do
-		if k == key then return true end
-		continue
-	end
-	return false
-end
-
-function modules.Load( ... )
-	print( 'Loading Modules' )
-	local args = {...}
-	if type(args[1]) == 'table' then
-		for k,v in pairs(args[1]) do
-			print('\tLoaded module : ' .. v)
-			for f,func in pairs(modules.functions) do
-				if file.Exists( GM.Name .. '/gamemode/modules/'..v .. '/' .. f,'LUA') and file.Size( GM.Name ..'/gamemode/modules/'..v .. '/' .. f,"LUA") != 0 then
-					do
-						func( GM.Name .. "/gamemode/modules/"..v)
-					end
+class "Ananke.modules" {
+	
+	abstract {
+	
+		Load = function() end;
+		Unload = function() end;
+		
+	};
+	
+	public {
+		functions = {
+		
+			['init.lua'] = function(p)
+				if !SERVER then return end
+				Ananke.include(p .. "/init.lua")
+			end,
+					
+			['cl_init.lua'] = function(p)
+				if SERVER then
+					Ananke.AddCSLuaFile(p .. '/cl_init.lua')
+				else
+					Ananke.include(p .. "/cl_init.lua")
 				end
+			end		
+		}
+	}'
+	
+	protected {
+	
+		Register = function( self )
+			Ananke._MODULES[ self.Name ] = self
+
+		end;
+		
+		Get = function( name )
+			if Ananke._MODULES[ name ] then 
+				return Ananke._MODULES[ name ]
+			else
+				Ananke.debug.Error( 'Module not found', false )
+			end
+		end;
+		
+		LoadModules = function( tab )
+		
+			print( 'Loading Modules' )
+			for k,v in pairs( tab ) do
+				print('\tLoaded module : ' .. v)
+				
+				for f,func in pairs(Ananke.modules.functions) do
+					func( GM.Name .. "/gamemode/modules/"..v)
+				end
+				
+				hook.Call( "Ananke.PreModuleLoad", GAMEMODE, name )
+				
+				Ananke.modules.Get( v ):OnLoad()
+				
+				hook.Call( "Ananke.PostModulesLoad", GAMEMODE, v )
+				
+			end	
+		end;
+		
+		LoadModule = function( name )
+		
+			if !Ananke._MODULES[ name ] then return end
+			print('\tLoaded module : ' .. name)
+			
+			for f,func in pairs(Ananke.modules.functions) do
+				func( Ananke.Name .. "/gamemode/modules/" .. name)
+			end
+			
+			hook.Call( "Ananke.PreModuleLoad", GAMEMODE, name )
+			
+			Ananke.modules.Get( name ):OnLoad()
+			
+			hook.Call( "Ananke.PostModuleLoad", GAMEMODE, name )
+			
+		end;
+		
+		Initialise = function()
+			for k,v in pairs(_MODULES) do
+				modules.get( k ):OnLoad()
 			end
 		end
-	else
-		if !table.HasKey( _MODULES , args[1] ) then return end
-		print('\tLoaded module : ' .. args[1])
-		for f,func in pairs(modules.functions) do
-			if file.Exists( GM.Name .. '/gamemode/modules/' ..args[1] .. '/' .. f,'LUA') and file.Size( GM.Name .. '/gamemode/modules/'..args[1] .. '/' .. f,"LUA") != 0 then
-				do
-					func( GM.Name .. "/gamemode/modules/"..args[1])
-				end
-			end
-		end
-		modules.get( args[1] ):OnLoad()
-	end
+	};
+	
+	private {
+		
+		Name = 'module_name';
+		
+	};
+}
 
-	hook.Call( "wp.PostModulesLoad", GAMEMODE )
 
-end
-
-function modules.Unload( name )
-	modules.get( name ):UnLoad()
-end
-
-function modules.Initialise()
-	for k,v in pairs(_MODULES) do
-		modules.get( k ):OnLoad()
-	end
-end
-
--- Will have to rewrite for use on dedi
+		

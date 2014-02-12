@@ -1,55 +1,57 @@
-local modul = modules.new()
-modul.name = 'admin'
+local MODULE = Ananke.modules.new()
+MODULE.Name = 'Admin'
 
 Admin = {}
-Admin.plugins = {}
-Admin.plugins.mt = {}
-Admin.plugins.mt.__index = Admin.plugins
+Admin._PLUGINS = {}
 
-local _PLUGINS = {}
+class 'Admin.plugins' {
+	
+	private {
+		
+		Name = 'plugin_default';
+		
+	}
+	
+	protected {
+		
+		_constructor = function( name )
+			Name = name
+		end;
+		
+		Register = function( self )
+			Admin._PLUGINS[ self.Name ] = self
+		end;
 
-function Admin.plugins.New()
-	local tabl = {}
-	table.Name = ''
-	return setmetatable(tabl,Admin.plugins.mt)
-end
-
-function Admin.plugins.mt:Register()
-	_PLUGINS[self.Name] = table.Copy(self)
-end
-
-function Admin.plugins.GetByName(name)
-	return _PLUGINS[name]
-end
-
-function Admin.plugins.Initialise()
-
-	local f,d = file.Find( GM.Name .. "/gamemode/modules/admin/plugins/*.lua", "LUA" )
-
-	print('\tLoading plugins:')
-
-	for k,v in pairs(f) do
-		if SERVER then
-
-			print('\t\tLoading ' .. v)
-			do
-				AddCSLuaFile( GM.Name .. '/gamemode/modules/admin/plugins/'..v)
-				include( GM.Name .. '/gamemode/modules/admin/plugins/'..v)
+		Get = function( name )
+			if !Admin._PLUGINS[ name ] then
+				Ananke.debug.Error( 'ADMIN: Could not load plugin: ' .. name , false )
+			else
+				return Admin._PLUGINS[ name ]
 			end
-		else
-			print('\t\tLoading ' .. v)
-			do
-				include(GM.Name .. '/gamemode/modules/admin/plugins/'..v)
+		end;
+
+		Initialise = function( )
+			local f,d = file.Find( Ananke.Name .. "/gamemode/modules/admin/plugins/*.lua", "LUA" )
+
+			print('\tLoading plugins:')
+		
+			for k,v in pairs(f) do
+				if SERVER then
+					print('\t\tLoading ' .. v)
+					Ananke.AddCSLuaFile( GM.Name .. '/gamemode/modules/admin/plugins/'..v)
+					Ananke.include( GM.Name .. '/gamemode/modules/admin/plugins/'..v)
+				else
+					print('\t\tLoading ' .. v)
+					Ananke.include(GM.Name .. '/gamemode/modules/admin/plugins/'..v)
+				end
 			end
-		end
-	end
+		end;
 
-end
 
-hook.Add("wp.PostModulesLoad", "wp.PostModulesLoad.Admin", function()
+hook.Add("Ananke.PostModuleLoad", "Ananke.PostModulesLoad.Admin", function()
 
-	Admin.plugins.Initialise() --Load all modules.
+	Admin.plugins.Initialise() --Load all modules. We don't want to invoke a function that doesn't exist
 
 end)
 
-modul:Register()
+MODULE:Register()
