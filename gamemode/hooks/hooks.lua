@@ -8,7 +8,7 @@ function Ananke.Hooks.Initialise()
 	for k,v in pairs(f) do
 		if v == 'hooks.lua' then continue end
 		print('\tLoading ' .. v)
-		Ananke.include( v )
+		Ananke.include( Ananke.Name .. "/gamemode/hooks/" .. v )
 		if SERVER then 
 			Ananke.AddCSLuaFile( v )
 		end
