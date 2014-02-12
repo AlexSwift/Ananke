@@ -25,7 +25,7 @@ class "Ananke.modules" {
 				end
 			end		
 		}
-	}'
+	};
 	
 	protected {
 	

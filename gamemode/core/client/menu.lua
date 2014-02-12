@@ -6,7 +6,7 @@ Ananke.core.menu.MousePos = { x = 0 , y = 0 }
 Ananke.core.menu.ActiveElements = {}
 Ananke.core.menu.Objects = {}
 
-class "core.menu.gui" {
+class "Ananke.core.menu.gui" {
 
 	public {
 		OnCursorMoved = function()
@@ -107,90 +107,69 @@ class "core.menu.gui" {
 }
 
 
-function core.menu.gui.Create( name , parent )
-
-	local obj = core.menu.gui[name].new()
-	if parent then
-		obj:SetParent( parent )
-	end
-	obj:Init( )
-
-	table.insert( core.menu.Elements , obj )
-
-	return obj
-
-end
-
-function core.menu.GetElements( )
-
-	return core.menu.Elements
-
-end
-
-function core.menu.GetActiveElements( )
-
-	local enabled = {}
-
-	for k, v in pairs(core.menu.Elements) do
-		if core.menu.Elements[k]:IsEnabled() then
-			table.insert( enabled, core.menu.Elements[k] )
-		end
-	end
-
-	return enabled
-
-end
-
-function core.menu.Initialise()
-
-	local f,d = file.Find( GM.Name .. "/gamemode/core/client/gui/*.lua", "LUA" )
-
-	print('\tLoading Gui:')
-	for k,v in pairs(f) do
-		include('gui/'..v)
-	end
-
-end
-
-function core.menu.Enable( )
-
-	GAMEMODE:PreDrawMenu( ) --USed to create elements
-
-	core.menu.Enabled = true
-
-end
-
-function core.menu.Disable( )
-
-	GAMEMODE:PostDrawMenu() --used to delete elements
-
-	core.menu.Enabled = false
-
-end
-
-core.menu.Initialise()
-
-hook.Add( 'HUDPaint' , 'core.menu.draw' , function( )
-	if !core.menu.Enabled then return end
+class 'Ananke.core.menu' {
 	
-	local mp = { x = 0 , y = 0 }
+	private {
 	
-	if gui.MousePos() != mp then
-		for k,v in pairs(core.menu.ActiveElements) do
-			v:OnCursorMoved()
-		end
-	end
+		__constructor = function( self , name , parent )
+			self.object = core.menu.gui[name].new()
+			if parent then
+				self:SetParent( parent )
+			end
 
-	core.menu.MousePos = mp
-	mp = nil; -- __gc
+			obj:Init( )
+			table.insert( core.menu.Elements , obj )
+		end;
 
-	for i = 1 , #elements do
+		object = nil; --Insert user data type here.
 		
+	};
+	
+	protected {
+	
+		Create = new;
+		
+		GetElements = function( )
+			return Ananke.core.menu.Elements
+		end;
+		
+		GetActiveElements = function()
+			local enabled = {}
+			for k,v in pairs(Ananke.core.menu.Elements) do
+				if core.menu.Elements[k]:IsEnabled() then
+					table.insert( enabled, Ananke.core.menu.Elements )
+				end
+			end
+		end;
+		
+		Initialise = function()
 
-	GAMEMODE:DrawMenu( )
-	end
-	return
-end)
+			local f,d = file.Find( Ananke.Name .. "/gamemode/core/client/gui/*.lua", "LUA" )
+		
+			print('\tLoading Gui:')
+			for k,v in pairs(f) do
+				Ananke.include(Ananke.Name .. "/gamemode/core/client/gui/" .. v)
+			end
+		
+		end;
+		
+		Enable = function( )
+			GAMEMODE:PreDrawMenu( )
+			Ananke.core.menu.Enabled = true
+		end;
+		
+		Disable = function( )
+			GAMEMODE:PostDrawMenu()
+			Ananke.core.menu.Enabled = false
+		end;
+		
+		
+	}
+			
+}
+
+Ananke.core.menu.Initialise()
+
 
 --				Usage:
 -- local gui = core.menu.gui.Get( 'text' )
