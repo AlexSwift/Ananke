@@ -1,5 +1,5 @@
-local modul = modules.new()
-modul.name = 'Binds'
+local modul = Ananke.modules.new()
+modul.Name = 'Binds'
 
 Ananke.binds = {}
 Ananke.binds._BINDS = {} -- [key] = { table of CallBacks }

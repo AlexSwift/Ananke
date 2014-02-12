@@ -10,6 +10,7 @@ end
 function Ananke.AddCSLuaFile( file )
 	if not SERVER then return end
 	do
+		--if !file.Exist( file ) then return end
 		m_addcsluafile( file )
 	end
 end

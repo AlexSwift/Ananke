@@ -11,7 +11,7 @@ function Ananke.extentions.Initialise()
 		print('\tLoading ' .. v)
 		include( v )
 		if SERVER then 
-			Ananke.AddCSLuaFile( v )
+			AddCSLuaFile( v )
 		end
 	end
 

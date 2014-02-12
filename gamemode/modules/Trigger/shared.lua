@@ -1,5 +1,5 @@
-local modul = modules.new()
-modul.name = 'Trigger'
+local modul = Ananke.modules.new()
+modul.Name = 'Trigger'
 
 Ananke.Trigger = {}
 Ananke.Trigger.CallBacks = {} -- ID , callback 
