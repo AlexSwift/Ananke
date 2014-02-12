@@ -1,5 +1,4 @@
 class "LinkedList.Node" {
-
 	public {
 		__construct = function(self, value, nextNode)
 			self['value'] = value
@@ -16,9 +15,7 @@ class "LinkedList.Node" {
 		end;
 		
 		SetNext = function(self, nextNode)
-			if nextNode != nil then
-				self['nextNode'] = nextNode
-			end
+			self['nextNode'] = nextNode
 		end;
 	};
 	
@@ -26,11 +23,9 @@ class "LinkedList.Node" {
 		value = nil;
 		nextNode = nil;
 	};
-
 };
 
 class "LinkedList" {
-
 	public {
 		__construct = function(self)
 		end;
@@ -39,6 +34,8 @@ class "LinkedList" {
 			self:Clear()
 		end;
 	
+		-- Adds given 'obj' to the head of the list.
+		-- Returns the node if successful, nil otherwise.
 		AddHead = function(self, obj)
 			if(obj != nil) then
 				local node = self['Node'].new(obj, self['head'])
@@ -49,21 +46,24 @@ class "LinkedList" {
 				
 				return node
 			end
+			
+			return nil
 		end;
 		
+		-- Adds given 'obj' to the list before the given 'before' object.
+		-- Returns the node added if successful, nil otherwise.
 		AddBefore = function(self, obj, before)
 			if(obj != nil) then
 				if(before == self['head'] or self['head'] == nil) then
-					return self:AddHead(obj)
+					self:AddHead(obj)
+					return
 				end
 				
 				local prev = nil
 				local curr = self['head']
 				
 				while(curr != nil) do
-					if(curr == before) then
-						break
-					end
+					if(curr == before) then break end
 					
 					prev = curr
 					curr = curr:Next()
@@ -77,11 +77,15 @@ class "LinkedList" {
 					return node
 				end
 			end
+			
+			return nil
 		end;
 		
+		-- Adds given 'obj' to the list after the given 'after' object.
+		-- Returns the node added if successful, nil otherwise.
 		AddAfter = function(self, obj, after)
 			if(obj != nil) then
-				if(self['head'] == nil) then return self:AddHead(obj) end
+				if(self['head'] == nil) then self:AddHead(obj); return; end
 				
 				local curr = self['head']
 				
@@ -101,51 +105,63 @@ class "LinkedList" {
 					return node
 				end
 			end
+			
+			return nil
 		end;
 		
+		-- Removes given 'obj' from the list, maintaining the link between all nodes.
+		-- Returns the next node in the list if successful, nil otherwise.
 		Remove = function(self, obj)
 			if(obj != nil) then
 				if(self['head'] == nil) then return end
-				if(self['head'] == obj) then self['head'] = obj:Next(); return end
+				if(self['head'] == obj) then 
+					self['head'] = obj:Next();  
+					self:DecreaseCount(); 
+					return head; 
+				end
 				
 				local prev = nil
 				local curr = self['head']
 				
 				while(curr != nil) do
-					if(curr == obj) then
-						break
-					end
+					if(curr == obj) then break end
 					
 					prev = curr
 					curr = curr:Next()
 				end
 				
 				if(curr != nil) then
-					prev:SetNext(curr:Next())
+					local nextNode = curr:Next()
+					prev:SetNext(nextNode)
 					obj = nil
 					self:DecreaseCount()
+					
+					return nextNode
 				end
 			end
+			
+			return nil
 		end;
 		
-		Clear = function(self) -- Do we need to set each individual node and it's parameters to null?
+		Clear = function(self) -- Do we need to set each individual node and its parameters to null?
 			self['head'] = nil
 			
 			self['count'] = 0
 		end;
 		
 		
-		-- Returns the index indicating the the first instance of 'obj'.
-		-- If 'obj' not found, returns -1.
-		-- If 'obj' is nil, returns nil
+		-- Searches the list looking for 'obj'.
+		-- Returns the index where 'obj' is located if successful.
+		-- If the list is empty or 'obj' is nil, returns nil.
+		-- If 'obj' is not in the list, returns -1.
 		Find = function(self, obj)
 			if(obj != nil) then
 				local index = 1
 				
-				if(head == nil) then return nil end
-				if(head == obj) then return index end
+				if(self['head'] == nil) then return nil end
+				if(self['head'] == obj) then return index end
 				
-				local curr = head
+				local curr = self['head']
 				
 				while(curr != null) do
 					if(curr == obj) then
@@ -162,15 +178,20 @@ class "LinkedList" {
 			return nil
 		end;
 		
+		-- First attempts to locate the optional 'obj' given.
+		-- If no 'obj' was found, defaults the start of the search to head.
+		-- Returns the object located at the given index.
 		Get = function(self, index, obj) -- Optional anchor point EX: Get(10, head) -> head + 10
 			local anchor = Find(obj)
 			
 			if(anchor == nil) then anchor = 0 end
-			if(anchor == -1) then Ananke.core.debug.Error("LinkedList does not contain specified object.", true) end
-			if(anchor + index > count) then Ananke.core.debug.Error("Index out of range.", true) end
+			else if(anchor == -1) then Ananke.core.debug.Error("LinkedList does not contain specified object.", true) end
+			else if(anchor + index > count) then Ananke.core.debug.Error("Index out of range.", true) end
 			
-			local curr = head
-			for i=0, anchor + index do
+			local curr = obj and obj or self['head']
+			for i=anchor, anchor + index do
+				if(curr == nil) then break end
+				
 				curr = curr:Next()
 			end
 			
@@ -194,5 +215,4 @@ class "LinkedList" {
 		head = nil;
 		count = 0;
 	};
-
 };
