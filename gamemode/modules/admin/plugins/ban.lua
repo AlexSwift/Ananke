@@ -1,24 +1,23 @@
-local plugin = Admin.plugins.New()
+local PLUGIN = Admin.plugins.New()
 
-plugin.Name = "ban"
+PLUGIN.Name = "ban"
+--PLUGIN:SetCallBack( PLUGIN.CallBack )
 
---active stuff
+function PLUGIN.ban(former, ply, length, reason)
 
-local function ban(former, ply, length, reason)
-	if !ply:IsValid() then former:ChatPrint("The player you entered is invalid") end
+	if !ply:IsValid() then 
+		former:ChatPrint("The player you entered is invalid") 
+		Ananke.debug.Error("ADMIN : Ban plugin : The player you entered is invalid" , false )
+	end
+	
 	local banlength = utils.TimeFromString(length).total
 	local unban = math.Round(CurTime() + banlength)
-	local name = tmysql.Escape(ply:Name())
-	reason = tmysql.Escape(reason)
-	core.MySQL.Query([[INSERT INTO `ananke`.`bans`
-(`steamid`, `steamid64`, `name`, `unban`, `reason`, `num`, `altof`)
-VALUES
-(]]..ply:SteamID()..[[, ]]..ply:SteamID64()..[[, ]]..name..[[, ]]..unban..[[, ]]..reason..[[, DEFAULT, NULL)
-ON DUPLICATE KEY
-UPDATE `name` = ]]..name..[[, `unban` = ]]..unban..[[, `reason` = ]]..reason..[[, `num` = `num` + 1]])
+	local name, reason = tmysql.Escape(ply:Name()), tmysql.Escape(reason)
+	
+	Ananke.core.MySQL.Query([[INSERT INTO `ananke`.`bans` (`steamid`, `steamid64`, `name`, `unban`, `reason`, `num`, `altof`) VALUES (]]..ply:SteamID()..[[, ]]..ply:SteamID64()..[[, ]]..name..[[, ]]..unban..[[, ]]..reason..[[, DEFAULT, NULL) ON DUPLICATE KEY UPDATE `name` = ]]..name..[[, `unban` = ]]..unban..[[, `reason` = ]]..reason..[[, `num` = `num` + 1]])
 end
 
-local function callback(ply, data)
+function PLUGIN.CallBack(ply, data)
 	local matches, names = utils.FindPlayersByName(data[1])
 	if !matches then ply:ChatPrint("Could not match player "..data[1]..".") return end
 
@@ -49,4 +48,4 @@ local function MySQLSetup()
 end
 MySQLSetup()
 
-plugin:Register()
+PLUGIN:Register()
