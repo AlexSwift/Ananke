@@ -38,12 +38,12 @@ function Ananke.core.serialization.initialize()
 								local typ = string.GetChar( i )
 								local bytes = string.byte(string.GetChar( i + 1))
 
-								local key = Ananke.core.serialization.translations[core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 3, i + 2 + bytes ))
+								local key = Ananke.core.serialization.translations[Ananke.core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 3, i + 2 + bytes ))
 
 								typ = string.GetChar( i + 3 + bytes )
 								local bytes2 = string.byte(string.GetChar( i + 4 + bytes))
 
-								local value = Ananke.core.serialization.translations[core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 4 + bytes, i + 3 + bytes + bytes2))
+								local value = Ananke.core.serialization.translations[Ananke.core.serialization.GetTypeFromByte( typ )][3](string.sub( s_data, i + 4 + bytes, i + 3 + bytes + bytes2))
 
 								data[key] = value
 								i = i + 4 + bytes + bytes2
@@ -93,7 +93,7 @@ function Ananke.core.serialization.initialize()
 							local tabl = {}
 							for i = 1,6,2 do
 								local num = t[i] .. t[i+1]
-								tabl[i] = (Ananke.core.serialization.translations['number'][3](num) <= 0) and (core.serialization.translations['number'][3](num) + 255) or (core.serialization.translations['number'][3](num))
+								tabl[i] = (Ananke.core.serialization.translations['number'][3](num) <= 0) and (Ananke.core.serialization.translations['number'][3](num) + 255) or (Ananke.core.serialization.translations['number'][3](num))
 							end
 							local ang = Angle( unpack(tabl) )
 							return ang
@@ -149,7 +149,7 @@ function Ananke.core.serialization.encode(data)
 end
 
 function Ananke.core.serialization.GetTypeFromByte( byte )
-	for k,v in pairs(core.serialization.translations) do
+	for k,v in pairs(Ananke.core.serialization.translations) do
 		if v[1] == byte then
 			return k
 		end
