@@ -10,7 +10,7 @@ class 'Admin.plugins' {
 		
 		Name = 'plugin_default';
 		
-	}
+	};
 	
 	protected {
 		
@@ -46,7 +46,8 @@ class 'Admin.plugins' {
 				end
 			end
 		end;
-
+	}
+}
 
 hook.Add("Ananke.PostModuleLoad", "Ananke.PostModulesLoad.Admin", function()
 

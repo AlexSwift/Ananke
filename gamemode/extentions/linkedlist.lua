@@ -201,9 +201,13 @@ class "LinkedList" {
 		Get = function(self, index, obj) -- Optional anchor point EX: Get(10, head) -> head + 10
 			local anchor = Find(obj)
 			
-			if(anchor == nil) then anchor = 0 end
-			else if(anchor == -1) then Ananke.core.debug.Error("LinkedList does not contain specified object.", true) end
-			else if(anchor + index > count) then Ananke.core.debug.Error("Index out of range.", true) end
+			if(anchor == nil) then 
+				anchor = 0
+			elseif(anchor == -1) then 
+				Ananke.core.debug.Error("LinkedList does not contain specified object.", true)
+			elseif(anchor + index > count) then 
+				Ananke.core.debug.Error("Index out of range.", true) 
+			end
 			
 			local curr = obj and obj or self['head']
 			for i=anchor, anchor + index do

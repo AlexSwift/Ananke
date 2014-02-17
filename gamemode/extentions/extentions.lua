@@ -9,9 +9,9 @@ function Ananke.extentions.Initialise()
 	for k,v in pairs(f) do
 		if v == 'extentions.lua' then continue end
 		print('\tLoading ' .. v)
-		Ananke.include( v )
+		include( v )
 		if SERVER then 
-			Ananke.AddCSLuaFile( v )
+			AddCSLuaFile( v )
 		end
 	end
 

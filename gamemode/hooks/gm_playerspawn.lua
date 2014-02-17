@@ -25,4 +25,4 @@ hook.Add( 'PlayerSpawn' , 'Ananke.PlayerHands', function( ply )
 		hands:Spawn()
 		
  	end
-end
+end)

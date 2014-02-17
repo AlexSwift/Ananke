@@ -1,5 +1,5 @@
-local modul = modules.new()
-modul.name = 'chatcommands'
+local modul = Ananke.modules.new()
+modul.Name = 'Chat Commands'
 
 local _CHATCOMMANDS = {}
 
@@ -23,7 +23,7 @@ function chatcommands.New(command)
 	tabl['callback'] = function() end
 	tabl['precall'] = function(ply, data) return true end -- Should it actually pass?
 	tabl['postcall'] = function() end
-	tabl['validatecall'] = Validate(ply, data) end
+	tabl['validatecall'] = Validate(ply, data)
 	tabl['data']['minargs'] = 0
 	return setmetatable(tabl,chatcommands)
 end
