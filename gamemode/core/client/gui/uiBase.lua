@@ -5,27 +5,6 @@ class "core.menu.gui.uiBase" {
 	};
 
 	protected {
-		
-		-- Initialise
-		__construct = function(self, parent)
-			if parent != nil then
-				self:SetParent(parent)
-			end
-			
-			self['relX'] = surface.ScreenWidth * 0.45
-			self['relY'] = surface.ScreenHeight * 0.45
-			
-			self['width'] = surface.ScreenWidth * 0.1
-			self['height'] = surface.ScreenWidth * 0.1
-			
-			self['scaleX'] = 1.0
-			self['scaleY'] = 1.0
-		end;
-		
-		__finalize = function(self)
-		
-		end;
-		
 		SetParent = function(self, parent)
 			if self['parent'] then
 				self['parent']:RemoveChild(self)
@@ -161,6 +140,30 @@ class "core.menu.gui.uiBase" {
 	};
 	
 	public {
+	-- Initialise
+		__construct = function(self, parent)
+			if(parent) then
+				self:SetParent(parent)
+			end
+		
+			self['relX'] = surface.ScreenWidth * 0.45
+			self['relY'] = surface.ScreenHeight * 0.45
+			
+			self['width'] = surface.ScreenWidth * 0.1
+			self['height'] = surface.ScreenWidth * 0.1
+			
+			self['scaleX'] = 1.0
+			self['scaleY'] = 1.0
+		end;
+		
+		__finalize = function(self)
+		
+		end;
+		
+		Init = function(self)
+		
+		end;
+		
 		OnCursorMoved = function()
 		end;
 		

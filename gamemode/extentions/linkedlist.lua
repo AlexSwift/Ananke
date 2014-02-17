@@ -17,6 +17,10 @@ class "LinkedList.Node" {
 		SetNext = function(self, nextNode)
 			self['nextNode'] = nextNode
 		end;
+		
+		Value = function(self)
+			return self['value']
+		end;
 	};
 	
 	private {
@@ -41,8 +45,9 @@ class "LinkedList" {
 				local node = self['Node'].new(obj, self['head'])
 				
 				self['head'] = node
-				
 				self:IncreaseCount()
+				
+				if(self['tail'] == nil) then self['tail'] = node end
 				
 				return node
 			end
@@ -50,29 +55,45 @@ class "LinkedList" {
 			return nil
 		end;
 		
-		-- Adds given 'obj' to the list before the given 'before' object.
+		-- Adds given 'obj' to the tail of the list.
+		-- Returns the node if successful, nil otherwise.
+		AddTail = function(self, obj)
+			if(obj != nil) then
+				if(head == nil) then AddHead(obj); return end
+				
+				local node = self['Node'].new(obj, nil)
+				
+				self['tail']:SetNext(node)
+				self['tail'] = node
+				
+				self:IncreaseSize()
+				
+				return node
+			end
+			
+			return nil
+		end;
+		
+		-- Adds given 'obj' to the list before the given 'before' node.
 		-- Returns the node added if successful, nil otherwise.
 		AddBefore = function(self, obj, before)
 			if(obj != nil) then
+				if(before['Next'] == nil) then return nil end
 				if(before == self['head'] or self['head'] == nil) then
-					self:AddHead(obj)
-					return
+					local node = self:AddHead(obj)
+					return node
 				end
 				
-				local prev = nil
 				local curr = self['head']
-				
-				while(curr != nil) do
-					if(curr == before) then break end
-					
-					prev = curr
+				while(curr:Next() != before) do
 					curr = curr:Next()
 				end
 				
 				if(curr != nil) then
-					local node = self['Node'].new(obj, curr)
-					prev:SetNext(node)
-					self:IncreaseCount()
+					local node = self['Node'].new(obj, before)
+					
+					curr:SetNext(node)
+					IncreaseSize()
 					
 					return node
 				end
@@ -81,26 +102,19 @@ class "LinkedList" {
 			return nil
 		end;
 		
-		-- Adds given 'obj' to the list after the given 'after' object.
+		-- Adds given 'obj' to the list after the given 'after' node.
 		-- Returns the node added if successful, nil otherwise.
 		AddAfter = function(self, obj, after)
 			if(obj != nil) then
-				if(self['head'] == nil) then self:AddHead(obj); return; end
+				if(after['Next'] == nil) then return nil end
+				if(self['head'] == nil) then local node = self:AddHead(obj); return node end
+				if(self['tail'] == after) then local node = self:AddTail(obj); return node end
 				
-				local curr = self['head']
-				
-				while(curr != nil) do
-					if(curr == after) then
-						break
-					end
+				if(after != nil) then
+					local node = self['Node'].new(obj, after:Next())
 					
-					curr = curr:Next()
-				end
-				
-				if(curr != nil) then
-					local node = self['Node'].new(obj, curr:Next())
-					curr:SetNext(obj)
-					self:IncreaseCount()
+					after:SetNext(node)
+					IncreaseSize()
 					
 					return node
 				end
@@ -133,6 +147,9 @@ class "LinkedList" {
 				if(curr != nil) then
 					local nextNode = curr:Next()
 					prev:SetNext(nextNode)
+					
+					if(curr == self['tail']) then self['tail'] = prev end
+					
 					obj = nil
 					self:DecreaseCount()
 					
@@ -145,10 +162,10 @@ class "LinkedList" {
 		
 		Clear = function(self) -- Do we need to set each individual node and its parameters to null?
 			self['head'] = nil
+			self['tail'] = nil
 			
 			self['count'] = 0
 		end;
-		
 		
 		-- Searches the list looking for 'obj'.
 		-- Returns the index where 'obj' is located if successful.
@@ -213,6 +230,8 @@ class "LinkedList" {
 	
 	private {
 		head = nil;
+		tail = nil;
+		
 		count = 0;
 	};
 };
