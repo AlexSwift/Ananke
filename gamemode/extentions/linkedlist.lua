@@ -203,10 +203,10 @@ class "LinkedList" {
 			
 			if(anchor == nil) then 
 				anchor = 0
-			else if(anchor == -1) then 
+			elseif(anchor == -1) then 
 				Ananke.core.debug.Error("LinkedList does not contain specified object.", true)
-			else if(anchor + index > count) then
-				Ananke.core.debug.Error("Index out of range.", true)
+			elseif(anchor + index > count) then 
+				Ananke.core.debug.Error("Index out of range.", true) 
 			end
 			
 			local curr = obj and obj or self['head']
