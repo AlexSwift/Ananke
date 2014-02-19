@@ -2,7 +2,7 @@
 #define _INCLUDE_MEMUTILS_H_
 
 #ifndef NULL
-#define NULL (void*)0
+//#define NULL (void*)0
 #endif
 
 #ifdef _LINUX

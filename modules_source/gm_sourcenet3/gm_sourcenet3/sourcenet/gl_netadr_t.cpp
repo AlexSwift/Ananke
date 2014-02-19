@@ -55,7 +55,7 @@ META_FUNCTION( netadr_t, IsValid )
 
 	return 1;
 }
-
+/*
 META_FUNCTION( netadr_t, GetIP )
 {
 	UsesLua();
@@ -68,7 +68,7 @@ META_FUNCTION( netadr_t, GetIP )
 
 	return 1;
 }
-
+*/
 META_FUNCTION( netadr_t, GetPort )
 {
 	UsesLua();
