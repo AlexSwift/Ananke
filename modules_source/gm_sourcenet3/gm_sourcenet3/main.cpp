@@ -1,4 +1,4 @@
-// Required interfaces
+﻿// Required interfaces
 #define IVENGINESERVER_INTERFACE
 #define IVENGINECLIENT_INTERFACE
 #define ICVAR_INTERFACE
@@ -42,8 +42,8 @@
 #define NETPATCH_OLD "\x0F\x84\xC0\x00\x00\x00"
 #define NETPATCH_NEW "\xE9\xC1\x00\x00\x00\x90"
 #define NETCHUNK_SIG_OFFSET 21
-#define NETCHUNK_SIG "\x87\x13\x8D\x04\xB8\x83\xC7\xFF"
-#define NETCHUNK_MSK "xxxxxxxx"
+#define NETCHUNK_SIG "\x55\x8b\xec\xb8\x00\x00\x00\x00\xe8\x00\x00\x00\x00\xa1\x00\x00\x00\x00\x83\x78\x30\x00\x53\x8b\x5d\x08\x56\x8b\xf1\x57\x89\x75\xfc\x74\x00\x85\xdb\x74\x00\x8b\x43\x0c\x83\xc0\x07\xc1\xf8\x03\x85\xc0\x7e\x00\x8b\x0d\x00\x00\x00\x00\x8b\x11\x8b\x8a\x90\x00\x00\x00\x48\x50\x8b\x03\x50\x68\x00\x00\x00\x00‏"
+#define NETCHUNK_MSK "xxxx????x????x????xxxxxxxxxxxxxxxx?xxx?xxxxxxxxxxxx?xx????xxxxxxxxxxxxxx????"
 
 #elif defined _LINUX
 
@@ -120,7 +120,8 @@ int Open( lua_State *L )
 	ILuaObject *_G_hook_Call = _G_hook->GetMember( "Call" );
 	_G_hook_Call->Push();
 	// hook.Call reference
-	msi.ref_hook_Call = Lua()->GetReference( -1, true );
+	//msi.ref_hook_Call = Lua()->GetReference( -1, true );
+	msi.ref_hook_Call = Lua()->GetReference( -1 );
 	// Cleanup
 	_G_hook_Call->UnReference();
 	_G_hook->UnReference();

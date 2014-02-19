@@ -84,6 +84,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="common\ILuaInterface.cpp" />
+    <ClCompile Include="common\ILuaModuleManager.cpp" />
+    <ClCompile Include="common\ILuaObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sourcenet\gl_bitbuf_read.cpp" />
     <ClCompile Include="sourcenet\gl_bitbuf_write.cpp" />
@@ -106,9 +109,13 @@
     <ClCompile Include="sourcemod\memutils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\ILuaTable.h" />
+    <ClInclude Include="common\LuaBase.h" />
+    <ClInclude Include="common\LuaInterface.h" />
+    <ClInclude Include="common\Types.h" />
+    <ClInclude Include="common\UserData.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="engine\net.h" />
-    <ClInclude Include="common\GMLuaModule.h" />
     <ClInclude Include="common\ILuaInterface.h" />
     <ClInclude Include="common\ILuaModuleManager.h" />
     <ClInclude Include="common\ILuaObject.h" />

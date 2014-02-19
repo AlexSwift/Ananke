@@ -654,7 +654,7 @@ META_FUNCTION( CNetChan, GetConnectTime )
 
 	CNetChan *netchan = GET_META( 1, CNetChan );
 
-	Lua()->PushDouble( netchan->connect_time );
+	Lua()->Push( netchan->connect_time );
 
 	return 1;
 }

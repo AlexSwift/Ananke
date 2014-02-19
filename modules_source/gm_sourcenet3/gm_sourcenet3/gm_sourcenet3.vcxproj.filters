@@ -43,6 +43,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\common">
+      <UniqueIdentifier>{7b5316fc-7863-40d6-9cea-7635c0adf3f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,6 +108,15 @@
     <ClCompile Include="sourcemod\memutils.cpp">
       <Filter>Source Files\sourcemod</Filter>
     </ClCompile>
+    <ClCompile Include="common\ILuaInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="common\ILuaModuleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="common\ILuaObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -112,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="engine\net.h">
       <Filter>Header Files\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="common\GMLuaModule.h">
-      <Filter>Header Files\common</Filter>
     </ClInclude>
     <ClInclude Include="common\ILuaInterface.h">
       <Filter>Header Files\common</Filter>
@@ -187,6 +196,21 @@
     </ClInclude>
     <ClInclude Include="sourcemod\sm_symtable.h">
       <Filter>Header Files\sourcemod</Filter>
+    </ClInclude>
+    <ClInclude Include="common\ILuaTable.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\LuaBase.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\LuaInterface.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Types.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\UserData.h">
+      <Filter>Header Files\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

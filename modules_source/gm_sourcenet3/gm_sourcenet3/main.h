@@ -1,7 +1,7 @@
 #ifndef SOURCENET3_H
 #define SOURCENET3_H
 
-#include "GMLuaModule.h"
+#include "ILuaModuleManager.h"
 
 // Enable/disable SendDatagram hooking
 extern bool g_bPatchedNetChunk;
@@ -35,7 +35,7 @@ extern bool g_bPatchedNetChunk;
 	else if ( arg___t == GLua::TYPE_NUMBER && Lua()->GetInteger( arg ) == 0 ) \
 		dst = (dsttype)NULL; \
 	else \
-		Lua()->TypeError( GET_META_NAME( meta ), arg )
+		//Lua()->TypeError( GET_META_NAME( meta ), arg )
 
 #define GET_META( index, name )	(name *)Lua()->GetUserData( index )
 
