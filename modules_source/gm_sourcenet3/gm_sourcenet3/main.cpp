@@ -523,7 +523,7 @@ int Open( lua_State *L )
 		REG_META_FUNCTION( netadr_t, IsReservedAdr );
 		REG_META_FUNCTION( netadr_t, IsValid );
 
-		REG_META_FUNCTION( netadr_t, GetIP );
+		//REG_META_FUNCTION( netadr_t, GetIP );
 		REG_META_FUNCTION( netadr_t, GetPort );
 		REG_META_FUNCTION( netadr_t, GetType );
 
