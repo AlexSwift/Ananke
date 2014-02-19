@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B8D3A0EB-8B2B-4041-AA8C-9E29D67CBAFE}</ProjectGuid>
+    <RootNamespace>gm_sourcenet3</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;GM_SOURCENET3_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\game\shared;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\game\server;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\game\client;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\engine;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\tier1;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\mathlib;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\tier0;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\common;C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\sourcenet;C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\engine;C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\game\shared;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\game\server;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\game\client;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\engine;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\tier1;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\mathlib;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\tier0;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public;C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\common;C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\sourcenet;C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\engine;C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;GM_SOURCENET3_EXPORTS;GMOD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>tier0.lib;tier1.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="sourcenet\gl_bitbuf_read.cpp" />
+    <ClCompile Include="sourcenet\gl_bitbuf_write.cpp" />
+    <ClCompile Include="sourcenet\gl_cnetchan.cpp" />
+    <ClCompile Include="sourcenet\gl_datafragments_t.cpp" />
+    <ClCompile Include="sourcenet\gl_filehandle_t.cpp" />
+    <ClCompile Include="sourcenet\gl_hooks.cpp" />
+    <ClCompile Include="sourcenet\gl_igameevent.cpp" />
+    <ClCompile Include="sourcenet\gl_igameeventmanager2.cpp" />
+    <ClCompile Include="sourcenet\gl_inetchannelhandler.cpp" />
+    <ClCompile Include="sourcenet\gl_inetworkstringtable.cpp" />
+    <ClCompile Include="sourcenet\gl_inetworkstringtablecontainer.cpp" />
+    <ClCompile Include="sourcenet\gl_netadr_t.cpp" />
+    <ClCompile Include="sourcenet\gl_subchannel_t.cpp" />
+    <ClCompile Include="sourcenet\gl_ucharptr.cpp" />
+    <ClCompile Include="tier0\memoverride.cpp" />
+    <ClCompile Include="engine\net_chan.cpp" />
+    <ClCompile Include="simplescan\csimplescan.cpp" />
+    <ClCompile Include="simplescan\sigscan.cpp" />
+    <ClCompile Include="sourcemod\memutils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h" />
+    <ClInclude Include="engine\net.h" />
+    <ClInclude Include="common\GMLuaModule.h" />
+    <ClInclude Include="common\ILuaInterface.h" />
+    <ClInclude Include="common\ILuaModuleManager.h" />
+    <ClInclude Include="common\ILuaObject.h" />
+    <ClInclude Include="common\protocol.h" />
+    <ClInclude Include="common\vfnhook.h" />
+    <ClInclude Include="simplescan\csimplescan.h" />
+    <ClInclude Include="simplescan\sigscan.h" />
+    <ClInclude Include="sourcenet\gl_bitbuf_read.h" />
+    <ClInclude Include="sourcenet\gl_bitbuf_write.h" />
+    <ClInclude Include="sourcenet\gl_cnetchan.h" />
+    <ClInclude Include="sourcenet\gl_datafragments_t.h" />
+    <ClInclude Include="sourcenet\gl_filehandle_t.h" />
+    <ClInclude Include="sourcenet\gl_hooks.h" />
+    <ClInclude Include="sourcenet\gl_igameevent.h" />
+    <ClInclude Include="sourcenet\gl_igameeventmanager2.h" />
+    <ClInclude Include="sourcenet\gl_inetchannelhandler.h" />
+    <ClInclude Include="sourcenet\gl_inetworkstringtable.h" />
+    <ClInclude Include="sourcenet\gl_inetworkstringtablecontainer.h" />
+    <ClInclude Include="sourcenet\gl_netadr_t.h" />
+    <ClInclude Include="sourcenet\gl_subchannel_t.h" />
+    <ClInclude Include="sourcenet\gl_ucharptr.h" />
+    <ClInclude Include="sourcemod\memutils.h" />
+    <ClInclude Include="sourcemod\sh_vector.h" />
+    <ClInclude Include="sourcemod\sm_symtable.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

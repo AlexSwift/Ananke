@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\sourcenet">
+      <UniqueIdentifier>{32818f3f-e8fc-4ee7-983c-12229cd9649f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tier0">
+      <UniqueIdentifier>{0da6b7d0-5c17-46a3-a1a6-9c19e040ac45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine">
+      <UniqueIdentifier>{903f7045-bb16-44a6-a013-d1964319937a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\simplescan">
+      <UniqueIdentifier>{89c61883-6e01-4e74-9a88-21d5b3d0e96a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sourcemod">
+      <UniqueIdentifier>{9cfdd792-f1c7-4845-ad67-78c7a4dab254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\engine">
+      <UniqueIdentifier>{e29a8512-a18e-4e98-93f6-9f6f820e7047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\common">
+      <UniqueIdentifier>{19a7b282-1da4-418c-9c87-11e3452b5791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\simplescan">
+      <UniqueIdentifier>{e7ab4f36-4f5c-4a03-b430-0f9e1832d734}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sourcenet">
+      <UniqueIdentifier>{172344d1-022a-44c9-954a-518f2da2d4b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sourcemod">
+      <UniqueIdentifier>{1add0205-2d42-4db6-8046-5bcf6a741afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_bitbuf_read.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_bitbuf_write.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_cnetchan.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_datafragments_t.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_filehandle_t.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_hooks.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_igameevent.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_igameeventmanager2.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_inetchannelhandler.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_inetworkstringtable.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_inetworkstringtablecontainer.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_netadr_t.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_subchannel_t.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcenet\gl_ucharptr.cpp">
+      <Filter>Source Files\sourcenet</Filter>
+    </ClCompile>
+    <ClCompile Include="tier0\memoverride.cpp">
+      <Filter>Source Files\tier0</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\net_chan.cpp">
+      <Filter>Source Files\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="simplescan\csimplescan.cpp">
+      <Filter>Source Files\simplescan</Filter>
+    </ClCompile>
+    <ClCompile Include="simplescan\sigscan.cpp">
+      <Filter>Source Files\simplescan</Filter>
+    </ClCompile>
+    <ClCompile Include="sourcemod\memutils.cpp">
+      <Filter>Source Files\sourcemod</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\net.h">
+      <Filter>Header Files\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="common\GMLuaModule.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\ILuaInterface.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\ILuaModuleManager.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\ILuaObject.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\protocol.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\vfnhook.h">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="simplescan\csimplescan.h">
+      <Filter>Header Files\simplescan</Filter>
+    </ClInclude>
+    <ClInclude Include="simplescan\sigscan.h">
+      <Filter>Header Files\simplescan</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_bitbuf_read.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_bitbuf_write.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_cnetchan.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_datafragments_t.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_filehandle_t.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_hooks.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_igameevent.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_igameeventmanager2.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_inetchannelhandler.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_inetworkstringtable.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_inetworkstringtablecontainer.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_netadr_t.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_subchannel_t.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcenet\gl_ucharptr.h">
+      <Filter>Header Files\sourcenet</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcemod\memutils.h">
+      <Filter>Header Files\sourcemod</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcemod\sh_vector.h">
+      <Filter>Header Files\sourcemod</Filter>
+    </ClInclude>
+    <ClInclude Include="sourcemod\sm_symtable.h">
+      <Filter>Header Files\sourcemod</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
