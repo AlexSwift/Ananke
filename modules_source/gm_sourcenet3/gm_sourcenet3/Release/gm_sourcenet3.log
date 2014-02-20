@@ -1,12 +1,12 @@
-﻿Build started 19/02/2014 13:28:54.
+﻿Build started 20/02/2014 14:52:38.
      1>Project "C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\gm_sourcenet3.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Release\gm_sourcenet3.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IC:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3 /I"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\game\shared" /I"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\game\server" /I"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\game\client" /I"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\engine" /I"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\tier1" /I"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\mathlib" /I"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public\tier0" /I"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\public" /I"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\common" /IC:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\sourcenet /IC:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\engine /IC:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\common /Zi /nologo /W3 /WX- /O2 /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D GM_SOURCENET3_EXPORTS /D GMOD /D _WINDLL /D _MBCS /Gm- /EHsc /MT /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>main.cpp(639): warning C4566: character represented by universal-character-name '\u200F' cannot be represented in the current code page (1252)
-     1>main.cpp(690): warning C4566: character represented by universal-character-name '\u200F' cannot be represented in the current code page (1252)
+     1>main.cpp(640): warning C4566: character represented by universal-character-name '\u200F' cannot be represented in the current code page (1252)
+     1>main.cpp(691): warning C4566: character represented by universal-character-name '\u200F' cannot be represented in the current code page (1252)
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\Release\gm_sourcenet3.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Alex\Documents\GitHub\source-sdk-2013\mp\src\lib\public" tier0.lib tier1.lib ws2_32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\gm_sourcenet3.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\Release\gm_sourcenet3.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\Release\gm_sourcenet3.lib" /MACHINE:X86 /DLL Release\ILuaInterface.obj
          Release\ILuaModuleManager.obj
@@ -44,4 +44,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:07.64
+Time Elapsed 00:00:09.83

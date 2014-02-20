@@ -18,6 +18,7 @@ namespace GarrysMod
 		{
 			enum
 			{
+				TYPE_INetworkStringTableContainer  = 5010,
 				TYPE_INVALID = -1,
 				TYPE_NIL, 
 				TYPE_BOOL,
@@ -73,7 +74,7 @@ namespace GarrysMod
 		{
 			enum
 			{
-
+				INetworkStringTableContainer  = 5010,
 				INVALID = -1,
 				NIL, 
 				BOOL,
@@ -126,6 +127,7 @@ namespace GarrysMod
 
 			static const char* Name[] = 
 			{
+				"INetworkStringTableContainer",
 				"nil",
 				"bool",
 				"lightuserdata",

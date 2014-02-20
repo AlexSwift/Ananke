@@ -23,7 +23,9 @@ META_FUNCTION( INetworkStringTableContainer, GetTable )
 {
 	UsesLua();
 
-	Lua()->CheckType( 1, GET_META_ID( INetworkStringTableContainer ) );
+	//Lua()->SetGlobal( "META_ID" ,  (double)GET_META_ID( INetworkStringTableContainer ) );
+
+	Lua()->CheckType( 1, GLua::TYPE_INetworkStringTableContainer );
 	Lua()->CheckType( 2, GLua::TYPE_NUMBER );
 
 	INetworkStringTableContainer *pContainer = GET_META( 1, INetworkStringTableContainer );
