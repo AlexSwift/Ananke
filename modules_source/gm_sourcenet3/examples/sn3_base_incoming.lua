@@ -54,11 +54,12 @@ hook.Add( "PreProcessMessages", "InFilter", function( netchan, read, write, loca
 			end
 		end
 
+		
 		local handler = NET_MESSAGES[ msg ]
 
-		--[[if ( msg != net_NOP && msg != 3 && msg != 9 ) then
+		if ( msg != net_NOP && msg != 3 && msg != 9 ) then
 			Msg( "(in) Pre Message: " .. msg .. ", bits: " .. read:GetNumBitsRead() .. "/" .. totalbits .. "\n" )
-		end--]]
+		end
 	
 		if ( !handler ) then
 			if ( CLIENT ) then
@@ -86,9 +87,9 @@ hook.Add( "PreProcessMessages", "InFilter", function( netchan, read, write, loca
 			break
 		end
 
-		--[[if ( msg != net_NOP && msg != 3 && msg != 9 ) then
+		if ( msg != net_NOP && msg != 3 && msg != 9 ) then
 			Msg( "(in) Post Message: " .. msg .. " bits: " .. read:GetNumBitsRead() .. "/" .. totalbits .. "\n" )
-		end--]]
+		end
 	end
 	
 	if ( CLIENT ) then

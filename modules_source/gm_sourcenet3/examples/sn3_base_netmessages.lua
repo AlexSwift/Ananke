@@ -1,7 +1,7 @@
 require( "sourcenet3" )
 
 -- Debug ConVar
-local sourcenet_netmessage_info = CreateConVar( "sourcenet_netmessage_info", "0" )
+local sourcenet_netmessage_info = CreateConVar( "sourcenet_netmessage_info", "1" )
 
 -- Engine definitions
 NET_MESSAGE_BITS = 6
@@ -15,10 +15,13 @@ MAX_SERVER_CLASS_BITS = 9
 MAX_EDICT_BITS = 15
 MAX_TEMPENTITIES_BITS = 18
 MAX_STRINGTABLE_BITS = 21
---]]
+]]
 MAX_EDICT_BITS = 11
 MAX_TEMPENTITIES_BITS = 17
 MAX_STRINGTABLE_BITS = 20
+
+clc_GMod_ClientToServer = 18
+svc_GMod_ServerToClient = 33
 
 function math.log2( val )
 	return math.log( val ) / math.log( 2 )
@@ -131,22 +134,22 @@ NET_MESSAGES = {
 		[ clc_ClientInfo ] = { -- 8
 			DefaultCopy = function( netchan, read, write )
 				write:WriteUBitLong( clc_ClientInfo, NET_MESSAGE_BITS )
-							
+
 				local spawncount = read:ReadLong() -- 14h, server spawn count - reconnects client if incorrect
 				write:WriteLong( spawncount )
-							
+				
 				local sendTableCRC = read:ReadLong() -- 10h
 				write:WriteLong( sendTableCRC )
-
+				
 				local ishltv = read:ReadOneBit() -- 18h, requires tv_enable
 				write:WriteOneBit( ishltv )
-							
+				
 				local friendsID = read:ReadLong() -- 1Ch
 				write:WriteLong( friendsID )
-							
+				
 				local guid = read:ReadString() -- 20h, hashed CD Key (32 hex alphabetic chars + 0 terminator)
 				write:WriteString( guid )
-
+				
 				for i = 1, MAX_CUSTOM_FILES do
 					local useFile = read:ReadOneBit() -- 40h, 44h, 48h, 4Ch
 					write:WriteOneBit( useFile )
@@ -166,7 +169,7 @@ NET_MESSAGES = {
 				
 				local unk = read:ReadOneBit() -- 19h, probably replay related
 				write:WriteOneBit( unk )
-				
+
 				SourceNetMsg( string.format( "clc_ClientInfo %i,%i,%i,%i,%s,%i\n", spawncount, sendTableCRC, ishltv, friendsID, guid, unk ) )
 			end
 		},
@@ -329,7 +332,6 @@ NET_MESSAGES = {
 			end			
 		},
 		
-		--[[BETA
 		[ clc_GMod_ClientToServer ] = { -- 18
 			DefaultCopy = function( netchan, read, write )
 				write:WriteUBitLong( clc_GMod_ClientToServer, NET_MESSAGE_BITS )
@@ -344,10 +346,52 @@ NET_MESSAGES = {
 				write:WriteBits( data, bits - 16 )
 				data:Delete()
 
-				SourceNetMsg( string.format( "clc_GMod_ClientToServer length=%i,id=%i/%s\n", bits, id, util.NetworkIDToString( id ) ) )
+				SourceNetMsg( string.format( "clc_GMod_ClientToServer length=%i,id=%i\n", bits, id ) )
 			end		
 		},
-		--]]
+		[ 35 ] = { -- 8
+			DefaultCopy = function( netchan, read, write )
+				write:WriteUBitLong( 35, NET_MESSAGE_BITS )
+
+				local spawncount = read:ReadLong() -- 14h, server spawn count - reconnects client if incorrect
+				write:WriteLong( spawncount )
+				
+				local sendTableCRC = read:ReadLong() -- 10h
+				write:WriteLong( sendTableCRC )
+				
+				local ishltv = read:ReadOneBit() -- 18h, requires tv_enable
+				write:WriteOneBit( ishltv )
+				
+				local friendsID = read:ReadLong() -- 1Ch
+				write:WriteLong( friendsID )
+				
+				/*
+				local guid = read:ReadString() -- 20h, hashed CD Key (32 hex alphabetic chars + 0 terminator)
+				write:WriteString( guid )
+				
+				for i = 1, MAX_CUSTOM_FILES do
+					local useFile = read:ReadOneBit() -- 40h, 44h, 48h, 4Ch
+					write:WriteOneBit( useFile )
+
+					local fileCRC
+
+					if ( useFile == 1 ) then
+						fileCRC = read:ReadUBitLong( 32 )
+
+						write:WriteUBitLong( fileCRC, 32 )
+						
+						SourceNetMsg( "clc_ClientInfo \t> customization file " .. i .. " = " .. fileCRC .. "\n" )
+					else
+						fileCRC = 0
+					end
+				end
+				*/
+				local unk = read:ReadOneBit() -- 19h, probably replay related
+				write:WriteOneBit( unk )
+
+				SourceNetMsg( string.format( "clc_ClientInfo %i,%i,%i,%i,%s,%i\n", spawncount, sendTableCRC, ishltv, friendsID, guid, unk ) )
+			end
+		},
 	},
 
 	SVC = {
@@ -828,16 +872,7 @@ NET_MESSAGES = {
 			end
 		},
 		
-		[ svc_Prefetch ] = { -- 28
-			DefaultCopy = function( netchan, read, write )
-				write:WriteUBitLong( svc_Prefetch, NET_MESSAGE_BITS )
-				
-				local index = read:ReadUBitLong( 13 )
-				write:WriteUBitLong( index, 13 )
-				
-				SourceNetMsg( string.format( "svc_Prefetch index=%i\n", index ) )
-			end
-		},
+	
 		
 		[ svc_Menu ] = { -- 29
 			DefaultCopy = function( netchan, read, write )
@@ -904,7 +939,6 @@ NET_MESSAGES = {
 			end
 		},
 		
-		--[[BETA
 		[ svc_GMod_ServerToClient ] = { -- 33
 			DefaultCopy = function( netchan, read, write )
 				write:WriteUBitLong( svc_GMod_ServerToClient, NET_MESSAGE_BITS )
@@ -921,7 +955,7 @@ NET_MESSAGES = {
 
 				SourceNetMsg( string.format( "svc_GMod_ServerToClient length=%i,id=%i/%s\n", bits, id, util.NetworkIDToString( id ) ) )
 			end		
-		},
-		--]]
+		}
+		
 	}
 }

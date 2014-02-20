@@ -87,11 +87,11 @@ function HookNetChannel( ... )
 			local a1 = netchan:GetAddress()
 			local a2 = CNetChan( v ):GetAddress()
 
-			if ( a1:GetIP() == a2:GetIP() && a1:GetPort() == a2:GetPort() ) then
+			//if ( a1:GetIP() == a2:GetIP() && a1:GetPort() == a2:GetPort() ) then
 				table.remove( NET_CHANNEL_INDICES, k )
 
 				break
-			end
+			//end
 		end
 		
 		if ( #NET_CHANNEL_INDICES == 0 ) then

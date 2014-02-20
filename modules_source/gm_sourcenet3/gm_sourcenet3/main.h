@@ -63,7 +63,7 @@ extern bool g_bPatchedNetChunk;
 #define EXT_META_ID( name, id )			extern const int META_##name##_id; \
 						extern const char *META_##name##_name
 
-#define GET_META_ID( name )			META_##name##_id
+#define GET_META_ID( name )			7 //META_##name##_id
 #define GET_META_NAME( name )			META_##name##_name
 
 #define BEGIN_META_REGISTRATION( name ) \
