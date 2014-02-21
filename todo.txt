@@ -5,8 +5,8 @@ ANANKE
 - 		Extend the mathsx lib
 - (DONE)	Prefix all public tables with Ananke.
 - 		Start on sockets communications
-- 		Menu system objects
-- 		Menu system drawing 
+- (DOING)(Matt)		Menu system objects
+- (DOING)(Matt)		Menu system drawing 
 - (DONE) 	bind system
 - 		Items
 - 		Inventory
