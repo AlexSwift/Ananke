@@ -53,3 +53,38 @@ function Ananke.core.MySQL.CollumnNames(DB,tabl,callback)
 	end)
 end
 
+--- Wrapper for insertion by James (after being ignored for an hour)
+-- Yes it's ugly, I don't exactly know how to make it look pretty though :'(
+
+function Ananke.core.MySQL.Insert( name , keys , values )
+	local str = "INSERT INTO " .. name
+	local str2 = " ( "
+	
+	for k,v in ipairs( keys ) do
+		if k == 1 then str2 = str2 .. v 
+		else str2 = str2 .. "," .. v end
+	end
+	
+	str2 = str2 .. " ) VALUES( "
+
+	for k,v in ipairs( values ) do
+		if type( v ) == "number" then
+			if k == 1 then str2 = str2 .. " " .. v .. ""
+			else str2 = str2 .. ", " .. v .. "" end
+		else
+			if k == 1 then str2 = str2 .. " '" .. tmysql.escape(v) .. "'"
+			else
+				if ( !tmysql.escape(v) ) then print( "NIL VALUE IN " .. k .. " POSITION", name )
+					PrintTable( keys )
+					PrintTable( values )
+				end
+				str2 = str2 .. ", '" .. tmysql.escape(v) .. "'"
+			end
+		end
+	end
+	str = str .. str2 .. " )" 
+	
+	Ananke.core.MySQL.Query( str , function(data)
+		--callback(data)
+	end)
+end
