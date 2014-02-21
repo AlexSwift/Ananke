@@ -1,0 +1,98 @@
+C6E aClc_voicedataR db 'CLC_VoiceData::ReadFromBuffer',0
+__cstring:003A0C98 aSBackupINewIBy db '%s: backup %i, new %i, bytes %i',0
+__cstring:003A0CB8 aClc_moveReadfr db 'CLC_Move::ReadFromBuffer',0
+__cstring:003A0CD9 aSSendtablecrcI db '%s: SendTableCRC %i',0
+__cstring:003A0CED aClc_clientinfo db 'CLC_ClientInfo::ReadFromBuffer',0
+__cstring:003A0D0C aClc_baselineac db 'CLC_BaselineAck::ReadFromBuffer',0
+__cstring:003A0D2C aSTickI         db '%s: tick %i',0
+__cstring:003A0D38 aClc_listeneven db 'CLC_ListenEvents::ReadFromBuffer',0
+__cstring:003A0D59 aSRegisteredEve db '%s: registered events %i',0
+__cstring:003A0D72 aClc_respondcva db 'CLC_RespondCvarValue::ReadFromBuffer',0
+__cstring:003A0D97 aSStatusDValueS db '%s: status: %d, value: %s, cookie: %d',0
+__cstring:003A0DBD aGame           db 'GAME',0             ; DATA XREF: __data:_g_MostCommonPathIDso
+__cstring:003A0DC2 aMod            db 'MOD',0              ; DATA XREF: __data:00479538o
+__cstring:003A0DC6 aMaterials      db 'materials',0        ; DATA XREF: __data:_g_MostCommonPrefixeso
+__cstring:003A0DD0 aModels         db 'models',0           ; DATA XREF: __data:00479540o
+__cstring:003A0DD7 aSounds         db 'sounds',0           ; DATA XREF: __data:00479544o
+__cstring:003A0DDE aScripts        db 'scripts',0          ; DATA XREF: __data:00479548o
+__cstring:003A0DE6 aClc_filecrcche db 'CLC_FileCRCCheck::ReadFromBuffer',0
+__cstring:003A0E07 aSCS            db '%s%c%s',0
+__cstring:003A0E0E aSPathSFileS    db '%s: path: %s, file: %s',0
+__cstring:003A0E25 aClc_filemd5che db 'CLC_FileMD5Check::ReadFromBuffer',0
+__cstring:003A0E46 aBase_cmdkeyval db 'Base_CmdKeyValues::ReadFromBuffer',0
+__cstring:003A0E68 aSS             db '%s: %s',0
+__cstring:003A0E6F aNull           db '<<null>>',0
+__cstring:003A0E78 aSvc_printNull  db ' svc_print NULL',0
+__cstring:003A0E88 aSvc_printReadf db 'SVC_Print::ReadFromBuffer',0
+__cstring:003A0EA2 aSS_0           db '%s: "%s"',0
+__cstring:003A0EAB aNet_stringcmdN db ' NET_StringCmd NULL',0
+__cstring:003A0EBF aNet_stringcmdR db 'NET_StringCmd::ReadFromBuffer',0
+__cstring:003A0EDD aSvc_serverinfo db 'SVC_ServerInfo::ReadFromBuffer',0
+__cstring:003A0EFC aSGameSMapSMaxI db '%s: game "%s", map "%s", max %i',0
+__cstring:003A0F1C aNet_signonstat db 'NET_SignonState::ReadFromBuffer',0
+__cstring:003A0F3C aSStateICountI  db '%s: state %i, count %i',0
+__cstring:003A0F53 aSvc_bspdecalRe db 'SVC_BSPDecal::ReadFromBuffer',0
+__cstring:003A0F70 aSTexIEntIModIL db '%s: tex %i, ent %i, mod %i lowpriority %i',0
+__cstring:003A0F9A aSvc_setviewRea db 'SVC_SetView::ReadFromBuffer',0
+__cstring:003A0FB6 aSViewEntityI   db '%s: view entity %i',0
+__cstring:003A0FC9 aSvc_fixangleRe db 'SVC_FixAngle::ReadFromBuffer',0
+__cstring:003A0FE6 aSS_1f_1f_1f    db '%s: %s %.1f %.1f %.1f ',0
+__cstring:003A0FFD aRelative       db 'relative',0
+__cstring:003A1006 aAbsolute       db 'absolute',0
+__cstring:003A100F aSvc_crosshaira db 'SVC_CrosshairAngle::ReadFromBuffer',0
+__cstring:003A1032 aS_1f_1f_1f     db '%s: (%.1f %.1f %.1f)',0
+__cstring:003A1047 aSvc_voiceinitN db 'svc_voiceinit NULL',0
+__cstring:003A105A aSvc_voiceinitR db 'SVC_VoiceInit::ReadFromBuffer',0
+__cstring:003A1078 aSCodecSQualitt db '%s: codec "%s", qualitty %i',0
+__cstring:003A1094 aSvc_voicedataR db 'SVC_VoiceData::ReadFromBuffer',0
+__cstring:003A10B2 aSClientIBytesI db '%s: client %i, bytes %i',0
+__cstring:003A10CA aNet_tickReadfr db 'NET_Tick::ReadFromBuffer',0
+__cstring:003A10E3 aSvc_usermessag db 'SVC_UserMessage::ReadFromBuffer',0
+__cstring:003A1103 aSTypeIBytesI   db '%s: type %i, bytes %i',0
+__cstring:003A1119 aSvc_setpauseRe db 'SVC_SetPause::ReadFromBuffer',0
+__cstring:003A1136 aPaused         db 'paused',0
+__cstring:003A113D aUnpaused       db 'unpaused',0
+__cstring:003A1146 aNet_setconvarR db 'NET_SetConVar::ReadFromBuffer',0
+__cstring:003A1164 aSICvarsSS      db '%s: %i cvars, "%s"="%s"',0
+__cstring:003A117C aSvc_updatestri db 'SVC_UpdateStringTable::ReadFromBuffer',0
+__cstring:003A11A2 aSTableIChanged db '%s: table %i, changed %i, bytes %i',0
+__cstring:003A11C5 aSvc_createstri db 'SVC_CreateStringTable::ReadFromBuffer',0
+__cstring:003A11EB aSTableSEntries db '%s: table %s, entries %i, bytes %i userdatasize %i userdatabits %'
+__cstring:003A11EB                 db 'i',0
+__cstring:003A122E aSvc_soundsRead db 'SVC_Sounds::ReadFromBuffer',0
+__cstring:003A1249 aSNumberISBytes db '%s: number %i,%s bytes %i',0
+__cstring:003A1263 aReliable       db ' reliable,',0
+__cstring:003A126E aSvc_prefetchRe db 'SVC_Prefetch::ReadFromBuffer',0
+__cstring:003A128B aSTypeIIndexI   db '%s: type %i index %i',0
+__cstring:003A12A0 aSvc_tempentiti db 'SVC_TempEntities::ReadFromBuffer',0
+__cstring:003A12C1 aSNumberIBytesI db '%s: number %i, bytes %i',0
+__cstring:003A12D9 aSvc_classinfoR db 'SVC_ClassInfo::ReadFromBuffer',0
+__cstring:003A12F7 aSNumIS         db '%s: num %i, %s',0
+__cstring:003A1306 aUseClientClass db 'use client classes',0
+__cstring:003A1319 aFullUpdate     db 'full update',0
+__cstring:003A1325 aSvc_gameeventR db 'SVC_GameEvent::ReadFromBuffer',0
+__cstring:003A1343 aSBytesI        db '%s: bytes %i',0
+__cstring:003A1350 aSvc_sendtableR db 'SVC_SendTable::ReadFromBuffer',0
+__cstring:003A136E aSNeedsDecoderS db '%s: needs Decoder %s,bytes %i',0
+__cstring:003A138C aYes            db 'yes',0
+__cstring:003A1390 aNo             db 'no',0
+__cstring:003A1393 aSvc_entitymess db 'SVC_EntityMessage::ReadFromBuffer',0
+__cstring:003A13B5 aSEntityIClassI db '%s: entity %i, class %i, bytes %i',0
+__cstring:003A13D7 aSvc_packetenti db 'SVC_PacketEntities::ReadFromBuffer',0
+__cstring:003A13FA aSDeltaIMaxICha db '%s: delta %i, max %i, changed %i,%s bytes %i',0
+__cstring:003A1427 aBlUpdate       db ' BL update,',0
+__cstring:003A1433 aTooMuchMenuDat db 'Too much menu data (4096 bytes max)',0Ah,0
+__cstring:003A1458 aSvc_menuReadfr db 'SVC_Menu::ReadFromBuffer',0
+__cstring:003A1471 aMenu           db 'menu',0
+__cstring:003A1476 aSISLenI        db '%s: %i "%s" (len:%i)',0
+__cstring:003A148B aNoKeyvalues    db 'No KeyValues',0
+__cstring:003A1498 aSvc_gameeventl db 'SVC_GameEventList::ReadFromBuffer',0
+__cstring:003A14BA aHeartbeat      db 'Heartbeat',0
+__cstring:003A14C4 aClientInfoIdLl db 'Client Info: ID: %llu, Players: %d',0
+__cstring:003A14E7 aRegisterRespon db 'Register Response',0
+__cstring:003A14F9 aMutelist       db 'Mutelist',0
+__cstring:003A1502 aCheckpointD    db 'Checkpoint: %d',0
+__cstring:003A1511 aIdLluNonceLluF db 'ID: %llu, Nonce: %llu, Flags: %u',0
+__cstring:003A1532 aMigrateMessage db 'Migrate Message',0
+__cstring:003A1542 aSvc_getcvarval db 'SVC_GetCvarValue::ReadFromBuffer',0
+__cstring:003A1563 aSCvarSCookieD  db '%s: cvar: %s, cookie: %d',0

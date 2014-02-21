@@ -1,0 +1,40 @@
+.data:0x00000000	push   ebp	
+.data:0x00000001	mov    ebp,esp	
+.data:0x00000003	mov    eax,0x0	
+.data:0x00000008	func_0000000d	
+.data:0x0000000d		; =============== F U N C T I O N ====================================
+.data:0x0000000d		; CODE XREF: 0x00000008
+.data:0x0000000d			
+.data:0x0000000d		func_0000000d:	
+.data:0x0000000d	mov    eax,ds:0x0	
+; char* dst = arg[0]
+.data:0x00000012	cmp    DWORD PTR [eax+0x30],0x0	
+.data:0x00000016	push   ebx	
+.data:0x00000017	mov    ebx,DWORD PTR [ebp+0x8]	
+.data:0x0000001a	push   esi	
+.data:0x0000001b	mov    esi,ecx	
+; while (c != 0)
+.data:0x0000001d	push   edi	
+.data:0x0000001e	mov    DWORD PTR [ebp-0x4],esi	
+.data:0x00000021	je     loc_00000023	
+.data:0x00000023			
+.data:0x00000023		loc_00000023:	
+.data:0x00000023	test   ebx,ebx	
+.data:0x00000025	je     loc_00000027	
+.data:0x00000027			
+.data:0x00000027		loc_00000027:	
+.data:0x00000027	mov    eax,DWORD PTR [ebx+0xc]	
+.data:0x0000002a	add    eax,0x7	
+.data:0x0000002d	sar    eax,0x3	
+.data:0x00000030	test   eax,eax	
+.data:0x00000032	jle    loc_00000034	
+.data:0x00000034			
+.data:0x00000034		loc_00000034:	
+.data:0x00000034	mov    ecx,DWORD PTR ds:0x0	
+.data:0x0000003a	mov    edx,DWORD PTR [ecx]	
+.data:0x0000003c	mov    ecx,DWORD PTR [edx+0x90]	
+.data:0x00000042	dec    eax	
+.data:0x00000043	push   eax	
+.data:0x00000044	mov    eax,DWORD PTR [ebx]	
+.data:0x00000046	push   eax	
+.data:0x00000047	push   0x0

@@ -152,7 +152,7 @@ enum
 
 #define svc_blank35			35
 
-#define SVC_LASTMSG			33	// last known server message
+#define SVC_LASTMSG			34	// last known server message
 
 //
 // client to server
@@ -169,7 +169,7 @@ enum
 #define clc_FileMD5Check		17		// client is sending a file's MD5 to the server to be verified.
 
 #define clc_GMod_ClientToServer 18
-#define CLC_LASTMSG	18
+#define CLC_LASTMSG	19
 
 #define RES_FATALIFMISSING	(1<<0)   // Disconnect if we can't get this file.
 #define RES_PRELOAD			(1<<1)  // Load on client rather than just reserving name

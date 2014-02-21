@@ -1,4 +1,4 @@
-﻿Build started 20/02/2014 17:32:33.
+﻿Build started 21/02/2014 20:09:26.
      1>Project "C:\Users\Alex\Documents\GitHub\Ananke\modules_source\gm_sourcenet3\gm_sourcenet3\gm_sourcenet3.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Release\gm_sourcenet3.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -46,4 +46,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:11.42
+Time Elapsed 00:00:09.87

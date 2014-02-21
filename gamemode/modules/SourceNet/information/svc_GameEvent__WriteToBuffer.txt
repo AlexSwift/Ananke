@@ -1,0 +1,316 @@
+__text:00009A70 ; SVC_GameEvent::WriteToBuffer(bf_write &)
+__text:00009A70 __ZN13SVC_GameEvent13WriteToBufferER8bf_write proc near
+__text:00009A70
+__text:00009A70 var_28          = dword ptr -28h
+__text:00009A70 var_24          = dword ptr -24h
+__text:00009A70 var_20          = dword ptr -20h
+__text:00009A70 var_18          = dword ptr -18h
+__text:00009A70 var_14          = dword ptr -14h
+__text:00009A70 var_10          = dword ptr -10h
+__text:00009A70 arg_0           = dword ptr  8
+__text:00009A70 arg_4           = dword ptr  0Ch
+__text:00009A70
+__text:00009A70                 push    ebp
+__text:00009A71                 mov     ebp, esp
+__text:00009A73                 push    ebx
+__text:00009A74                 push    edi
+__text:00009A75                 push    esi
+__text:00009A76                 sub     esp, 1Ch
+__text:00009A79                 mov     edx, [ebp+arg_0]
+__text:00009A7C                 mov     ecx, [edx+38h]
+__text:00009A7F                 mov     [edx+10h], ecx
+__text:00009A82                 xor     al, al
+__text:00009A84                 cmp     ecx, 7FFh
+__text:00009A8A                 jg      loc_9BA9
+__text:00009A90                 mov     esi, [ebp+arg_4]
+__text:00009A93                 mov     eax, [edx]
+__text:00009A95                 mov     [esp+28h+var_28], edx
+__text:00009A98                 call    dword ptr [eax+20h]
+__text:00009A9B                 mov     edx, [esi+8]
+__text:00009A9E                 mov     ebx, [esi+0Ch]
+__text:00009AA1                 mov     ecx, edx
+__text:00009AA3                 sub     ecx, ebx
+__text:00009AA5                 cmp     ecx, 5
+__text:00009AA8                 jg      short loc_9AB5
+__text:00009AAA                 mov     [esi+0Ch], edx
+__text:00009AAD                 mov     byte ptr [esi+10h], 1
+__text:00009AB1                 mov     eax, edx
+__text:00009AB3                 jmp     short loc_9B19
+__text:00009AB5 ; ---------------------------------------------------------------------------
+__text:00009AB5
+__text:00009AB5 loc_9AB5:                               ; CODE XREF: SVC_GameEvent::WriteToBuffer(bf_write &)+38j
+__text:00009AB5                 lea     ecx, [ebx+6]
+__text:00009AB8                 mov     [esi+0Ch], ecx
+__text:00009ABB                 mov     ecx, ebx
+__text:00009ABD                 and     ecx, 1Fh
+__text:00009AC0                 mov     [ebp+var_10], ecx
+__text:00009AC3                 rol     eax, cl
+__text:00009AC5                 mov     [ebp+var_14], eax
+__text:00009AC8                 xor     ecx, 1Fh
+__text:00009ACB                 mov     edi, 1Fh
+__text:00009AD0                 shr     edi, cl
+__text:00009AD2                 mov     ecx, edi
+__text:00009AD4                 and     ecx, 1
+__text:00009AD7                 sar     ebx, 5
+__text:00009ADA                 add     ecx, ebx
+__text:00009ADC                 mov     edx, [ebp+arg_4]
+__text:00009ADF                 mov     eax, [edx]
+__text:00009AE1                 mov     [ebp+var_18], eax
+__text:00009AE4                 mov     esi, [eax+ecx*4]
+__text:00009AE7                 mov     edx, esi
+__text:00009AE9                 mov     eax, [ebp+var_14]
+__text:00009AEC                 xor     edx, eax
+__text:00009AEE                 and     edx, edi
+__text:00009AF0                 xor     edx, esi
+__text:00009AF2                 mov     esi, [ebp+var_18]
+__text:00009AF5                 mov     edi, [esi+ebx*4]
+__text:00009AF8                 mov     [esi+ecx*4], edx
+__text:00009AFB                 xor     eax, edi
+__text:00009AFD                 mov     edx, edi
+__text:00009AFF
+__text:00009AFF loc_9AFF:                               ; DATA XREF: __eh_frame:004351B3o
+__text:00009AFF                 mov     edi, 3Fh
+__text:00009B04                 mov     ecx, [ebp+var_10]
+__text:00009B07                 shl     edi, cl
+__text:00009B09                 and     edi, eax
+__text:00009B0B                 xor     edi, edx
+__text:00009B0D                 mov     [esi+ebx*4], edi
+__text:00009B10                 mov     esi, [ebp+arg_4]
+__text:00009B13                 mov     eax, [esi+8]
+__text:00009B16                 mov     edx, [esi+0Ch]
+__text:00009B19
+__text:00009B19 loc_9B19:                               ; CODE XREF: SVC_GameEvent::WriteToBuffer(bf_write &)+43j
+__text:00009B19                 mov     ecx, eax
+__text:00009B1B                 sub     ecx, edx
+__text:00009B1D                 cmp     ecx, 0Ah
+__text:00009B20                 jg      short loc_9B30
+__text:00009B22                 mov     [esi+0Ch], eax
+__text:00009B25                 mov     byte ptr [esi+10h], 1
+__text:00009B29                 mov     eax, [ebp+arg_0]
+__text:00009B2C                 mov     ecx, eax
+__text:00009B2E                 jmp     short loc_9B93
+__text:00009B30 ; ---------------------------------------------------------------------------
+__text:00009B30
+__text:00009B30 loc_9B30:                               ; CODE XREF: SVC_GameEvent::WriteToBuffer(bf_write &)+B0j
+__text:00009B30                 mov     eax, [ebp+arg_0]
+__text:00009B33                 mov     edi, [eax+10h]
+__text:00009B36                 lea     eax, [edx+0Bh]
+__text:00009B39                 mov     [esi+0Ch], eax
+__text:00009B3C                 mov     ecx, edx
+__text:00009B3E                 and     ecx, 1Fh
+__text:00009B41                 mov     [ebp+var_10], ecx
+__text:00009B44                 rol     edi, cl
+__text:00009B46                 mov     esi, edi
+__text:00009B48                 xor     ecx, 1Fh
+__text:00009B4B                 mov     edi, 3FFh
+__text:00009B50                 shr     edi, cl
+__text:00009B52                 mov     ecx, edi
+__text:00009B54                 and     ecx, 1
+__text:00009B57                 sar     edx, 5
+__text:00009B5A                 add     ecx, edx
+__text:00009B5C                 mov     eax, [ebp+arg_4]
+__text:00009B5F                 mov     eax, [eax]
+__text:00009B61                 mov     [ebp+var_14], eax
+__text:00009B64                 mov     ebx, [eax+ecx*4]
+__text:00009B67                 mov     eax, ebx
+__text:00009B69                 xor     eax, esi
+__text:00009B6B                 and     eax, edi
+__text:00009B6D                 xor     eax, ebx
+__text:00009B6F                 mov     ebx, [ebp+var_14]
+__text:00009B72                 mov     edi, [ebx+edx*4]
+__text:00009B75                 mov     [ebx+ecx*4], eax
+__text:00009B78                 xor     esi, edi
+__text:00009B7A                 mov     eax, edi
+__text:00009B7C                 mov     edi, 7FFh
+__text:00009B81                 mov     ecx, [ebp+var_10]
+__text:00009B84
+__text:00009B84 loc_9B84:                               ; DATA XREF: __text:0036B030o
+__text:00009B84                 shl     edi, cl
+__text:00009B86                 mov     ecx, [ebp+arg_0]
+__text:00009B89                 and     edi, esi
+__text:00009B8B                 xor     edi, eax
+__text:00009B8D                 mov     [ebx+edx*4], edi
+__text:00009B90                 mov     esi, [ebp+arg_4]
+__text:00009B93
+__text:00009B93 loc_9B93:                               ; CODE XREF: SVC_GameEvent::WriteToBuffer(bf_write &)+BEj
+__text:00009B93                 mov     eax, [ecx+10h]
+__text:00009B96                 mov     ecx, [ecx+2Ch]
+__text:00009B99                 mov     [esp+28h+var_20], eax
+__text:00009B9D                 mov     [esp+28h+var_24], ecx
+__text:00009BA1                 mov     [esp+28h+var_28], esi
+__text:00009BA4                 call    __ZN8bf_write9WriteBitsEPKvi ; bf_write::WriteBits(void  const*,int)
+__text:00009BA9
+__text:00009BA9 loc_9BA9:                               ; CODE XREF: SVC_GameEvent::WriteToBuffer(bf_write &)+1Aj
+__text:00009BA9                 movzx   eax, al
+__text:00009BAC                 add     esp, 1Ch
+__text:00009BAF                 pop     esi
+__text:00009BB0                 pop     edi
+__text:00009BB1                 pop     ebx
+__text:00009BB2                 pop     ebp
+__text:00009BB3                 retn
+__text:00009BB3 __ZN13SVC_GameEvent13WriteToBufferER8bf_write endp
+__text:00009BB3
+__text:00009BB3 ; ---------------------------------------------------------------------------
+__text:00009BB4                 dd 2E666666h, 841F0Fh, 0
+__text:00009BC0
+__text:00009BC0 ; ¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦ S U B R O U T I N E ¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦
+__text:00009BC0
+__text:00009BC0 ; Attributes: bp-based frame
+__text:00009BC0
+__text:00009BC0 ; SVC_GameEvent::ReadFromBuffer(bf_read &)
+__text:00009BC0 __ZN13SVC_GameEvent14ReadFromBufferER7bf_read proc near
+__text:00009BC0
+__text:00009BC0 var_28          = dword ptr -28h
+__text:00009BC0 var_24          = dword ptr -24h
+__text:00009BC0 var_20          = dword ptr -20h
+__text:00009BC0 var_1C          = dword ptr -1Ch
+__text:00009BC0 var_18          = dword ptr -18h
+__text:00009BC0 var_11          = byte ptr -11h
+__text:00009BC0 var_10          = dword ptr -10h
+__text:00009BC0 arg_0           = dword ptr  8
+__text:00009BC0 arg_4           = dword ptr  0Ch
+__text:00009BC0
+__text:00009BC0                 push    ebp
+__text:00009BC1                 mov     ebp, esp
+__text:00009BC3                 push    ebx
+__text:00009BC4                 push    edi
+__text:00009BC5                 push    esi
+__text:00009BC6                 sub     esp, 1Ch
+__text:00009BC9                 call    $+5
+__text:00009BCE                 pop     esi
+__text:00009BCF                 mov     edi, ds:off_46E442[esi]
+__text:00009BD5                 mov     eax, [edi+100Ch]
+__text:00009BDB                 mov     [ebp+var_10], eax
+__text:00009BDE                 test    eax, eax
+__text:00009BE0                 jz      short loc_9C3E
+__text:00009BE2                 mov     ebx, [edi+19B8h]
+__text:00009BE8                 call    _ThreadGetCurrentId_stub
+__text:00009BED                 cmp     ebx, eax
+__text:00009BEF                 jnz     short loc_9C3E
+__text:00009BF1                 mov     eax, [edi+1014h]
+__text:00009BF7                 mov     edx, [eax]
+__text:00009BF9                 lea     ecx, dword_397757[esi]
+__text:00009BFF                 cmp     edx, ecx
+__text:00009C01
+__text:00009C01 loc_9C01:                               ; DATA XREF: __text:001ED304o
+__text:00009C01                 jz      short loc_9C2F
+__text:00009C03
+__text:00009C03 loc_9C03:                               ; DATA XREF: __text:002E6ECAo
+__text:00009C03                 lea     edx, dword_3970BE[esi]
+__text:00009C09                 mov     [esp+28h+var_1C], edx
+__text:00009C0D                 mov     [esp+28h+var_24], ecx
+__text:00009C11                 mov     [esp+28h+var_28], eax
+__text:00009C14                 mov     [esp+28h+var_18], 0
+__text:00009C1C
+__text:00009C1C loc_9C1C:                               ; DATA XREF: __text:00367B7Eo
+__text:00009C1C                 mov     [esp+28h+var_20], 1
+__text:00009C24                 call    __ZN10CVProfNode10GetSubNodeEPKciS1_i_stub
+__text:00009C29                 mov     [edi+1014h], eax
+__text:00009C2F
+__text:00009C2F loc_9C2F:                               ; CODE XREF: SVC_GameEvent::ReadFromBuffer(bf_read &):loc_9C01j
+__text:00009C2F                 mov     [esp+28h+var_28], eax
+__text:00009C32                 call    __ZN10CVProfNode10EnterScopeEv_stub
+__text:00009C37                 mov     byte ptr [edi+1010h], 0
+__text:00009C3E
+__text:00009C3E loc_9C3E:                               ; CODE XREF: SVC_GameEvent::ReadFromBuffer(bf_read &)+20j
+__text:00009C3E                                         ; SVC_GameEvent::ReadFromBuffer(bf_read &)+2Fj
+__text:00009C3E                 mov     esi, [ebp+arg_4]
+__text:00009C41                 mov     eax, [esi+8]
+__text:00009C44
+__text:00009C44 loc_9C44:                               ; DATA XREF: __text:002232ACo
+__text:00009C44                 mov     ecx, [esi+0Ch]
+__text:00009C47                 mov     edx, eax
+__text:00009C49                 sub     edx, ecx
+__text:00009C4B                 cmp     edx, 0Ah
+__text:00009C4E                 jg      short loc_9C5F
+__text:00009C50                 mov     [esi+0Ch], eax
+__text:00009C53                 xor     ebx, ebx
+__text:00009C55                 mov     [esp+28h+var_28], esi
+__text:00009C58                 call    __ZN7bf_read15SetOverflowFlagEv ; bf_read::SetOverflowFlag(void)
+__text:00009C5D                 jmp     short loc_9C84
+__text:00009C5F ; ---------------------------------------------------------------------------
+__text:00009C5F
+__text:00009C5F loc_9C5F:                               ; CODE XREF: SVC_GameEvent::ReadFromBuffer(bf_read &)+8Ej
+__text:00009C5F                 lea     eax, [ecx+0Bh]
+__text:00009C62                 mov     [esi+0Ch], eax
+__text:00009C65                 lea     eax, [ecx+0Ah]
+__text:00009C68                 sar     eax, 5
+__text:00009C6B                 mov     edx, [esi]
+__text:00009C6D                 mov     eax, [edx+eax*4]
+__text:00009C70                 mov     ebx, ecx
+__text:00009C72                 sar     ebx, 5
+__text:00009C75                 mov     ebx, [edx+ebx*4]
+__text:00009C78                 and     ecx, 1Fh
+__text:00009C7B                 shrd    ebx, eax, cl
+__text:00009C7E
+__text:00009C7E loc_9C7E:                               ; DATA XREF: __text:0030A7A0o
+__text:00009C7E                                         ; __text:0036D3CCo
+__text:00009C7E                 and     ebx, 7FFh
+__text:00009C84
+__text:00009C84 loc_9C84:                               ; CODE XREF: SVC_GameEvent::ReadFromBuffer(bf_read &)+9Dj
+__text:00009C84                 mov     eax, [ebp+arg_0]
+__text:00009C87                 mov     [eax+10h], ebx
+__text:00009C8A
+__text:00009C8A loc_9C8A:                               ; DATA XREF: __text:0038C81Eo
+__text:00009C8A                                         ; __text:002FEE50o
+__text:00009C8A                 movsd   xmm0, qword ptr [esi+10h]
+__text:00009C8F
+__text:00009C8F loc_9C8F:                               ; DATA XREF: __text:0035ED86o
+__text:00009C8F                                         ; __text:003936E8o ...
+__text:00009C8F                 movsd   qword ptr [eax+24h], xmm0
+__text:00009C94                 movsd   xmm0, qword ptr [esi]
+__text:00009C98                 movsd   xmm1, qword ptr [esi+8]
+__text:00009C9D                 movsd   qword ptr [eax+1Ch], xmm1
+__text:00009CA2                 movsd   qword ptr [eax+14h], xmm0
+__text:00009CA7                 add     ebx, [esi+0Ch]
+__text:00009CAA                 js      short loc_9CB3
+__text:00009CAC                 mov     al, 1
+__text:00009CAE                 cmp     [esi+8], ebx
+__text:00009CB1                 jge     short loc_9CC0
+__text:00009CB3
+__text:00009CB3 loc_9CB3:                               ; CODE XREF: SVC_GameEvent::ReadFromBuffer(bf_read &)+EAj
+__text:00009CB3                 mov     [esp+28h+var_28], esi
+__text:00009CB6                 call    __ZN7bf_read15SetOverflowFlagEv ; bf_read::SetOverflowFlag(void)
+__text:00009CBB                 mov     ebx, [esi+8]
+__text:00009CBE                 xor     al, al
+__text:00009CC0
+__text:00009CC0 loc_9CC0:                               ; CODE XREF: SVC_GameEvent::ReadFromBuffer(bf_read &)+F1j
+__text:00009CC0                 mov     [ebp+var_11], al
+__text:00009CC3                 mov     [esi+0Ch], ebx
+__text:00009CC6                 cmp     [ebp+var_10], 0
+__text:00009CCA                 jz      short loc_9D1E
+__text:00009CCC                 cmp     byte ptr [edi+1010h], 0
+__text:00009CD3                 jz      short loc_9CDF
+__text:00009CD5                 mov     eax, [edi+100Ch]
+__text:00009CDB                 test    eax, eax
+__text:00009CDD                 jz      short loc_9D1E
+__text:00009CDF
+__text:00009CDF loc_9CDF:                               ; CODE XREF: SVC_GameEvent::ReadFromBuffer(bf_read &)+113j
+__text:00009CDF                 mov     esi, [edi+19B8h]
+__text:00009CE5                 call    _ThreadGetCurrentId_stub
+__text:00009CEA                 cmp     esi, eax
+__text:00009CEC                 jnz     short loc_9D1E
+__text:00009CEE                 mov     eax, [edi+1014h]
+__text:00009CF4                 mov     [esp+28h+var_28], eax
+__text:00009CF7                 call    __ZN10CVProfNode9ExitScopeEv_stub
+__text:00009CFC                 mov     ecx, [edi+1014h]
+__text:00009D02                 test    al, al
+__text:00009D04                 jz      short loc_9D0F
+__text:00009D06                 mov     ecx, [ecx+64h]
+__text:00009D09                 mov     [edi+1014h], ecx
+__text:00009D0F
+__text:00009D0F loc_9D0F:                               ; CODE XREF: SVC_GameEvent::ReadFromBuffer(bf_read &)+144j
+__text:00009D0F                 lea     eax, [edi+1018h]
+__text:00009D15                 cmp     ecx, eax
+__text:00009D17                 setz    byte ptr [edi+1010h]
+__text:00009D1E
+__text:00009D1E loc_9D1E:                               ; CODE XREF: SVC_GameEvent::ReadFromBuffer(bf_read &)+10Aj
+__text:00009D1E                                         ; SVC_GameEvent::ReadFromBuffer(bf_read &)+11Dj ...
+__text:00009D1E                 movzx   eax, [ebp+var_11]
+__text:00009D22                 add     esp, 1Ch
+__text:00009D25                 pop     esi
+__text:00009D26                 pop     edi
+__text:00009D27                 pop     ebx
+__text:00009D28                 pop     ebp
+__text:00009D29                 retn
+__text:00009D29 __ZN13SVC_GameEvent14ReadFromBufferER7bf_read endp

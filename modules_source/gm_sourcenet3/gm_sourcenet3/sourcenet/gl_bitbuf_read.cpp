@@ -114,11 +114,12 @@ META_FUNCTION( sn3_bf_read, ReadBits )
 
 	sn3_bf_read *buf = GET_META( 1, sn3_bf_read );
 
-	unsigned char *data = new unsigned char[ BitByte( Lua()->GetInteger( 2 ) ) ];
-
+	int Int = BitByte( Lua()->GetInteger( 2 ) );
+	unsigned char *data = new unsigned char[ Int ];
 	if ( !data )
 	{
-		Lua()->Msg( "[gm_sourcenet3][sn3_bf_read::ReadBits] Failed allocating %i bytes\n", BitByte( Lua()->GetInteger( 2 ) ) );
+		Lua()->Error( "[gm_sourcenet3] Failed to allocate " + Int );
+		//Lua()->Msg( "[gm_sourcenet3][sn3_bf_read::ReadBits] Failed allocating %i bytes\n", BitByte( Lua()->GetInteger( 2 ) ) );
 		Lua()->Error( "[gm_sourcenet3][sn3_bf_read::ReadBits] Fatal error" );
 
 		// Prevent further reading of the buffer

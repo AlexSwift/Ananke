@@ -1,0 +1,34 @@
+; SVC_GameEvent::ReadFromBuffer(bf_read &)
+__text:00009BC0 __ZN13SVC_GameEvent14ReadFromBufferER7bf_read proc near
+__text:00009BC0
+__text:00009BC0 var_28          = dword ptr -28h
+__text:00009BC0 var_24          = dword ptr -24h
+__text:00009BC0 var_20          = dword ptr -20h
+__text:00009BC0 var_1C          = dword ptr -1Ch
+__text:00009BC0 var_18          = dword ptr -18h
+__text:00009BC0 var_11          = byte ptr -11h
+__text:00009BC0 var_10          = dword ptr -10h
+__text:00009BC0 arg_0           = dword ptr  8
+__text:00009BC0 arg_4           = dword ptr  0Ch
+__text:00009BC0
+__text:00009BC0                 push    ebp
+__text:00009BC1                 mov     ebp, esp
+__text:00009BC3                 push    ebx
+__text:00009BC4                 push    edi
+__text:00009BC5                 push    esi
+__text:00009BC6                 sub     esp, 1Ch
+__text:00009BC9                 call    $+5
+__text:00009BCE                 pop     esi
+__text:00009BCF                 mov     edi, ds:off_46E442[esi]
+__text:00009BD5                 mov     eax, [edi+100Ch]
+__text:00009BDB                 mov     [ebp+var_10], eax
+__text:00009BDE                 test    eax, eax
+__text:00009BE0                 jz      short loc_9C3E
+__text:00009BE2                 mov     ebx, [edi+19B8h]
+__text:00009BE8                 call    _ThreadGetCurrentId_stub
+__text:00009BED                 cmp     ebx, eax
+__text:00009BEF                 jnz     short loc_9C3E
+__text:00009BF1                 mov     eax, [edi+1014h]
+__text:00009BF7                 mov     edx, [eax]
+__text:00009BF9                 lea     ecx, dword_397757[esi]
+__text:00009BFF                 cmp     edx, ecx
