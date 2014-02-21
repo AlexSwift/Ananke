@@ -2,39 +2,55 @@ local modul = Ananke.modules.new()
 modul.Name = 'SoundScape'
 
 Ananke.SoundScape = {}
-Ananke.SoundScape.Data = {} -- ID , callback 
+Ananke.SoundScape.Scapes = {} 
 
 function Ananke.SoundScape.AddSoundScape( id , SndData )
+
+	local SoundObj = CreateSound( pl, SndData.Sound )
 	
-	Ananke.SoundScape.CallBacks[id] = { start 	= StartTouch,
-										['end']	= EndTouch }
+	local StartTouch = function( trigger , ent, m_scape )
+		if not CLIENT then return end
+		
+		for k, v in pairs( Ananke.SoundScape.Scapes ) do
+			v.SndData.controlVol = 0
+		end
+		
+		Ananke.SoundScape.Scapes[m_scape].SndData.controlVol = .5
+		-- UPDATE SOUND OBJECTS HERE --
+	end
+		
+	local EndTouch = function( trigger , ent, m_scape )
+		if not CLIENT then return end
+		Ananke.SoundScape.Scapes[m_scape].SndData.controlVol = 0
+		-- UPDATE SOUND OBJECTS HERE --
+	end
+	
+	Ananke.SoundScape.Scapes[id] = { start 	= StartTouch,
+									['end']	= EndTouch,
+									SndData = SndData}
 	
 end
 
 function Ananke.SoundScape.RemoveCallback( id )
-
-	-- CAUTION: This will break functionality
-	
-	Ananke.SoundScape.CallBacks[id] = nil
-	
+	Ananke.SoundScape.Scapes[id] = nil
 end
 
 
-function Ananke.Trigger.StartTouch( trigger , ent )
+function Ananke.SoundScape.StartTouch( trigger , ent )
 
-	local m_callback = trigger:GetKeyValues().m_callback
-	if not Ananke.Trigger.CallBacks[m_callback]['start'] then return end
+	local m_scape = trigger:GetKeyValues().m_scape
+	if not Ananke.SoundScape.Scapes[m_scape]['start'] then return end
 	
-	Ananke.Trigger.CallBacks[m_callback]['start']( trigger , ent )
+	Ananke.SoundScape.Scapes[m_scape]['start']( trigger , ent, m_scape )
 	
 end
 
-function Ananke.Trigger.EndTouch( trigger , ent )
+function Ananke.SoundScape.EndTouch( trigger , ent )
 
-	local m_callback = trigger:GetKeyValues().m_callback
-	if not Ananke.Trigger.CallBacks[m_callback]['end'] then return end
+	local m_scape = trigger:GetKeyValues().m_scape
+	if not Ananke.SoundScape.Scapes[m_scape]['end'] then return end
 	
-	Ananke.Trigger.CallBacks[m_callback]['end']( trigger , ent )
+	Ananke.SoundScape.Scapes[m_scape]['end']( trigger , ent, m_scape )
 	
 end
 	
