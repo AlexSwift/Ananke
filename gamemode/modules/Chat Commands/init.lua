@@ -95,7 +95,7 @@ hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)
 	-- command exists
 	text = text:gsub( "^[!/](%S+)%s*", "" )
 	local args = {}
-	for v in str:gmatch( "(%S+)" ) do
+	for v in text:gmatch( "(%S+)" ) do
 		table.insert( args, v )
 	end
 	
