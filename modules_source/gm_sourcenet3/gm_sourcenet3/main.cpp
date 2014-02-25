@@ -258,9 +258,7 @@ int Open( lua_State *L )
 	REG_GLBL_NUMBER( svc_GameEventList );
 	REG_GLBL_NUMBER( svc_GetCvarValue );
 	REG_GLBL_NUMBER( svc_CmdKeyValues );
-#ifdef GMODBETA
 	REG_GLBL_NUMBER( svc_GMod_ServerToClient );
-#endif
 	REG_GLBL_NUMBER( SVC_LASTMSG );
 
 	REG_GLBL_NUMBER( clc_ClientInfo );
@@ -272,9 +270,7 @@ int Open( lua_State *L )
 	REG_GLBL_NUMBER( clc_FileCRCCheck );
 	REG_GLBL_NUMBER( clc_CmdKeyValues );
 	REG_GLBL_NUMBER( clc_FileMD5Check );
-#ifdef GMODBETA
 	REG_GLBL_NUMBER( clc_GMod_ClientToServer );
-#endif
 	REG_GLBL_NUMBER( CLC_LASTMSG );
 
 	REG_GLBL_NUMBER( RES_FATALIFMISSING );
