@@ -34,7 +34,7 @@ class "LinkedList" {
 		end;
 		
 		__finalize = function(self)
-		
+			self:Clear()
 		end;
 		
 		-- Adds given 'obj' to the Head of the list.
@@ -67,7 +67,7 @@ class "LinkedList" {
 			
 			print("\nAddTail(" .. obj .. ")\n")
 			local node = LLNode.new(obj, nil)
-			self['tail']['nextNode'] = node
+			self['tail'].nextNode = node
 			self['tail'] = node
 			
 			return node
@@ -129,7 +129,7 @@ class "LinkedList" {
 		Remove = function(self, node)
 			if self:IsEmpty() then
 				return
-			elseif node['value'] == "nil" then
+			elseif type(node) == "nil" or node['value'] == "nil" then
 				Error("\nGiven 'node' is not of type: LLNode\n")
 				return
 			elseif node == self['head'] then
@@ -160,7 +160,7 @@ class "LinkedList" {
 			if self:IsEmpty() then
 				return
 			elseif type(value) == "nil" then
-				Error("\nCannot remove Nil Object.\n")
+				Error("\nCannot remove a Nil Object.\n")
 				return
 			elseif self['head'].value == value then
 				self:RemoveHead()
@@ -169,6 +169,8 @@ class "LinkedList" {
 				self:RemoveTail()
 				return
 			end
+			
+			print("\nRemoveByValue(" .. value .. ")\n")
 			
 			local node = self['head']
 			while node['nextNode'].value != value do
@@ -186,18 +188,18 @@ class "LinkedList" {
 		
 		-- Removes the head of the LinkedList.
 		RemoveHead = function(self)
-			if not self:IsEmpty() then
-				print("\nRemoveHead()\n")
+			if self:IsEmpty() then return end
 			
-				local node = self['head']
-				
-				if self['head'] == self['tail'] then self['head'], self['tail'] = nil, nil end
-				
-				self['head'] = node.nextNode
-				
-				node['nextNode'] = nil
-				node['value'] = nil
-			end
+			print("\nRemoveHead()\n")
+			
+			local node = self['head']
+			
+			if self['head'] == self['tail'] then self['head'], self['tail'] = nil, nil end
+			
+			self['head'] = node.nextNode
+			
+			node['nextNode'] = nil
+			node['value'] = nil
 		end;
 		
 		-- Removes the tail of the LinkedList.
@@ -212,6 +214,9 @@ class "LinkedList" {
 				
 				newTail['nextNode'] = nil
 				local delete = self['tail']
+				
+				if self['head'] == self['tail'] then self['head'], self['tail'] = nil, nil end
+				
 				self['tail'] = newTail
 				
 				delete['nextNode'] = nil
@@ -220,11 +225,32 @@ class "LinkedList" {
 		end;
 		
 		Clear = function(self)
+			print("Clear():")
 		
+			while not self:IsEmpty() do
+				self:RemoveHead()
+			end
+			
+			self['head'], self['tail'] = nil, nil
 		end;
 		
 		Find = function(self, obj)
+			if type(obj) == "nil" then
+				Error("Cannot find a Nil Object")
+				return nil
+			elseif self:IsEmpty() then
+				return nil
+			end
+			
+			print("Find(" .. obj .. ")\n")
+		
 			local node = self['head']
+			
+			while node != nil do
+				if node['value'] == obj then break end
+			
+				node = node['nextNode']
+			end
 			
 			return node
 		end;
@@ -274,48 +300,19 @@ class "LinkedList" {
 				tail = lList:AddAfter("fourth", tail)
 				print("Head = " .. head.value .. "\nTail = " .. tail.value)
 				
-				lList:RemoveHead()
-				head = lList:Head()
-				print("Head = " .. head.value .. "\nTail = " .. tail.value)
+				local find = lList:Find("fifth")
+				if find != nil then print("Found " .. find.value .. ".\n") end
 				
-				local index = 1
-				print("\n\n- Printing contents -\n")
-				for node in lList:Iterate() do
-					print(index .. ") " .. node.value)
-					index = index + 1
-				end
+				find = lList:Find("first")
+				if find != nil then print("Found " .. find.value .. ".\n") end
 				
-				lList:RemoveTail()
-				tail = lList:Tail()
-				print("Head = " .. head.value .. "\nTail = " .. tail.value)
-				
-				local index = 1
-				print("\n\n- Printing contents -\n")
-				for node in lList:Iterate() do
-					print(index .. ") " .. node.value)
-					index = index + 1
-				end
-				
-				lList:RemoveByValue('third')
+				lList:Clear()
 				head = lList:Head()
 				tail = lList:Tail()
-				print("Head = " .. head.value .. "\nTail = " .. tail.value)
 				
-				local index = 1
-				print("\n\n- Printing contents -\n")
-				for node in lList:Iterate() do
-					print(index .. ") " .. node.value)
-					index = index + 1
-				end
-				
-				lList:RemoveHead()
+				lList:Clear()
 				head = lList:Head()
 				tail = lList:Tail()
-				if head == nil and tail == nil then
-					print("Head = nil\nTail = nil")
-				else
-					print("Head = " .. head.value .. "\nTail = " .. tail.value)
-				end
 				
 				local index = 1
 				print("\n\n- Printing contents -\n")
@@ -324,7 +321,7 @@ class "LinkedList" {
 					index = index + 1
 				end
 				
-				print("********** FINISHED LList TEST **********")
+				print("********** FINISHED LLIST TEST **********")
 			end;
 		};
 	};
