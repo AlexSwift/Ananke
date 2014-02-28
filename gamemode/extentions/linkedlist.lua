@@ -1,7 +1,7 @@
 local Next = function(head, curr)
 	if not curr then
 		return head
-	elseif type(curr['nextNode']) != "nil" then
+	elseif curr['nextNode'] != nil then
 		return curr['nextNode']
 	else
 		return nil
@@ -9,6 +9,14 @@ local Next = function(head, curr)
 end;
 
 class "LLNode" {
+
+	meta {
+		__index = function(self, key)
+			if type(self['value']) == "table" then
+				return self['value'][key]
+			end
+		end;
+	};
 
 	public {
 		__construct = function(self, val, node)
@@ -40,15 +48,17 @@ class "LinkedList" {
 		-- Adds given 'obj' to the Head of the list.
 		-- Returns the head of the list if succeeded, nil otherwise.
 		AddHead = function(self, obj)
-			if type(obj) == "nil" then 
+			if obj == nil then 
 				Error("Cannot add a Nil Object\n")
+				return nil
+			elseif not self:ValidValue(obj) then
+				Error("Given 'obj' is not of type: " .. self['nodeType'] .. ".\n")
 				return nil
 			end
 			
-			print("\nAddHead(" .. obj .. ")\n")
 			local node = LLNode.new(obj, self['head'])
 			
-			if self:IsEmpty() then self['tail'] = node end
+			if self:IsEmpty() then self['tail'] = node; self['nodeType'] = type(obj) end
 			self['head'] = node
 			
 			return self['head']
@@ -57,15 +67,16 @@ class "LinkedList" {
 		-- Adds given 'obj' to the Tail of the list.
 		-- Returns the tail of the list if succeeded, nil otherwise.
 		AddTail = function(self, obj)
-			if type(obj) == "nil" then
+			if obj == nil then
 				Error("Cannot add a Nil Object")
 				return nil
 			elseif self:IsEmpty() then
 				local node = self:AddHead(obj)
 				return node
+			elseif not self:ValidValue(obj) then
+				Error("Given 'obj' is not of type: " .. self['nodeType'] .. ".\n")
 			end
 			
-			print("\nAddTail(" .. obj .. ")\n")
 			local node = LLNode.new(obj, nil)
 			self['tail'].nextNode = node
 			self['tail'] = node
@@ -77,10 +88,13 @@ class "LinkedList" {
 		-- Returns the LLNode added if succeeded.
 		-- Returns nil if 'obj' is nil or 'before' isn't of type LLNode.
 		AddBefore = function(self, obj, before)
-			if type(obj) == "nil" then
+			if obj == nil then
 				Error("\nCannot add a Nil Object\n")
 				return nil
-			elseif type(before['value']) == "nil" then
+			elseif not self:ValidValue(obj) then
+				Error("\nGiven 'obj' is not of type: " .. self['nodeType'] .. ".\n")
+				return nil
+			elseif before['value'] == nil then
 				Error("\nGiven 'before' is not of type: LLNode\n")
 				return nil
 			elseif before == self['head'] then
@@ -88,14 +102,12 @@ class "LinkedList" {
 				return node
 			end
 			
-			print("\nAddBefore(" .. obj .. ", " .. before.value .. ")\n")
-			
 			local curr = self['head']
 			while curr['nextNode'] != before do
 				curr = curr['nextNode']
 			end
 			
-			if type(curr) != "nil" then
+			if curr != nil then
 				local node = LLNode.new(obj, before)
 				
 				curr['nextNode'] = node
@@ -108,18 +120,19 @@ class "LinkedList" {
 		-- Returns the LLNode added if succeeded.
 		-- Returns nil if 'obj' is nil or 'after' isn't of type LLNode.
 		AddAfter = function(self, obj, after)
-			if type(obj) == "nil" then
+			if obj == nil then
 				Error("\nCannot add a Nil Object\n")
 				return nil
-			elseif type(after['value']) == "nil" then
+			elseif not self:ValidValue(obj) then
+				Error("\nGiven 'obj' is not of type: " .. self['nodeType'] .. ".\n")
+				return nil
+			elseif after['value'] == nil then
 				Error("\nGiven 'after' is not of type: LLNode\n")
 				return nil
 			elseif after == self['tail'] then
 				local node = self:AddTail(obj)
 				return node
 			end
-			
-			print("\nAddAfter(" .. obj .. ", " .. after.value .. ")\n")
 			
 			local node = LLNode.new(obj, after['nextNode'])
 			after['nextNode'] = node
@@ -129,7 +142,7 @@ class "LinkedList" {
 		Remove = function(self, node)
 			if self:IsEmpty() then
 				return
-			elseif type(node) == "nil" or node['value'] == "nil" then
+			elseif node == nil or node['value'] == nil then
 				Error("\nGiven 'node' is not of type: LLNode\n")
 				return
 			elseif node == self['head'] then
@@ -140,14 +153,12 @@ class "LinkedList" {
 				return
 			end
 			
-			print("\nRemove(" .. node.value .. ")\n")
-			
 			local curr = self['head']
 			while curr['nextNode'] != node do
 				curr = curr['nextNode']
 			end
 			
-			if type(curr) != "nil" then
+			if curr != nil then
 				curr['nextNode'] = node['nextNode']
 				
 				node['nextNode'] = nil
@@ -159,7 +170,7 @@ class "LinkedList" {
 		RemoveByValue = function(self, value)
 			if self:IsEmpty() then
 				return
-			elseif type(value) == "nil" then
+			elseif value == nil then
 				Error("\nCannot remove a Nil Object.\n")
 				return
 			elseif self['head'].value == value then
@@ -170,14 +181,12 @@ class "LinkedList" {
 				return
 			end
 			
-			print("\nRemoveByValue(" .. value .. ")\n")
-			
 			local node = self['head']
 			while node['nextNode'].value != value do
 				node = node['nextNode']
 			end
 			
-			if type(node) != "nil" then
+			if node != nil then
 				local delete = node['nextNode']
 				node['nextNode'] = delete['nextNode']
 				
@@ -190,13 +199,15 @@ class "LinkedList" {
 		RemoveHead = function(self)
 			if self:IsEmpty() then return end
 			
-			print("\nRemoveHead()\n")
-			
 			local node = self['head']
 			
-			if self['head'] == self['tail'] then self['head'], self['tail'] = nil, nil end
+			if self['head'] == self['tail'] then 
+				self['head'] = nil
+				self['tail'] = nil
+				self['nodeType'] = nil
+			end
 			
-			self['head'] = node.nextNode
+			self['head'] = node['nextNode']
 			
 			node['nextNode'] = nil
 			node['value'] = nil
@@ -204,24 +215,26 @@ class "LinkedList" {
 		
 		-- Removes the tail of the LinkedList.
 		RemoveTail = function(self)
-			if not self:IsEmpty() then
-				print("\nRemoveTail()\n")
+			if self:IsEmpty() then return end
 			
-				local newTail = self['head']
-				while newTail['nextNode'] != self['tail'] do
-					newTail = newTail['nextNode']
-				end
-				
-				newTail['nextNode'] = nil
-				local delete = self['tail']
-				
-				if self['head'] == self['tail'] then self['head'], self['tail'] = nil, nil end
-				
-				self['tail'] = newTail
-				
-				delete['nextNode'] = nil
-				delete['value'] = nil
+			local newTail = self['head']
+			while newTail['nextNode'] != self['tail'] do
+				newTail = newTail['nextNode']
 			end
+			
+			newTail['nextNode'] = nil
+			local delete = self['tail']
+			
+			if self['head'] == self['tail'] then
+				self['head'] = nil
+				self['tail'] = nil
+				self['nodeType'] = nil
+			end
+			
+			self['tail'] = newTail
+			
+			delete['nextNode'] = nil
+			delete['value'] = nil
 		end;
 		
 		Clear = function(self)
@@ -235,14 +248,12 @@ class "LinkedList" {
 		end;
 		
 		Find = function(self, obj)
-			if type(obj) == "nil" then
+			if obj == nil then
 				Error("Cannot find a Nil Object")
 				return nil
 			elseif self:IsEmpty() then
 				return nil
 			end
-			
-			print("Find(" .. obj .. ")\n")
 		
 			local node = self['head']
 			
@@ -257,7 +268,7 @@ class "LinkedList" {
 		
 		-- Returns whether the LinkedList is empty.
 		IsEmpty = function(self)
-			return type(self['head']) == "nil"
+			return self['head'] == nil
 		end;
 		
 		-- Returns the head of the LinkedList.
@@ -283,36 +294,17 @@ class "LinkedList" {
 				
 				local lList = LinkedList.new()
 				
-				local head = lList:AddTail("first")
-				local tail = head
-				print("Head = " .. head.value .. "\nTail = " .. tail.value)
+				local node = lList:AddTail("first")
+				print("Head = " .. lList:Head().value .. "\nTail = " .. lList:Tail().value)
 				
-				tail = lList:AddTail("third")
-				print("Head = " .. head.value .. "\nTail = " .. tail.value)
+				node = lList:AddTail("third")
+				print("Head = " .. lList:Head().value .. "\nTail = " .. lList:Tail().value)
 				
-				local node = lList:AddAfter("second", head)
-				print("Head = " .. head.value .. "\nTail = " .. tail.value)
+				node = lList:AddBefore(0.0, node)
+				print("Head = " .. lList:Head().value .. "\nTail = " .. lList:Tail().value)
 				
-				local invalid = {}
-				node = lList:AddAfter("invalid", invalid)
-				print("Head = " .. head.value .. "\nTail = " .. tail.value)
-				
-				tail = lList:AddAfter("fourth", tail)
-				print("Head = " .. head.value .. "\nTail = " .. tail.value)
-				
-				local find = lList:Find("fifth")
-				if find != nil then print("Found " .. find.value .. ".\n") end
-				
-				find = lList:Find("first")
-				if find != nil then print("Found " .. find.value .. ".\n") end
-				
-				lList:Clear()
-				head = lList:Head()
-				tail = lList:Tail()
-				
-				lList:Clear()
-				head = lList:Head()
-				tail = lList:Tail()
+				node = lList:AddAfter("second", lList:Head())
+				print("Head = " .. lList:Head().value .. "\nTail = " .. lList:Tail().value)
 				
 				local index = 1
 				print("\n\n- Printing contents -\n")
@@ -329,6 +321,13 @@ class "LinkedList" {
 	private {
 		head = {};
 		tail = {};
+		
+		nodeType = "";
+		
+		ValidValue = function(self, value)
+			if self:IsEmpty() then return true end
+			return type(value) == self['nodeType']
+		end;
 	};
 
 };
