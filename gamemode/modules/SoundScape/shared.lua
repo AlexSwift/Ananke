@@ -1,5 +1,8 @@
-local modul = Ananke.modules.new()
-modul.Name = 'SoundScape'
+MODULE.Name = 'SoundScape'
+MODULE.Author = 'WARPAC Studios';
+MODULE.Contact = 'n/a';
+MODULE.Website = 'www.warpac-rp.com';
+MODULE.Description = 'Soundscape system, for more complete controll over scapes.'
 
 Ananke.SoundScape = {}
 Ananke.SoundScape.Scapes = {} 

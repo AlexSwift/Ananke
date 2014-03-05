@@ -1,5 +1,8 @@
-local modul = Ananke.modules.new()
-modul.Name = 'Chat Commands'
+MODULE.Name = 'Chat Commands'
+MODULE.Author = 'WARPAC Studios';
+MODULE.Contact = 'n/a';
+MODULE.Website = 'www.warpac-rp.com';
+MODULE.Description = 'Chat command system.'
 
 local _CHATCOMMANDS = {}
 
@@ -62,28 +65,6 @@ end
 
 hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)
 
-	--[[local tabl = string.explode(" ",text)
-	if !string.gsub(tabl[1],1,1) == self.prefix then return end
-
-	local command = chatcommands.Get(string.TrimLeft(tabl[1],chatcommands.prefix))
-	if !command then return end
-
-	table.remove(tabl, 1) --Remove the '>command' and shift
-
-	local data = {}
-	for k,v in ipairs(command.args) do
-		data[k] = tabl[k] or v[2]
-	end
-
-	local shouldpass = command.precall(ply, data)
-	if !shouldpass then return end
-
-	local isvalid = command.validatecall(ply, data)
-	if !isvalied then return end
-
-	command.callback(data)
-
-	command.postcall()--]]
 
 	local cmd = text:gsub( "^["..self.prefix.."/](%S+)(.*)", "%1" )
 	
@@ -115,6 +96,3 @@ hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)
 	command.postcall()
 	
 end)
-
-modul:Register()
-

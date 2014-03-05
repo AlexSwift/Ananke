@@ -1,10 +1,10 @@
-local MODULE = Ananke.modules.new()
-MODULE.Name = 'Admin'
+include('info.lua')
+AddCSLuaFile( 'info.lua' )
 
-Admin = {}
-Admin._PLUGINS = {}
+Ananke.Admin = {}
+Ananke.Admin._PLUGINS = {}
 
-class 'Admin.plugins' {
+class 'Ananke.Admin.plugins' {
 	
 	private {
 		
@@ -51,8 +51,6 @@ class 'Admin.plugins' {
 
 hook.Add("Ananke.PostModuleLoad", "Ananke.PostModulesLoad.Admin", function()
 
-	Admin.plugins.Initialise() --Load all modules. We don't want to invoke a function that doesn't exist
+	Ananke.Admin.plugins.Initialise() --Load all modules. We don't want to invoke a function that doesn't exist
 
 end)
-
-MODULE:Register()

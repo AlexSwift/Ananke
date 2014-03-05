@@ -1,4 +1,4 @@
-mathsx.matrices = {}
+Ananke.mathsx.matrices = {}
 
 mathsx.matrices.mt = {}
 mathsx.matrices.mt.__index = mathsx.matrices.mt

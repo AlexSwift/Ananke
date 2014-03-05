@@ -372,17 +372,6 @@ bool CNetChan_ProcessMessages_H( CNetChan *netchan, sn3_bf_read &buf )
 
 		netchan->UpdateMessageStats( netmsg->GetGroup(), newpos - oldpos );
 
-		for (int i; i < 50 ; i ++) {
-
-			INetMessage *netmsg = netchan->FindMessage( i );
-			if (!netmsg) {
-					break;
-			};
-			ConMsg( "Netchannel: message %i name %s.\n", i , netmsg->GetName() );
-
-
-		}
-
 		if ( showmsg && ( *showmsg == '1' || !V_strcasecmp( showmsg, netmsg->GetName() ) ) )
 		{
 			ConMsg( "Msg from %s: %s\n", netchan->remote_address.ToString(), netmsg->ToString() );

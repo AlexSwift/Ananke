@@ -1,10 +1,7 @@
 AddCSLuaFile("shared.lua")
-
 AddCSLuaFile("chataddtext.lua")
 
 include("shared.lua")
-
-
 
 local plymeta = FindMetaTable("Player")
 

@@ -1,4 +1,4 @@
-class "mathsx.complex" {
+class "Ananke.MathsX.complex" {
 	
 	private {
 		

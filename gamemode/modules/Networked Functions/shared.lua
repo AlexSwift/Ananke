@@ -1,19 +1,17 @@
-local modul = Ananke.modules.new()
-modul.Name = 'NwFuncs'
+MODULE.Name = 'Networked Functions'
+MODULE.Author = 'WARPAC Studios';
+MODULE.Contact = 'n/a';
+MODULE.Website = 'www.warpac-rp.com';
+MODULE.Description = 'Networked Functions, more of a util library.'
 
-newfuncs = {}
+Ananke.NetworkedFunction = {}
 
-function nwfuncs.Initialise()
-	
+function Ananke.NetworkedFunction.Initialise()
+	include("chataddtext.lua")
 end
 
-function modul:Load()
-	nwfuncs.Initialise()
+function MODULE:Load()
+	Ananke.NetworkedFunction.Initialise()
 end
 
-include("chataddtext.lua")
 
-
-
-
-modul:Register()

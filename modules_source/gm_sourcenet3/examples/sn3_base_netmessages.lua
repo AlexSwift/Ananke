@@ -872,7 +872,16 @@ NET_MESSAGES = {
 			end
 		},
 		
-	
+		[ svc_Prefetch ] = { -- 28
+			DefaultCopy = function( netchan, read, write )
+				write:WriteUBitLong( svc_Prefetch, NET_MESSAGE_BITS )
+				
+				local index = read:ReadUBitLong( 13 )
+				write:WriteUBitLong( index, 13 )
+				
+				SourceNetMsg( string.format( "svc_Prefetch index=%i\n", index ) )
+			end
+		},
 		
 		[ svc_Menu ] = { -- 29
 			DefaultCopy = function( netchan, read, write )

@@ -163,10 +163,10 @@ enum
 #define clc_VoiceData			10      // Voicestream data from a client
 #define clc_BaselineAck			11		// client acknowledges a new baseline seqnr
 #define clc_ListenEvents		12		// client acknowledges a new baseline seqnr
-#define clc_RespondCvarValue	14		// client is responding to a svc_GetCvarValue message.
-#define clc_FileCRCCheck		15		// client is sending a file's CRC to the server to be verified.
-#define clc_CmdKeyValues		48
-#define clc_FileMD5Check		16		// client is sending a file's MD5 to the server to be verified.
+#define clc_RespondCvarValue	13		// client is responding to a svc_GetCvarValue message.
+#define clc_FileCRCCheck		14		// client is sending a file's CRC to the server to be verified.
+#define clc_CmdKeyValues		16
+#define clc_FileMD5Check		17		// client is sending a file's MD5 to the server to be verified.
 
 #define clc_GMod_ClientToServer 18
 #define CLC_LASTMSG	19

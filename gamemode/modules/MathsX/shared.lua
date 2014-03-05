@@ -1,16 +1,17 @@
-local modul = Ananke.modules.new()
-modul.Name = 'MathsX'
+MODULE.Name = 'MathX'
+MODULE.Author = 'WARPAC Studios';
+MODULE.Contact = 'n/a';
+MODULE.Website = 'www.warpac-rp.com';
+MODULE.Description = 'MathX. Advanced Math'
 
-mathsx = {}
+Ananke.MathsX = {}
 
-function mathsx.Initialise()
+function Ananke.MathsX.Initialise()
 	
 end
 
-function modul:Load()
-	mathsx.Initialise()
+function MODULE:Load()
+	Ananke.MathsX.Initialise()
 end
 
 
-
-modul:Register()
