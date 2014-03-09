@@ -83,18 +83,18 @@ class "Ananke.core.protocol" {
 function Ananke.core.protocols.Initialise()
 	if Ananke.core.protocols.Loaded then return end
 
-	local f,d = file.Find( GM.Name .. "/gamemode/core/shared/networking/protocols/*.lua", "LUA" )
+	local f,d = file.Find( Ananke.Name .. "/gamemode/core/shared/networking/protocols/*.lua", "LUA" )
 
 	print('\tLoading Protocols:')
 
 	for k,v in pairs(f) do
 		if SERVER then
 			print('\t\tLoading ' .. v)
-			Ananke.AddCSLuaFile( GM.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
-			Ananke.include( GM.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
+			Ananke.AddCSLuaFile( Ananke.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
+			Ananke.include( Ananke.Name .. '/gamemode/core/shared/networking/protocols/' .. v )
 		else
 			print('\t\tLoading ' .. v)
-			Ananke.include( GM.Name .. '/gamemode/core/shared/networking/protocols/'.. v)
+			Ananke.include( Ananke.Name .. '/gamemode/core/shared/networking/protocols/'.. v)
 		end
 	end
 	Ananke.core.protocols.Loaded = true

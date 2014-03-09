@@ -70,7 +70,9 @@ function Ananke.core.debug.Print( str , type )
 	
 end
 
-function Ananke.core.debug.Log( str , data, push )
+function Ananke.core.debug.Log( str , push, data )
+	
+	data = data or ''
 	
 	table.insert( Ananke.core.debug.data.Logs, { str , data } )
 	

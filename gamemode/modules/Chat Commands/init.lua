@@ -4,12 +4,9 @@ MODULE.Contact = 'n/a';
 MODULE.Website = 'www.warpac-rp.com';
 MODULE.Description = 'Chat command system.'
 
-local _CHATCOMMANDS = {}
-
-chatcommands = {}
-chatcommands.__index = {}
-
-chatcommands.prefix = '>'
+Ananke.ChatCommands = {}
+Ananke.ChatCommands._CHATCOMMANDS = {}
+Ananke.ChatCommands.Prefix = '>'
 
 local function Validate(ply, data)
 	if #data < self.data.minargs then
@@ -19,80 +16,106 @@ local function Validate(ply, data)
 	return true
 end
 
-function chatcommands.New(command)
-	local tabl = {}
-	tabl['name'] = command
-	tabl['args'] = {}
-	tabl['callback'] = function() end
-	tabl['precall'] = function(ply, data) return true end -- Should it actually pass?
-	tabl['postcall'] = function() end
-	tabl['validatecall'] = Validate(ply, data)
-	tabl['data']['minargs'] = 0
-	return setmetatable(tabl,chatcommands)
-end
-
-function chatcommands.Get(command)
-	return _CHATCOMMANDS[command] or nil
-end
-
-function chatcommands:AddArg(Type,default)
-	table.insert(self.args,{Type,default})
-end
-
-function chatcommands:SetCallback(func)
-	self.callback = func
-end
-
-function chatcommands:SetPrecall(func)
-	self.precall = func
-end
-
-function chatcommands:SetPostcall(func)
-	self.postcall = func
-end
-
-function chatcommands:SetValidatecall(func)
-	self.validatecall = func
-end
-
-function chatcommands:SetMinArgs(n)
-	self.data.minargs = n
-end
-
-function chatcommands:Register()
-	_CHATCOMMANDS[self.name] = table.Copy(self)
-end
-
-hook.Add('PlayerSay','wp_PlayerSay',function(ply,text,b_team)
-
-
-	local cmd = text:gsub( "^["..self.prefix.."/](%S+)(.*)", "%1" )
+class 'Ananke.ChatCommands' {
 	
-	-- check for command
-	local command = chatcommands.Get(string.TrimLeft(cmd,chatcommands.prefix))
-	if !command then return end
+	private {
 	
+		Name = 'chatcommand.name';
+		Author = 'module_author';
+		Contact = 'name@domaine.com';
+		Website = 'www.website.com';
+		Description = 'module_description';
+		
+		Arguments = {};
+		Callback = function() end;
+		Precall = function() end;
+		Postcall = function() end;
+		
+		Data = {};
 	
-	-- command exists
-	text = text:gsub( "^[!/](%S+)%s*", "" )
-	local args = {}
-	for v in text:gmatch( "(%S+)" ) do
-		table.insert( args, v )
-	end
+	};
 	
-	local data = {}
-	for k,v in ipairs(command.args) do
-		data[k] = args[k] or v[2]
-	end
+	protected {
 	
-	local shouldpass = command.precall(ply, data)
-	if !shouldpass then return end
+		AddArgument = function( self, Type, required, default )
+			
+			if required == true then
+				self.Data['MinimumArgs'] = self.Data['MinimumArgs'] and ( self.Data['MinimumArgs'] + 1 ) or 1
+				table.insert( self.Arguments , { Type , default } )
+			end
+		
+		end;
+		
+		SetCallback = function( self, func )		
+			self.Callback = func			
+		end;
+		
+		SetPrecall = function( self, func )			
+			self.Precall = func
+		end;
+		
+		SetPostcall = function( self, func )			
+			self.Postcall = func
+		end;
+		
+		Register = function( self )
+			Ananke.ChatCommands._CHATCOMMANDS[self.Name] = self
+		end;	
 	
-	local isvalid = command.validatecall(ply, data)
-	if !isvalied then return end
+	};
 	
-	command.callback(data)
+	public {
+		
+		static {
+			
+			Get = function( Name )
+				return Ananke.ChatCommands_CHATCOMMANDS[ Name ] or nil
+			end;
+			
+			PlayerSay = function( ply, text, b_team )
 
-	command.postcall()
+				local Command = Ananke.ChatCommands.Get(string.TrimLeft( text:gsub( "^[".. Ananke.ChatCommands.Prefix .."/](%S+)(.*)", "%1" ) , Ananke.ChatCommands.Prefix ))
+				local Arguments = {}
+				local Data = {}
+				
+				if not Command then
+					
+					Ananke.core.debug.Log( 'Unknown Command ' .. Command )
+					return 
+				
+				end
+				
+				text = text:gsub( "^[!/](%S+)%s*", "" )
+				for v in text:gmatch( "(%S+)" ) do
+					table.insert( Arguments , v )
+				end
+				
+				for k,v in ipairs( Command.Arguments ) do
+					Data[k] = args[k] or v[2]
+				end
+				
+				local shouldpass = Command.Precall( ply, Data )
+				if not shouldpass then
+				
+					Ananke.core.debug.Log( 'Command failed! ' .. Command )
+					return 
+					
+				end
+				
+				Command.Callback(Data)
+			
+				Command.Postcall()
+			
+			end;
+			
+		};
+		
+	};
+
+}
+
+hook.Add('PlayerSay','wp_PlayerSay',function( ply, text, b_team )
+
+	Ananke.ChatCommands.PlayerSay( ply, text, b_team )
 	
 end)
