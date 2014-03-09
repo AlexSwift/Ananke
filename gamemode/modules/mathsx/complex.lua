@@ -35,7 +35,7 @@ class "Ananke.MathsX.complex" {
 		end;
 		
 		__add = function( self, b )
-			local r = mathsx.complex.new()
+			local r = MathsX.complex.new()
 
 			local real = self:GetReal() + b:GetReal()
 			local imag = self:GetImag() + b:GetReal()
@@ -48,7 +48,7 @@ class "Ananke.MathsX.complex" {
 
 		__sub = function( self, b )
 
-			local r = mathsx.complex.new()
+			local r = MathsX.complex.new()
 		
 			local real = self:GetReal() - b:GetReal()
 			local imag = self:GetImag() - b:GetReal()
@@ -62,7 +62,7 @@ class "Ananke.MathsX.complex" {
 
 		__mul = function( self, b )
 
-			local r = mathsx.complex.new( )
+			local r = MathsX.complex.new( )
 		
 			local real = self:GetReal()*b:GetReal() - self:GetImag()*b:GetImag()
 			local imag = self:GetReal()*b:GetImag() + self:GetImag()*b:GetReal()
@@ -76,7 +76,7 @@ class "Ananke.MathsX.complex" {
 
 		__div = function( self, b )
 		
-			local r = mathsx.complex.new()
+			local r = MathsX.complex.new()
 		
 			if type(b) == 'number' then
 		
@@ -106,7 +106,7 @@ class "Ananke.MathsX.complex" {
 
 		Conjugate = function( self )
 
-			local r = mathsx.complex.new()
+			local r = MathsX.complex.new()
 		
 			r:SetReal( self:GetReal() )
 			r:SetImag( -self:GEtImag() )
@@ -119,7 +119,7 @@ class "Ananke.MathsX.complex" {
 	
 			if !maths.matrix then return nil end
 			
-			local r = mathsx.matrix.new()
+			local r = MathsX.matrix.new()
 			local real = self:GetReal()
 			local imag = self:GetImag()
 			
@@ -139,9 +139,9 @@ class "Ananke.MathsX.complex" {
 }
 
 
-function mathsx.complex.e( ) --e^(a + bi) = (e^a)*(cos b + i*sin b)
+function MathsX.complex.e( ) --e^(a + bi) = (e^a)*(cos b + i*sin b)
 
-	local mt = table.Copy( mathsx.complex.mt )
+	local mt = table.Copy( MathsX.complex.mt )
 
 	mt:__pow = function(b)
 		
@@ -149,7 +149,7 @@ function mathsx.complex.e( ) --e^(a + bi) = (e^a)*(cos b + i*sin b)
 			return math.exp(b)
 		else
 		
-			local r = mathsx.complex.new()
+			local r = MathsX.complex.new()
 
 			local real = b:GetReal() or 0
 			local theta = b:GetImag()
