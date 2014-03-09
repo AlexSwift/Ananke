@@ -166,8 +166,6 @@ class "INIParser" {
 /*
 
 INI = [[
-# Made by James Swift's INIParser
-# This is an automatic output
 
 [owner]
 name : John Doe
