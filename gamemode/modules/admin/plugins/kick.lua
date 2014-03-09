@@ -1,8 +1,8 @@
-local PLUGIN = Admin.plugins.New()
+local PLUGIN = Ananke.Admin.plugins.new()
 
 PLUGIN.Name = "kick"
 
-function PLUGIN.kick(ply, reason)
+function PLUGIN.Functions.kick(ply, reason)
 	ply:Kick(reason)
 end
 

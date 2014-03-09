@@ -1,44 +1,37 @@
 Ananke._MODULES = {}
 
-class "Ananke.modules" {
+class "Ananke.Modules" {
 	
 	public {
 		static {
-			LoadModules = function( tab )
-			
+			LoadModules = function( tab, dir)
+				
+				dir = dir or Ananke.Name .. "/gamemode/modules/"
+				
 				print( 'Loading Modules' )
 				for k,v in pairs( tab ) do
-					print('\tLoaded module : ' .. v)
 					
-					MODULE = Ananke.modules.new() --Start MODULE 
-					for f,func in pairs(Ananke.modules.functions) do
-						func( Ananke.Name .. "/gamemode/modules/"..v)
-					end
-					MODULE:Register() --End Module
-					
-					hook.Call( "Ananke.PreModuleLoad", GAMEMODE, name )
-					
-					local call = Ananke.modules.Get( v ) and Ananke.modules.Get( v ):Load()
-					
-					hook.Call( "Ananke.PostModulesLoad", GAMEMODE, v )
+					Ananke.Modules.LoadModule( v , dir )
 					
 				end	
 			end;
 			
-			LoadModule = function( name )
+			LoadModule = function( name, dir )
 			
-				if !Ananke._MODULES[ name ] then return end
+				dir = dir or Ananke.Name .. "/gamemode/modules/"
+				
+				if Ananke._MODULES[ name ] then return end
 				print('\tLoaded module : ' .. name)
 				
-				MODULE = Ananke.modules.new() --Start MODULE 
-				for f,func in pairs(Ananke.modules.functions) do
-					func( Ananke.Name .. "/gamemode/modules/" .. name)
+				MODULE = Ananke.Modules.new() --Start MODULE 
+				for f,func in pairs(Ananke.Modules.functions) do
+					func( dir .. name)
 				end
 				MODULE:Register() --End Module
 				
 				hook.Call( "Ananke.PreModuleLoad", GAMEMODE, name )
 				
-				Ananke.modules.Get( name ):OnLoad()
+				local call = Ananke.Modules.Get( name ) and Ananke.Modules.Get( name ):Load()
 				
 				hook.Call( "Ananke.PostModuleLoad", GAMEMODE, name )
 				
@@ -46,7 +39,7 @@ class "Ananke.modules" {
 			
 			Initialise = function()
 				for k,v in pairs(_MODULES) do
-					modules.get( k ):OnLoad()
+					--Ananke.Modules.Get( k ):Load()
 				end
 			end;
 			

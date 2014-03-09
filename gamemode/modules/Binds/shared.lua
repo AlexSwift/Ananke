@@ -211,6 +211,3 @@ hook.Add( 'KeyPress' , 'Ananke.Binds' , function( ply , key )
 	
 end)
 	
-	
-modul:Register()
-	

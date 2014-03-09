@@ -6,12 +6,6 @@ MODULE.Description = 'Networked Functions, more of a util library.'
 
 Ananke.NetworkedFunction = {}
 
-function Ananke.NetworkedFunction.Initialise()
-	include("chataddtext.lua")
-end
-
 function MODULE:Load()
-	Ananke.NetworkedFunction.Initialise()
+	Ananke.include(  Ananke.Name .. "/gamemode/modules/Networked Functions/chataddtext.lua" ) 
 end
-
-

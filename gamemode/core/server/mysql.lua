@@ -1,6 +1,7 @@
 require('tmysql4')
 
 Ananke.core.MySQL = {}
+Ananke.core.MySQL.Database = nil
 Ananke.core.MySQL.Authentication = {}
 Ananke.core.MySQL.Queries = {}
 Ananke.core.MySQL.Loaded = false
@@ -13,23 +14,33 @@ function Ananke.core.MySQL.Initialize()
 	local daba = Ananke.core.MySQL.Authentication['daba'] or 'main'
 	local port = Ananke.core.MySQL.Authentication['port'] or 3306
 
-	tmysql.initialize(host, user, pass, daba, port)
+	local Database, err = tmysql.initialize(host, user, pass, daba, port)
 
-	--Test query to check if connected?
-
-	Ananke.core.MySQL.Loaded = true
+	if Database then
+		print('[Ananke] Connected to the Mysql Database')
+		Ananke.core.MySQL.Loaded = true
+		Ananke.core.MySQL.Database = Database
+	else
+		Ananke.core.Debug.Error( 'Unabled to connect to the Database!' )
+	end
 end
 
 function Ananke.core.MySQL.Query( q, callback, ...)
+
 	local args = {...}
 	local flags, vargs =(args[1] or nil),(args[2] or nil)
 	table.insert(Ananke.core.MySQL.Queries, {q, callback, flags, vargs})
-	if not core.MySQL.InProg then
+	if not Ananke.core.MySQL.InProg then
 		Ananke.core.MySQL.Process()
 	end
 end
 
 function Ananke.core.MySQL.Process()
+
+	if not Ananke.core.MySQL.Loaded then
+		--Do a retry timer
+		return
+	end
 
 	local function callback(...)
 		local tabl = {...}
@@ -42,7 +53,7 @@ function Ananke.core.MySQL.Process()
 			Ananke.core.MySQL.InProg = false
 		end
 	end
-	tmysql.query(Ananke.core.MySQL.Queries[1][1], callback, Ananke.core.MySQL.Queries[1][3], Ananke.core.MySQL.Queries[1][4])
+	Ananke.core.MySQL.Database:Query(Ananke.core.MySQL.Queries[1][1], callback, Ananke.core.MySQL.Queries[1][3], Ananke.core.MySQL.Queries[1][4])
 	Ananke.core.MySQL.InProg = true
 end
 

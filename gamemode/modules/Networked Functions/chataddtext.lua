@@ -8,6 +8,6 @@ Ananke.NetworkedFunction.AddChatText.Protocol:SetType( NW_STC )		--0x01 - Server
 Ananke.NetworkedFunction.AddChatText.Protocol:SetData({ [1] = "table" })
 
 
-Ananke.NetworkedFunctionv.AddChatText.Protocol:SetCallBack(function(data)
+Ananke.NetworkedFunction.AddChatText.Protocol:SetCallBack(function(data)
 	chat.AddText(unpack(data))
 end)

@@ -1,9 +1,9 @@
-local PLUGIN = Admin.plugins.New()
+local PLUGIN = Ananke.Admin.plugins.new()
 
 PLUGIN.Name = "ban"
 --PLUGIN:SetCallBack( PLUGIN.CallBack )
 
-function PLUGIN.ban(former, ply, length, reason)
+function PLUGIN.Functions.ban(former, ply, length, reason)
 
 	if !ply:IsValid() then 
 		former:ChatPrint("The player you entered is invalid") 
@@ -23,7 +23,7 @@ function PLUGIN.CallBack(ply, data)
 
 	if matches > 1 then 
 		ply:ChatPrint("Error! Found multiple players with that name: "..table.concat(names))
-		return end
+		return 
 	else
 		ban(ply, matches[1], data[2], data[3])
 	end
@@ -33,18 +33,19 @@ end
 --passive stuff
 
 local function MySQLSetup()
-	core.MySQL.Query([[CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
-  `steamid` CHAR(25) NOT NULL,
-  `steamid64` INT(20) NOT NULL,
-  `name` CHAR(50) NULL,
-  `unban` INT(12) NOT NULL,
-  `reason` TEXT NULL,
-  `num` INT(4) NOT NULL DEFAULT 1,
-  `altof` CHAR(25) NULL,
-  PRIMARY KEY (`steamid`),
-  UNIQUE INDEX `steamid_UNIQUE` (`steamid` ASC),
-  UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
-]]))
+	Ananke.core.MySQL.Query([[CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
+`steamid` CHAR(25) NOT NULL,
+`steamid64` INT(20) NOT NULL,
+`name` CHAR(50) NULL,
+`unban` INT(12) NOT NULL,
+`reason` TEXT NULL,
+`num` INT(4) NOT NULL DEFAULT 1,
+`altof` CHAR(25) NULL,
+PRIMARY KEY (`steamid`),
+UNIQUE INDEX `steamid_UNIQUE` (`steamid` ASC),
+UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
+]])
+
 end
 MySQLSetup()
 
