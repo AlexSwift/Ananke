@@ -1,12 +1,15 @@
-local PLUGIN = Ananke.Admin.plugins.new()
-
 PLUGIN.Name = "kick"
+PLUGIN.Author = ''
+PLUGIN.Contact = ''
+PLUGIN.Website = ''
+PLUGIN.Description = ''
+
 
 function PLUGIN.Functions.kick(ply, reason)
 	ply:Kick(reason)
 end
 
-function PLUGIN.CallBack(ply, data)
+function PLUGIN.Functions.CallBack(ply, data)
 	local matches, names = utils.FindPlayersByName(data[1])
 	if !matches then 
 		ply:ChatPrint("Could not match player "..data[1]..".") 
@@ -21,4 +24,4 @@ function PLUGIN.CallBack(ply, data)
 	end
 end
 
-PLUGIN:Register()
+

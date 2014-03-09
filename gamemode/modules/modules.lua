@@ -29,17 +29,18 @@ class "Ananke.Modules" {
 				end
 				MODULE:Register() --End Module
 				
-				hook.Call( "Ananke.PreModuleLoad", GAMEMODE, name )
-				
-				local call = Ananke.Modules.Get( name ) and Ananke.Modules.Get( name ):Load()
-				
-				hook.Call( "Ananke.PostModuleLoad", GAMEMODE, name )
+				hook.Call( "Ananke.PreModuleLoad", GAMEMODE, MODULE.Name )
+				local call = MODULE.Load and MODULE:Load()
+				hook.Call( "Ananke.PostModuleLoad", GAMEMODE, MODULE.Name )
 				
 			end;
 			
 			Initialise = function()
 				for k,v in pairs(_MODULES) do
-					--Ananke.Modules.Get( k ):Load()
+					hook.Call( "Ananke.PreModuleLoad", GAMEMODE, v.Name )
+					local call = v.Load and v:Load()
+					hook.Call( "Ananke.PostModuleLoad", GAMEMODE, v.Name )
+				
 				end
 			end;
 			

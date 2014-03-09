@@ -1,8 +1,15 @@
-local plugin = Ananke.Admin.plugins.new()
+PLUGIN.Name = 'Echo'
+PLUGIN.Author = ''
+PLUGIN.Contact = ''
+PLUGIN.Website = ''
+PLUGIN.Description = ''
 
-plugin.Name = 'Echo'
+PLUGIN.Data.args = {
+	['p'] = {'string','Default'}
+	}
+	
+function PLUGIN.Functions.CallBack( data ) 
+	print( data['p'] ) 
+end
 
-plugin['args'] = {['p'] = {'string','Default'}}
-plugin['CallBack'] = function(data) print(data['p']) end
 
-plugin:Register()

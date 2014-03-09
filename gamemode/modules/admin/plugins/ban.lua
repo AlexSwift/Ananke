@@ -1,7 +1,22 @@
-local PLUGIN = Ananke.Admin.plugins.new()
+PLUGIN.Name = "Ban"
+PLUGIN.Author = ''
+PLUGIN.Contact = ''
+PLUGIN.Website = ''
+PLUGIN.Description = ''
 
-PLUGIN.Name = "ban"
---PLUGIN:SetCallBack( PLUGIN.CallBack )
+
+local Query = [[CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
+`steamid` CHAR(25) NOT NULL,
+`steamid64` INT(20) NOT NULL,
+`name` CHAR(50) NULL,
+`unban` INT(12) NOT NULL,
+`reason` TEXT NULL,
+`num` INT(4) NOT NULL DEFAULT 1,
+`altof` CHAR(25) NULL,
+PRIMARY KEY (`steamid`),
+UNIQUE INDEX `steamid_UNIQUE` (`steamid` ASC),
+UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
+]]
 
 function PLUGIN.Functions.ban(former, ply, length, reason)
 
@@ -15,9 +30,11 @@ function PLUGIN.Functions.ban(former, ply, length, reason)
 	local name, reason = tmysql.Escape(ply:Name()), tmysql.Escape(reason)
 	
 	Ananke.core.MySQL.Query([[INSERT INTO `ananke`.`bans` (`steamid`, `steamid64`, `name`, `unban`, `reason`, `num`, `altof`) VALUES (]]..ply:SteamID()..[[, ]]..ply:SteamID64()..[[, ]]..name..[[, ]]..unban..[[, ]]..reason..[[, DEFAULT, NULL) ON DUPLICATE KEY UPDATE `name` = ]]..name..[[, `unban` = ]]..unban..[[, `reason` = ]]..reason..[[, `num` = `num` + 1]])
+
 end
 
-function PLUGIN.CallBack(ply, data)
+function PLUGIN.Functions.CallBack(ply, data)
+
 	local matches, names = utils.FindPlayersByName(data[1])
 	if !matches then ply:ChatPrint("Could not match player "..data[1]..".") return end
 
@@ -27,26 +44,11 @@ function PLUGIN.CallBack(ply, data)
 	else
 		ban(ply, matches[1], data[2], data[3])
 	end
+	
 end
 
-
---passive stuff
-
-local function MySQLSetup()
-	Ananke.core.MySQL.Query([[CREATE TABLE IF NOT EXISTS `anankebans`.`bans` (
-`steamid` CHAR(25) NOT NULL,
-`steamid64` INT(20) NOT NULL,
-`name` CHAR(50) NULL,
-`unban` INT(12) NOT NULL,
-`reason` TEXT NULL,
-`num` INT(4) NOT NULL DEFAULT 1,
-`altof` CHAR(25) NULL,
-PRIMARY KEY (`steamid`),
-UNIQUE INDEX `steamid_UNIQUE` (`steamid` ASC),
-UNIQUE INDEX `steamid64_UNIQUE` (`steamid64` ASC));
-]])
+function PLUGIN:Load()
+	Ananke.core.MySQL.Query( Query )
 
 end
-MySQLSetup()
 
-PLUGIN:Register()
