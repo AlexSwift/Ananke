@@ -10,7 +10,8 @@ ANANKE
 - 		Items
 - 		Inventory
 - 		Test serialization for BLOB data encoding
-- 		Prevent family sharing ban bypass
+- (DOING)(LEN)	Prevent family sharing ban bypass
+- (DOING)(LEN)	Viewsway/bob module
 
 - 		MySQL testing, and planning MySQL table layouts
 - (DONE)	Create a Touchevent system for map triggers
