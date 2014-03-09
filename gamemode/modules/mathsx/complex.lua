@@ -1,4 +1,4 @@
-class "Ananke.MathsX.complex" {
+class "Ananke.MathsX.Complex" {
 	
 	private {
 		
@@ -35,7 +35,7 @@ class "Ananke.MathsX.complex" {
 		end;
 		
 		__add = function( self, b )
-			local r = MathsX.complex.new()
+			local r = Ananke.MathsX.Complex()
 
 			local real = self:GetReal() + b:GetReal()
 			local imag = self:GetImag() + b:GetReal()
@@ -48,7 +48,7 @@ class "Ananke.MathsX.complex" {
 
 		__sub = function( self, b )
 
-			local r = MathsX.complex.new()
+			local r = Ananke.MathsX.Complex()
 		
 			local real = self:GetReal() - b:GetReal()
 			local imag = self:GetImag() - b:GetReal()
@@ -62,7 +62,7 @@ class "Ananke.MathsX.complex" {
 
 		__mul = function( self, b )
 
-			local r = MathsX.complex.new( )
+			local r = Ananke.MathsX.Complex( )
 		
 			local real = self:GetReal()*b:GetReal() - self:GetImag()*b:GetImag()
 			local imag = self:GetReal()*b:GetImag() + self:GetImag()*b:GetReal()
@@ -76,7 +76,7 @@ class "Ananke.MathsX.complex" {
 
 		__div = function( self, b )
 		
-			local r = MathsX.complex.new()
+			local r = Ananke.MathsX.Complex()
 		
 			if type(b) == 'number' then
 		
@@ -106,7 +106,7 @@ class "Ananke.MathsX.complex" {
 
 		Conjugate = function( self )
 
-			local r = MathsX.complex.new()
+			local r = Ananke.MathsX.Complex()
 		
 			r:SetReal( self:GetReal() )
 			r:SetImag( -self:GEtImag() )
@@ -117,9 +117,9 @@ class "Ananke.MathsX.complex" {
 		
 		Matrix = function( self )
 	
-			if !maths.matrix then return nil end
+			if !Ananke.MathsX.Matrices then return nil end
 			
-			local r = MathsX.matrix.new()
+			local r = Ananke.MathsX.Matrices()
 			local real = self:GetReal()
 			local imag = self:GetImag()
 			
@@ -138,31 +138,6 @@ class "Ananke.MathsX.complex" {
 	
 }
 
-
-function MathsX.complex.e( ) --e^(a + bi) = (e^a)*(cos b + i*sin b)
-
-	local mt = table.Copy( MathsX.complex.mt )
-
-	mt:__pow = function(b)
-		
-		if type( b ) == 'number' then  
-			return math.exp(b)
-		else
-		
-			local r = MathsX.complex.new()
-
-			local real = b:GetReal() or 0
-			local theta = b:GetImag()
-
-			r:SetReal( math.cos( theta ) )
-			r:SetImag( math.sin( theta ) )
-			
-			r = r * math.exp(real)
-			
-			return r
-		end
-	end
-end
 
 
 
