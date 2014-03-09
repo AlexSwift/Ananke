@@ -1,35 +1,42 @@
-
 ANANKE
 
 - (DONE)	convert remaining meta tables to the simploo system
 - 		Extend the mathsx lib
 - (DONE)	Prefix all public tables with Ananke.
 - 		Start on sockets communications
-- (DOING)(Matt)		Menu system objects
-- (DOING)(Matt)		Menu system drawing 
+- (DOING)(Matt)		Menu system objects  --PRIORITY
+- (DOING)(Matt)		Menu system drawing  --PRIORITY
 - (DONE) 	bind system
 - 		Items
 - 		Inventory
 - 		Test serialization for BLOB data encoding
 - 		Prevent family sharing ban bypass
-- (DONE)	SourceNet3 Module
 
 - 		MySQL testing, and planning MySQL table layouts
 - (DONE)	Create a Touchevent system for map triggers
 - (DONE)	Allow for easier debugging
 
-- 		Create a dynamic Ananke.<system>.Load(dir)
+- 		Create a dynamic Ananke.<system>.Load(dir)   --PRIOTITY
 - (DONE)	fix directory inheritence
-
+- 		Player Class system   --PRIORITY
+- 		Make a hook system.
 
 
 WARPAC
 
-- 		Start on menu
+- 		Start on menu  --PRIOTITY
 - 		Prevent player from spawning on join
 - 		Redo the weapon base
 
 
 ONEHALF
 
--		start over from scratch
+- 		start over from scratch
+
+MODULE SOURCE
+
+- 		Add raw file reading and writing from the srcds directory. --PRIORITY
+- 		Create an image buffer systen (Matthew, would love some help)
+- (DONE)	SourceNet3 Module Fixing
+- 		Re-enumerate sn3 protocols
+- 		Plan for DRM system by using Compiled Lua in Shellcode format.
