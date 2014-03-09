@@ -142,17 +142,6 @@ class 'Ananke.core.menu' {
 			end
 		end;
 		
-		Initialise = function()
-
-			local f,d = file.Find( Ananke.Name .. "/gamemode/core/client/gui/*.lua", "LUA" )
-		
-			print('\tLoading Gui:')
-			for k,v in pairs(f) do
-				Ananke.include(Ananke.Name .. "/gamemode/core/client/gui/" .. v)
-			end
-		
-		end;
-		
 		Enable = function( )
 			GAMEMODE:PreDrawMenu( )
 			Ananke.core.menu.Enabled = true
@@ -163,8 +152,26 @@ class 'Ananke.core.menu' {
 			Ananke.core.menu.Enabled = false
 		end;
 		
+	};
+	
+	public {
+	
+		static {
+			
+			Initialise = function()
+
+				local f,d = file.Find( Ananke.Name .. "/gamemode/core/client/gui/*.lua", "LUA" )
+			
+				print('\tLoading Gui:')
+				for k,v in pairs(f) do
+					Ananke.include(Ananke.Name .. "/gamemode/core/client/gui/" .. v)
+				end
+			
+			end;
 		
-	}
+		};
+		
+	};
 			
 }
 
