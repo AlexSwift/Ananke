@@ -203,7 +203,7 @@ function Ananke.binds.RemoveBind( key , identifier )
 	
 end
 
-hook.Add( 'KeyPress' , 'Ananke.Binds' , function( ply , key )
+function MODULE.Hooks.KeyPress( ply , key )
 
 	for k,v in pairs( Ananke.binds.GetBinds( key ) ) do
 		v(ply)

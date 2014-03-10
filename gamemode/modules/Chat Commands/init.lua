@@ -114,7 +114,7 @@ class 'Ananke.ChatCommands' {
 
 }
 
-hook.Add('PlayerSay','wp_PlayerSay',function( ply, text, b_team )
+function MODULE.Hooks.PlayerSay( ply, text, b_team )
 
 	Ananke.ChatCommands.PlayerSay( ply, text, b_team )
 	
