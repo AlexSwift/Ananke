@@ -1,9 +1,3 @@
-MODULE.Name = 'Factions'
-MODULE.Author = 'Ananke TEAM'
-MODULE.Contact = ''
-MODULE.Website = ''
-MODULE.Description = ''
-
 function MODULE:Load()
 
 	Protocol = Ananke.core.protocol.new()

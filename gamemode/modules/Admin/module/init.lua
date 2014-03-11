@@ -1,6 +1,3 @@
-include('info.lua')
-AddCSLuaFile( 'info.lua' )
-
 Ananke.Admin = {}
 Ananke.Admin._PLUGINS = {}
 
