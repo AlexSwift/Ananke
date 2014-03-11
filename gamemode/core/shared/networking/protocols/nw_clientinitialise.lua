@@ -8,7 +8,7 @@ Protocol:SetData( {[1] = 'number'} )
 Protocol:SetCallBack( function(data)
 	
 	for k,v in pairs( Ananke._MODULES ) do
-		local nw = network.New()
+		local nw = Ananke.Network.new()
 		nw:SetProtocol(0x05)
 		nw:SetDescription('Client Initialize')
 		nw:PushData( k )

@@ -30,7 +30,7 @@ Protocol:Register()
 Ananke.core.variables =  SERVER and setmetatable({},{
 	__index = function(t,k) end,
 	__newindex = function(t,k,v)
-		local nw = network.New()
+		local nw = Ananke.Network.new()
 		nw:SetProtocol(0x02)
 		nw:SetDescription('Automatic variable networking')
 		nw:PushData(k)

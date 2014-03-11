@@ -1,6 +1,6 @@
 util.AddNetworkString('warpac_nw')
 
-class 'network' {
+class 'Ananke.Network' {
 
 	public {
 	
