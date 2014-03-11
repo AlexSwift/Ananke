@@ -95,6 +95,8 @@ class "Ananke.Modules" {
 				
 				local call = MODULE.Load and MODULE:Load()
 				
+				-- Cache table of ini tables here
+				
 			end;
 			
 			Get = function( name )

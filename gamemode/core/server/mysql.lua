@@ -64,9 +64,6 @@ function Ananke.core.MySQL.CollumnNames(DB,tabl,callback)
 	end)
 end
 
---- Wrapper for insertion by James (after being ignored for an hour)
--- Yes it's ugly, I don't exactly know how to make it look pretty though :'(
-
 function Ananke.core.MySQL.Insert( name , keys , values )
 	local str = "INSERT INTO " .. name
 	local str2 = " ( "

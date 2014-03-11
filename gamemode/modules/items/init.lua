@@ -59,4 +59,3 @@ function profiles:SetItems(data)
 	self:Set('inventory',data)
 end
 
-modul:Register()
