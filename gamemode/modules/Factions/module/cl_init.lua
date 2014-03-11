@@ -1,5 +1,3 @@
-include( 'shared.lua' )
-
 class 'Ananke.Factions' {
 
 	public {

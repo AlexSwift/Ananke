@@ -36,8 +36,6 @@ function items.Initialise()
 		end
 	end
 
-end
-
 function modul:OnLoad()
 	items.Initialise()
 end

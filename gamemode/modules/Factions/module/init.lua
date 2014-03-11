@@ -1,6 +1,3 @@
-include( 'shared.lua' )
-AddCSLuaFile( 'shared.lua' )
-
 class 'Ananke.Factions' {
 
 	public {

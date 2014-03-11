@@ -1,9 +1,3 @@
-MODULE.Name = 'Bind System'
-MODULE.Author = 'WARPAC Studios';
-MODULE.Contact = 'n/a';
-MODULE.Website = 'www.warpac-rp.com';
-MODULE.Description = 'Bind system. DUH IM ISACC CLARKE'
-
 Ananke.binds = {}
 Ananke.binds._BINDS = {}
 Ananke.binds._ValidKeys = {

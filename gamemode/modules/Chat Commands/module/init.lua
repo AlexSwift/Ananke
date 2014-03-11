@@ -1,9 +1,3 @@
-MODULE.Name = 'Chat Commands'
-MODULE.Author = 'WARPAC Studios';
-MODULE.Contact = 'n/a';
-MODULE.Website = 'www.warpac-rp.com';
-MODULE.Description = 'Chat command system.'
-
 Ananke.ChatCommands = {}
 Ananke.ChatCommands._CHATCOMMANDS = {}
 Ananke.ChatCommands.Prefix = '>'
