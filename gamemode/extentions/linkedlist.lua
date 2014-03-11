@@ -16,6 +16,10 @@ class "LLNode" {
 				return self['value'][key]
 			end
 		end;
+		
+		__eq = function(self, key)
+		
+		end;
 	};
 
 	public {
@@ -49,10 +53,10 @@ class "LinkedList" {
 		-- Returns the head of the list if succeeded, nil otherwise.
 		AddHead = function(self, obj)
 			if obj == nil then 
-				Error("Cannot add a Nil Object\n")
+				Error("LINKEDLIST: Cannot add a Nil Object\n")
 				return nil
 			elseif not self:ValidValue(obj) then
-				Error("Given 'obj' is not of type: " .. self['nodeType'] .. ".\n")
+				Error("LINKEDLIST: Given 'obj' is not of type: " .. self['nodeType'] .. ".\n")
 				return nil
 			end
 			
@@ -68,13 +72,13 @@ class "LinkedList" {
 		-- Returns the tail of the list if succeeded, nil otherwise.
 		AddTail = function(self, obj)
 			if obj == nil then
-				Error("Cannot add a Nil Object")
+				Error("LINKEDLIST: Cannot add a Nil Object")
 				return nil
 			elseif self:IsEmpty() then
 				local node = self:AddHead(obj)
 				return node
 			elseif not self:ValidValue(obj) then
-				Error("Given 'obj' is not of type: " .. self['nodeType'] .. ".\n")
+				Error("LINKEDLIST: Given 'obj' is not of type: " .. self['nodeType'] .. ".\n")
 			end
 			
 			local node = LLNode.new(obj, nil)
@@ -89,13 +93,13 @@ class "LinkedList" {
 		-- Returns nil if 'obj' is nil or 'before' isn't of type LLNode.
 		AddBefore = function(self, obj, before)
 			if obj == nil then
-				Error("\nCannot add a Nil Object\n")
+				Error("\nLINKEDLIST: Cannot add a Nil Object\n")
 				return nil
 			elseif not self:ValidValue(obj) then
-				Error("\nGiven 'obj' is not of type: " .. self['nodeType'] .. ".\n")
+				Error("\nLINKEDLIST: Given 'obj' is not of type: " .. self['nodeType'] .. ".\n")
 				return nil
 			elseif before['value'] == nil then
-				Error("\nGiven 'before' is not of type: LLNode\n")
+				Error("\nLINKEDLIST: Given 'before' is not of type: LLNode\n")
 				return nil
 			elseif before == self['head'] then
 				local node = self:AddHead(obj)
@@ -121,13 +125,13 @@ class "LinkedList" {
 		-- Returns nil if 'obj' is nil or 'after' isn't of type LLNode.
 		AddAfter = function(self, obj, after)
 			if obj == nil then
-				Error("\nCannot add a Nil Object\n")
+				Error("\nLINKEDLIST: Cannot add a Nil Object\n")
 				return nil
 			elseif not self:ValidValue(obj) then
-				Error("\nGiven 'obj' is not of type: " .. self['nodeType'] .. ".\n")
+				Error("\nLINKEDLIST: Given 'obj' is not of type: " .. self['nodeType'] .. ".\n")
 				return nil
 			elseif after['value'] == nil then
-				Error("\nGiven 'after' is not of type: LLNode\n")
+				Error("\nLINKEDLIST: Given 'after' is not of type: LLNode\n")
 				return nil
 			elseif after == self['tail'] then
 				local node = self:AddTail(obj)
@@ -287,35 +291,7 @@ class "LinkedList" {
 		Iterate = function(self)
 			return Next, self['head'], nil
 		end;
-		
-		static {
-			Test = function(self)
-				print("********** TESTING LINKEDLIST **********")
-				
-				local lList = LinkedList.new()
-				
-				local node = lList:AddTail("first")
-				print("Head = " .. lList:Head().value .. "\nTail = " .. lList:Tail().value)
-				
-				node = lList:AddTail("third")
-				print("Head = " .. lList:Head().value .. "\nTail = " .. lList:Tail().value)
-				
-				node = lList:AddBefore(0.0, node)
-				print("Head = " .. lList:Head().value .. "\nTail = " .. lList:Tail().value)
-				
-				node = lList:AddAfter("second", lList:Head())
-				print("Head = " .. lList:Head().value .. "\nTail = " .. lList:Tail().value)
-				
-				local index = 1
-				print("\n\n- Printing contents -\n")
-				for node in lList:Iterate() do
-					print(index .. ") " .. node.value)
-					index = index + 1
-				end
-				
-				print("********** FINISHED LLIST TEST **********")
-			end;
-		};
+
 	};
 	
 	private {

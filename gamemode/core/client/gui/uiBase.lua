@@ -31,34 +31,34 @@ class "core.menu.gui.uiBase" {
 		
 		-- Always returns absolute screen coordinates
 		GetPosition = function(self)
-			local pX, pY = self['parent'] and self.['parent']:GetPosition() or 0.0, 0.0
+			local pX, pY = self['parent'] and self['parent']:GetPosition() or 0.0, 0.0
 			local pW, pH = self['parent'] and self['parent']:GetSize() or surface.ScreenWidth, surface.ScreenHeight
 			
 			return (self['relX'] * pW) + pX, (self['relY'] * pH) + pY
 		end;
 		
 		AlignTop = function(self, offset)
-			local _, pHeight = self['parent'] and self['parent']:GetSize() or 0.0, surface.ScreenHeight
+			local _, pH = self['parent'] and self['parent']:GetSize() or 0.0, surface.ScreenHeight
 			
-			self['relY'] = offset / pHeight
+			self['relY'] = offset / pH
 		end;
 		
 		AlignBottom = function(self, offset)
-			local _, pHeight = self['parent'] and self['parent']:GetSize() or 0.0, surface.ScreenHeight
+			local _, pH = self['parent'] and self['parent']:GetSize() or 0.0, surface.ScreenHeight
 			
-			self['relY'] = 1.0 - (offset + self['height']) / pHeight
+			self['relY'] = 1.0 - (offset + self['height']) / pH
 		end;
 		
 		AlignLeft = function(self, offset)
-			local pWidth = self['parent'] and self['parent']:GetSize() or surface.ScreenWidth
+			local pW = self['parent'] and self['parent']:GetSize() or surface.ScreenWidth
 		
-			self['relX'] = offset / pWidth
+			self['relX'] = offset / pW
 		end;
 		
 		AlignRight = function(self, offset)
-			local pWidth = self['parent'] and self['parent']:GetSize() or surface.ScreenWidth
+			local pW = self['parent'] and self['parent']:GetSize() or surface.ScreenWidth
 		
-			self['relX'] = 1.0 - (offset + self['width']) / pWidth
+			self['relX'] = 1.0 - (offset + self['width']) / pW
 		end;
 		
 		SetWidth = function(self, w)
@@ -74,10 +74,8 @@ class "core.menu.gui.uiBase" {
 		end;
 		
 		SetSize = function(self, w, h)
-			if w > 0 and h > 0 then
-				self['width'] = w
-				self['height'] = h
-			end
+			self:SetWidth(w)
+			self:SetHeight(h)
 		end;
 		
 		GetSize = function(self)
@@ -120,11 +118,11 @@ class "core.menu.gui.uiBase" {
 		end;
 		
 		IsEnabled = function(self)
-			return self.isEnabled
+			return self['isEnabled']
 		end;
 		
 		ToggleEnabled = function(self)
-			self.isEnabled = !self.isEnabled
+			self['isEnabled'] = !self['isEnabled']
 			
 			if #self['children'] > 0 then
 				for k, v in pairs(self['children']) do
@@ -142,18 +140,7 @@ class "core.menu.gui.uiBase" {
 	public {
 	-- Initialise
 		__construct = function(self, parent)
-			if(parent) then
-				self:SetParent(parent)
-			end
-		
-			self['relX'] = surface.ScreenWidth * 0.45
-			self['relY'] = surface.ScreenHeight * 0.45
-			
-			self['width'] = surface.ScreenWidth * 0.1
-			self['height'] = surface.ScreenWidth * 0.1
-			
-			self['scaleX'] = 1.0
-			self['scaleY'] = 1.0
+			self:SetParent(parent)
 		end;
 		
 		__finalize = function(self)
