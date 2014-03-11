@@ -1,13 +1,13 @@
 ANANKE
 
 - (DONE)	convert remaining meta tables to the simploo system
-- 		Extend the mathsx lib
-- (DONE)	Prefix all public tables with Ananke.
+- (DONE)	Extend the mathsx lib 					-- MORE WORK POSSIBLE
+- (DONE)	Prefix all public tables with Ananke.			
 - 		Start on sockets communications
-- (DOING)(Matt)		Menu system objects  --PRIORITY
-- (DOING)(Matt)		Menu system drawing  --PRIORITY
+- (DOING)(Matt)	Menu system objects  --PRIORITY
+- (DOING)(Matt)	Menu system drawing  --PRIORITY
 - (DONE) 	bind system
-- 		Items
+- (DOING)(ALEX)	Items
 - 		Inventory
 - 		Test serialization for BLOB data encoding
 - (DOING)(LEN)	Prevent family sharing ban bypass
@@ -17,7 +17,7 @@ ANANKE
 - (DONE)	Create a Touchevent system for map triggers
 - (DONE)	Allow for easier debugging
 
-- 		Create a dynamic Ananke.<system>.Load(dir)   --PRIOTITY
+- (DOING)(ALEX)	Create a dynamic Ananke.<system>.Load(dir)   --PRIOTITY
 - (DONE)	fix directory inheritence
 - 		Player Class system   --PRIORITY
 - 		Make a hook system.
