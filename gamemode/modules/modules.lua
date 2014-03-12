@@ -6,9 +6,10 @@ class "Ananke.Modules" {
 		static {
 			LoadModules = function( tab, dir)
 				
+				print( 'Loading Modules' )
+				
 				dir = dir or Ananke.Name .. "/gamemode/modules/"
 				
-				print( 'Loading Modules' )
 				for k,v in pairs( tab ) do
 					Ananke.Modules.LoadModule( v , dir )	
 				end	
@@ -18,84 +19,35 @@ class "Ananke.Modules" {
 			LoadModule = function( name, dir )
 			
 				print('\tLoading module : ' .. name)
-			
-				local dir = dir or Ananke.Name .. "/gamemode/modules/"
-				local INI
-				local info
 				
-				if not file.Exists( dir .. name ..'/info.ini' , 'LUA' ) and not CLIENT then
+				local dir = dir or Ananke.Name .. "/gamemode/modules/"
+				
+				if not file.Exists( dir .. name ..'/info.ini' , 'LUA' ) and SERVER then
 					Error( '/t/tFailed to load module ' .. name .. ' as info file was not found!' )
 					return
 				end
 				
-				INI = INIParer.new( )
-				INI:LoadFile( dir .. name ..'/info.ini' , 'LUA' )
-				INI = INI:Parse( )
-				
-				if Ananke._MODULES[ INI['Info'].Name ] then
+				if Ananke._MODULES[ name ] then
 					Error( '/t/tFailed to load module '.. name .. ' as module is already loaded ' )
 					return 
 				end
 				
 				MODULE = Ananke.Modules.new()
 				
-				MODULE:SetInfo( INI['Info'] )
-				MODULE:SetFiles( { ['server'] = INI['server'], ['client'] = INI['client'] } )
+				MODULE.INI:LoadFile( dir .. name ..'/info.ini' , 'LUA' )
+				MODULE.INI = MODULE.INI:Parse( )
+				MODULE:SetInfo( MODULE.INI['Info'] )
+				MODULE:SetFiles( { ['server'] = MODULE.INI['server'], ['client'] = MODULE.INI['client'] } )
 				
-				for k,v in ipairs( MODULE:GetFiles()['client'] ) do
-				
-					if CLIENT then
-						Ananke.Include( dir .. name .. '/' .. v )
-					else
-						Ananke.AddCSLuaFile(  dir .. name .. '/' .. v )
-					end
-					
-				end
-				
-				for k,v in ipairs( MODULE:GetFiles()['server'] and MODULE:GetFiles()['server'] ) do
-					Ananke.Include( dir .. name .. '/' .. v )
-				end
-				
-				for k,v in pairs( file.Find( dir .. name .. '/entities/*' , 'LUA' , 'nameasc' ) ) do
-					ENT = {}
-					if CLIENT then
-						Ananke.Include( dir .. name .. '/entities/' .. v .. '/cl_init.lua' )
-					else
-						Ananke.Include( dir .. name .. '/entities/' .. v .. '/init.lua' )
-						Ananke.AddCSLuaFile( dir .. name .. '/entities/' .. v .. '/cl_init.lua' )
-					end
-					scripted_ents.Register( ENT, v )
-					ENT = nil
-				end
-				
-				for k,v in pairs( file.Find( dir .. name .. '/weapons/*' , 'LUA' , 'nameasc' ) ) do
-					SWEP = {}
-					if CLIENT then
-						Ananke.Include( dir .. name .. '/weapons/' .. v .. '/cl_init.lua' )
-					else
-						Ananke.Include( dir .. name .. '/weapons/' .. v .. '/init.lua' )
-						Ananke.AddCSLuaFile( dir .. name .. '/weapons/' .. v .. '/cl_init.lua' )
-					end
-					weapons.Register( SWEP, v )
-					SWEP = nil
-				end
-			
-				for k,v in pairs( file.Find( dir .. name .. '/effects/*' , 'LUA' , 'nameasc' ) ) do
-					EFFECT = {}
-					if CLIENT then
-						Ananke.Include( dir .. name .. '/effects/' .. v .. '/init.lua' )
-					else
-						Ananke.AddCSLuaFile( dir .. name .. '/effects/' .. v .. '/init.lua' )
-					end
-					effects.Register( SWEP, v )
-					EFFECT = nil
-				end
+				MODULE:LoadClient( dir, name )
+				MODULE:LoadServer( dir, name )
+				MODULE:LoadEntities( dir )
+				MODULE:LoadWeapons( dir )
+				MODULE:LoadEffects( dir )
 				
 				MODULE:Register()
 				
 				local call = MODULE.Load and MODULE:Load()
-				
-				-- Cache table of ini tables here
 				
 			end;
 			
@@ -119,6 +71,7 @@ class "Ananke.Modules" {
 		Info = {};
 		Files = {};
 		Hooks = {};
+		INI = INIParer.new( );
 	
 		Register = function( self )
 			Ananke._MODULES[ self.Info.Name ] = self
@@ -157,7 +110,68 @@ class "Ananke.Modules" {
 		end
 		
 	};
-
+	
+	private {
+		
+		LoadEffects = function( self, dir )
+			for k,v in pairs( file.Find( dir .. self:GetInfo().Name .. '/effects/*' , 'LUA' , 'nameasc' ) ) do
+				EFFECT = {}
+				if CLIENT then
+					Ananke.Include( dir .. self:GetInfo().Name .. '/effects/' .. v .. '/init.lua' )
+				else
+					Ananke.AddCSLuaFile( dir .. self:GetInfo().Name .. '/effects/' .. v .. '/init.lua' )
+				end
+				effects.Register( EFFECT, v )
+				EFFECT = nil
+			end
+		end;
+		
+		LoadWeapons = function( self, dir )
+			for k,v in pairs( file.Find( dir .. self:GetInfo().Name .. '/weapons/*' , 'LUA' , 'nameasc' ) ) do
+				SWEP = {}
+				if CLIENT then
+					Ananke.Include( dir .. self:GetInfo().Name .. '/weapons/' .. v .. '/cl_init.lua' )
+				else
+					Ananke.Include( dir .. self:GetInfo().Name .. '/weapons/' .. v .. '/init.lua' )
+					Ananke.AddCSLuaFile( dir .. self:GetInfo().Name .. '/weapons/' .. v .. '/cl_init.lua' )
+				end
+				weapons.Register( SWEP, v )
+				SWEP = nil
+			end
+		end;
+		
+		LoadEntities = function( self, dir )
+			for k,v in pairs( file.Find( dir .. name .. '/entities/*' , 'LUA' , 'nameasc' ) ) do
+				ENT = {}
+				if CLIENT then
+					Ananke.Include( dir .. name .. '/entities/' .. v .. '/cl_init.lua' )
+				else
+					Ananke.Include( dir .. name .. '/entities/' .. v .. '/init.lua' )
+					Ananke.AddCSLuaFile( dir .. name .. '/entities/' .. v .. '/cl_init.lua' )
+				end
+				scripted_ents.Register( ENT, v )
+				ENT = nil
+			end
+		end;
+		
+		LoadClient = function( self, dir, name )
+			for k,v in ipairs( MODULE:GetFiles()['client'] ) do				
+				if CLIENT then
+					Ananke.Include( dir .. name .. '/' .. v )
+				else
+					Ananke.AddCSLuaFile(  dir .. name .. '/' .. v )
+				end
+				
+			end
+		end;
+		
+		LoadServer = function( self, dir, name )
+			if !SERVER then return end
+			for k,v in ipairs( MODULE:GetFiles()['server'] and MODULE:GetFiles()['server'] ) do
+				Ananke.Include( dir .. name .. '/' .. v )
+			end
+		end;
+	}
 }
 
 
