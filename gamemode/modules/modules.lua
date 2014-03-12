@@ -7,6 +7,7 @@ class "Ananke.Modules" {
 			LoadModules = function( tab, dir)
 				
 				print( 'Loading Modules' )
+				Ananke.core.debug.Log( 'Loading Modules' )
 				
 				dir = dir or Ananke.Name .. "/gamemode/modules/"
 				
@@ -19,23 +20,45 @@ class "Ananke.Modules" {
 			LoadModule = function( name, dir )
 			
 				print('\tLoading module : ' .. name)
+				Ananke.core.debug.Log( 'Loading module : ' .. name )
 				
 				local dir = dir or Ananke.Name .. "/gamemode/modules/"
 				
 				if not file.Exists( dir .. name ..'/info.ini' , 'LUA' ) and SERVER then
+				
+					Ananke.core.debug.Log( 'Failed to load module ' .. name .. ' as info file was not found!' )
 					Error( '/t/tFailed to load module ' .. name .. ' as info file was not found!' )
 					return
+					
+				elseif CLIENT and not Ananke._MODULES[ name ].INI then
+				
+					local nw = network.New()
+					nw:SetProtocol(0x04)
+					nw:SetDescription('Client Request module INI')
+					nw:PushData( name )
+					nw:Send()
+					return
+					
 				end
+					
 				
 				if Ananke._MODULES[ name ] then
+				
+					Ananke.core.debug.Log( 'Failed to load module '.. name .. ' as module is already loaded ' )
 					Error( '/t/tFailed to load module '.. name .. ' as module is already loaded ' )
 					return 
+					
 				end
 				
 				MODULE = Ananke.Modules.new()
 				
-				MODULE.INI:LoadFile( dir .. name ..'/info.ini' , 'LUA' )
-				MODULE.INI = MODULE.INI:Parse( )
+				if SERVER then
+					MODULE.INI:LoadFile( dir .. name ..'/info.ini' , 'LUA' )
+					MODULE.INI = MODULE.INI:Parse( )
+				else
+					MODULE.INI = Ananke._MODULES[ name ].INI
+				end
+				
 				MODULE:SetInfo( MODULE.INI['Info'] )
 				MODULE:SetFiles( { ['server'] = MODULE.INI['server'], ['client'] = MODULE.INI['client'] } )
 				
@@ -84,6 +107,7 @@ class "Ananke.Modules" {
 				end)
 				
 				print('\t\tRegistered Hook : ' .. k )
+				Ananke.core.debug.Error( 'Registered Hook : ' .. k )
 				
 			end
 
@@ -93,20 +117,40 @@ class "Ananke.Modules" {
 			return self.Hooks 
 		end;
 		
-		SetInfo = function( self, Info )
+		SetInfo = function( self, Info, key )
+			if key then
+				self.Info[key] = Info
+				return
+			end
 			self.Info = Info
 		end;
 		
-		GetInfo = function( self )
-			return self.Info and self.Info or false
+		GetInfo = function( self, key )
+		
+			if key then
+				return self.Info[key] and self.Info[key] or nil
+			end
+			
+			return self.Info and self.Info or nil
 		end;
 		
-		SetFiles = function( self, tab )
+		SetFiles = function( self, tab, key )
+		
+			if key then
+				self.Files[key] = tab
+				return
+			end
+			
 			self.Files = tab
+			
 		end;
 		
-		GetFiles = function( self )
-			return self.Files and self.Files
+		GetFiles = function( self, key )
+			if key then
+				return self.Files[key] and self.Files[key] or {}
+			else
+				return self.Files and self.Files or {}
+			end
 		end;
 		
 	};
@@ -114,12 +158,12 @@ class "Ananke.Modules" {
 	private {
 		
 		LoadEffects = function( self, dir )
-			for k,v in pairs( file.Find( dir .. self:GetInfo().Name .. '/effects/*' , 'LUA' , 'nameasc' ) ) do
+			for k,v in pairs( file.Find( dir .. self:GetInfo('Name') .. '/effects/*' , 'LUA' , 'nameasc' ) ) do
 				EFFECT = {}
 				if CLIENT then
-					Ananke.Include( dir .. self:GetInfo().Name .. '/effects/' .. v .. '/init.lua' )
+					Ananke.Include( dir .. self:GetInfo('Name') .. '/effects/' .. v .. '/init.lua' )
 				else
-					Ananke.AddCSLuaFile( dir .. self:GetInfo().Name .. '/effects/' .. v .. '/init.lua' )
+					Ananke.AddCSLuaFile( dir .. self:GetInfo('Name') .. '/effects/' .. v .. '/init.lua' )
 				end
 				effects.Register( EFFECT, v )
 				EFFECT = nil
@@ -127,13 +171,13 @@ class "Ananke.Modules" {
 		end;
 		
 		LoadWeapons = function( self, dir )
-			for k,v in pairs( file.Find( dir .. self:GetInfo().Name .. '/weapons/*' , 'LUA' , 'nameasc' ) ) do
+			for k,v in pairs( file.Find( dir .. self:GetInfo('Name') .. '/weapons/*' , 'LUA' , 'nameasc' ) ) do
 				SWEP = {}
 				if CLIENT then
-					Ananke.Include( dir .. self:GetInfo().Name .. '/weapons/' .. v .. '/cl_init.lua' )
+					Ananke.Include( dir .. self:GetInfo('Name') .. '/weapons/' .. v .. '/cl_init.lua' )
 				else
-					Ananke.Include( dir .. self:GetInfo().Name .. '/weapons/' .. v .. '/init.lua' )
-					Ananke.AddCSLuaFile( dir .. self:GetInfo().Name .. '/weapons/' .. v .. '/cl_init.lua' )
+					Ananke.Include( dir .. self:GetInfo('Name') .. '/weapons/' .. v .. '/init.lua' )
+					Ananke.AddCSLuaFile( dir .. self:GetInfo('Name') .. '/weapons/' .. v .. '/cl_init.lua' )
 				end
 				weapons.Register( SWEP, v )
 				SWEP = nil
@@ -155,7 +199,7 @@ class "Ananke.Modules" {
 		end;
 		
 		LoadClient = function( self, dir, name )
-			for k,v in ipairs( MODULE:GetFiles()['client'] ) do				
+			for k,v in ipairs( MODULE:GetFiles( 'client' ) ) do				
 				if CLIENT then
 					Ananke.Include( dir .. name .. '/' .. v )
 				else
@@ -167,7 +211,7 @@ class "Ananke.Modules" {
 		
 		LoadServer = function( self, dir, name )
 			if !SERVER then return end
-			for k,v in ipairs( MODULE:GetFiles()['server'] and MODULE:GetFiles()['server'] ) do
+			for k,v in ipairs( MODULE:GetFiles( 'server' ) ) do
 				Ananke.Include( dir .. name .. '/' .. v )
 			end
 		end;
