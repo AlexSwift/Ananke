@@ -150,11 +150,11 @@ class "Ananke.Modules" {
 		
 		SetFiles = function( self, tab )
 			self.Files = tab
-		end
+		end;
 		
 		GetFiles = function( self )
 			return self.Files and self.Files
-		end
+		end;
 		
 	};
 
