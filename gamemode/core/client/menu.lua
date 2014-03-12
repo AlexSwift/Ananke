@@ -106,7 +106,6 @@ class "Ananke.core.menu.gui" {
 	};
 }
 
-
 class 'Ananke.core.menu' {
 	
 	private {
@@ -174,6 +173,41 @@ class 'Ananke.core.menu' {
 	};
 			
 }
+
+class "Ananke.core.menu.renderStack" {
+	
+	private {
+		layers = {}
+	};
+	
+	public {
+		__constructor = function(self)
+			for i = 1, 5 do
+				layers[i] = LinkedList.new()
+			end
+		end;
+		
+		Draw = function(self)
+			-- loop through 'layers' calling Draw on each object
+			for k,v in pairs(self['layers']) do
+				for node in v:Iterate() do
+					node:Draw()
+				end
+			end
+		end;
+		
+		-- TODO: layer is enum value
+		Add = function(self, obj, layer)
+			self['layers'][layer]:AddHead(obj)
+		end;
+		
+		-- TODO: layer is enum value
+		Remove = function(self, obj, layer)
+			self['layers'][layer]:RemoveByValue(obj)
+		end;
+	};
+	
+};
 
 Ananke.core.menu.Initialise()
 
