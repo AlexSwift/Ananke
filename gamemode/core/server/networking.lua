@@ -70,7 +70,7 @@ net.Receive('warpac_nw',function()
 		data = Datagram.Receive()
 	else
 		for k,v in ipairs(Datagram.Data) do
-			table.insert( data , net['Read'..NW_TRANSLAITON[v]()]() )
+			table.insert( data , net['Read'..NW_TRANSLATION[v]()]() )
 		end
 	end
 	

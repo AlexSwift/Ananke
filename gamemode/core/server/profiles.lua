@@ -48,7 +48,7 @@ class 'Ananke.core.profiles' {
 			if !Ananke.core.profiles['types'][key] then return end
 			return self.Data[key] or nil
 			
-		end
+		end;
 	
 		Load = function( self, id , ... )
 		
