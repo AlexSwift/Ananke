@@ -4,6 +4,7 @@ class "Ananke.Modules" {
 	
 	public {
 		static {
+			
 			LoadModules = function( tab, dir)
 				
 				print( 'Loading Modules' )
@@ -59,7 +60,7 @@ class "Ananke.Modules" {
 					MODULE.INI = Ananke._MODULES[ name ].INI
 				end
 				
-				MODULE:SetInfo( MODULE.INI['Info'] )
+				MODULE:SetInfo( MODULE.INI['info'] )
 				MODULE:SetFiles( { ['server'] = MODULE.INI['server'], ['client'] = MODULE.INI['client'] } )
 				
 				MODULE:LoadClient( dir, name )
@@ -94,10 +95,10 @@ class "Ananke.Modules" {
 		Info = {};
 		Files = {};
 		Hooks = {};
-		INI = INIParer.new( );
+		INI = INIParser.new();
 	
 		Register = function( self )
-			Ananke._MODULES[ self.Info.Name ] = self
+			Ananke._MODULES[ self:GetInfo('name') ] = self
 			
 			for k,v in pairs( self:GetHooks() ) do 
 			
@@ -118,6 +119,9 @@ class "Ananke.Modules" {
 		end;
 		
 		SetInfo = function( self, Info, key )
+		
+			self.Info = self.Info or {}
+		
 			if key then
 				self.Info[key] = Info
 				return
@@ -126,6 +130,8 @@ class "Ananke.Modules" {
 		end;
 		
 		GetInfo = function( self, key )
+		
+			self.Info = self.Info or {}
 		
 			if key then
 				return self.Info[key] and self.Info[key] or nil
@@ -158,12 +164,12 @@ class "Ananke.Modules" {
 	private {
 		
 		LoadEffects = function( self, dir )
-			for k,v in pairs( file.Find( dir .. self:GetInfo('Name') .. '/effects/*' , 'LUA' , 'nameasc' ) ) do
+			for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/effects/*' , 'LUA' , 'nameasc' ) ) do
 				EFFECT = {}
 				if CLIENT then
-					Ananke.Include( dir .. self:GetInfo('Name') .. '/effects/' .. v .. '/init.lua' )
+					Ananke.Include( dir .. self:GetInfo('name') .. '/effects/' .. v .. '/init.lua' )
 				else
-					Ananke.AddCSLuaFile( dir .. self:GetInfo('Name') .. '/effects/' .. v .. '/init.lua' )
+					Ananke.AddCSLuaFile( dir .. self:GetInfo('name') .. '/effects/' .. v .. '/init.lua' )
 				end
 				effects.Register( EFFECT, v )
 				EFFECT = nil
@@ -171,13 +177,13 @@ class "Ananke.Modules" {
 		end;
 		
 		LoadWeapons = function( self, dir )
-			for k,v in pairs( file.Find( dir .. self:GetInfo('Name') .. '/weapons/*' , 'LUA' , 'nameasc' ) ) do
+			for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/weapons/*' , 'LUA' , 'nameasc' ) ) do
 				SWEP = {}
 				if CLIENT then
-					Ananke.Include( dir .. self:GetInfo('Name') .. '/weapons/' .. v .. '/cl_init.lua' )
+					Ananke.Include( dir .. self:GetInfo('name') .. '/weapons/' .. v .. '/cl_init.lua' )
 				else
-					Ananke.Include( dir .. self:GetInfo('Name') .. '/weapons/' .. v .. '/init.lua' )
-					Ananke.AddCSLuaFile( dir .. self:GetInfo('Name') .. '/weapons/' .. v .. '/cl_init.lua' )
+					Ananke.Include( dir .. self:GetInfo('name') .. '/weapons/' .. v .. '/init.lua' )
+					Ananke.AddCSLuaFile( dir .. self:GetInfo('name') .. '/weapons/' .. v .. '/cl_init.lua' )
 				end
 				weapons.Register( SWEP, v )
 				SWEP = nil
@@ -185,13 +191,13 @@ class "Ananke.Modules" {
 		end;
 		
 		LoadEntities = function( self, dir )
-			for k,v in pairs( file.Find( dir .. name .. '/entities/*' , 'LUA' , 'nameasc' ) ) do
+			for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/entities/*' , 'LUA' , 'nameasc' ) ) do
 				ENT = {}
 				if CLIENT then
-					Ananke.Include( dir .. name .. '/entities/' .. v .. '/cl_init.lua' )
+					Ananke.Include( dir .. self:GetInfo('name') .. '/entities/' .. v .. '/cl_init.lua' )
 				else
-					Ananke.Include( dir .. name .. '/entities/' .. v .. '/init.lua' )
-					Ananke.AddCSLuaFile( dir .. name .. '/entities/' .. v .. '/cl_init.lua' )
+					Ananke.Include( dir .. self:GetInfo('name') .. '/entities/' .. v .. '/init.lua' )
+					Ananke.AddCSLuaFile( dir .. self:GetInfo('name') .. '/entities/' .. v .. '/cl_init.lua' )
 				end
 				scripted_ents.Register( ENT, v )
 				ENT = nil
