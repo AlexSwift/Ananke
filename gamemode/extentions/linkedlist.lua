@@ -275,16 +275,6 @@ class "LinkedList" {
 			return self['head'] == nil
 		end;
 		
-		-- Returns the head of the LinkedList.
-		Head = function(self)
-			return self['head']
-		end;
-		
-		-- Returns the tail of the LinkedList.
-		Tail = function(self)
-			return self['tail']
-		end;
-		
 		-- Function used in the generic for loop to iterate through
 		-- the contents of the LinkedList.
 		-- Ex: for node in lList:Iterate() do { ... } end

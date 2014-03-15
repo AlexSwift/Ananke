@@ -38,7 +38,7 @@ class 'stack' {
 			local ret = {}
 			
 			for i = 1, num do
-				table.insert( string.byte( self.data , p_start + i ) )
+				table.insert( ret, string.byte( self.data , p_start + i ) )
 			end
 			
 			return ret
