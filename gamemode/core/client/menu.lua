@@ -167,6 +167,8 @@ class 'Ananke.core.menu' {
 				end
 			
 			end;
+			
+			renderStack = {}
 		
 		};
 		
