@@ -1,4 +1,4 @@
-if !CLIENT then return end
+if not CLIENT then return end
 
 hook.Add( 'HUDPaint' , 'Ananke.core.menu.draw' , function( )
 	if not Ananke.core.menu.Enabled then return end

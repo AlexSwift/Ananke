@@ -1,86 +1,104 @@
-Ananke.core.debug = {}
-Ananke.core.debug.data = {}
-Ananke.core.debug.data.Errors = {}
-Ananke.core.debug.data.Logs = {}
-Ananke.core.debug.data.Stack = {}
 
-Ananke.core.debug.enabled = false
-Ananke.core.debug.timestamp = Ananke.core.debug.enabled and os.time() or 0
+class 'Ananke.core.debug' {
 
-DEBUG_PRINT = 1
-DEBUG_ERROR = 2
-DEBUG_ERRORNOHALT = 3
+	static {
+		
+		public {
+		
+			Add = function( self )
 
-function Ananke.core.debug.Add()
+				if not self.Enabled then return end
+				
+				local info = debug.getinfo(2, "nSl")
+				local i = self.Stack[info.short_src][info.linedefined][1] + 1 or 1
+				
+				self.Stack[info.short_src] = self.Stack[info.short_src] or {}
+				self.Stack[info.short_src][info.linedefined] = self.Data[info.short_src][info.linedefined] or {}
+				self.Stack[info.short_src][info.linedefined] = { i , info , i / ( os.time() - self.TimeStamp ) }
+				
+			end;
+			
+			PrintData = function( self, ... )
 
-	if !Ananke.core.debug.enabled then return end
-	
-	local info = debug.getinfo(2, "nSl")
-	local i = Ananke.core.debug.data.Stack[info.short_src][info.linedefined][1] + 1 or 1
-	
-	Ananke.core.debug.data.Stack[info.short_src] = Ananke.core.debug.data[info.short_src] or {}
-	Ananke.core.debug.data.Stack[info.short_src][info.linedefined] = Ananke.core.debug.data[info.short_src][info.linedefined] or {}
-	Ananke.core.debug.data.Stack[info.short_src][info.linedefined] = { i , info , i / (os.time() - Ananke.core.debug.timestamp) }
-	
-end
+				local args = {...}
+				
+				if args[1] and self.Stack[args[1]] then
+					if args[2] and self.Stack[args[1]][args[2]] then
+						return PrintTable( self.Stack[args[1]][args[2]] )
+					else
+						return PrintTable( self.Stack[args[1]] )
+					end
+				else
+					return PrintTable( self.Stack )
+				end
+				
+			end;
+		
+			SetActive = function( self, bActive )
 
-function Ananke.core.debug.PrintData(...)
+				self.Enabled = bActive
+				self.TimeStamp = self.Enabled and os.time() or 0
+			
+			end;
+			
+			Error = function( self, str , Halt )
+			
+				local func = Halt and Error or ErrorNoHalt
+			
+				local info = debug.getinfo(2, "nSl")
+				table.insert( self.Errors , { str , info } )
+				
+				func( str )
+				
+			end;
+			
+			Print = function( self, str , type )
 
-	local args = {...}
+				if type == Enums['DEBUG'].DEBUG_PRINT then
+					print( '[Ananke] ' .. str )
+				elseif type == Enums['DEBUG'].DEBUG_ERROR then
+					error( '[Ananke] ' .. str )
+				elseif type == Enums['DEBUG'].DEBUG_ERRORNOHALT then
+					ErrorNoHalt( '[Ananke] ' .. str )
+				end
+				
+			end;
+			
+			Log = function( self, str, push, data )
 	
-	if args[1] and Ananke.core.debug.data.Stack[args[1]] then
-		if args[2] and Ananke.core.debug.data.Stack[args[1]][args[2]] then
-			return PrintTable(Ananke.core.debug.data.Stack[args[1]][args[2]])
-		else
-			return PrintTable(Ananke.core.debug.data.Stack[args[1]])
-		end
-	else
-		return PrintTable(Ananke.core.debug.data.Stack)
-	end
+				data = data or ''
+				
+				table.insert( self.Logs, { str , data } )
+				
+				if push then
+					self:Print( str , push )
+				end
+				
+			end;
+		
+		};
 	
-end
+	};
+	
+	private {
+	
+		Errors = {};
+		Logs = {};
+		Stack = {};
+		
+		Enabled = false;
+		TimeStamp = os.time()
+	
+	};
 
-function Ananke.core.debug.SetActive( b )
+};
 
-	Ananke.core.debug.enabled = b
-	Ananke.core.debug.timestamp = Ananke.core.debug.enabled and os.time() or 0
-	
-end
+Enums['DEBUG'] = {
 
-function Ananke.core.debug.Error( str , Halt )
+	DEBUG_PRINT = 1,
+	DEBUG_ERROR = 2,
+	DEBUG_ERRORNOHALT = 3
 
-	local func = Halt and Error or ErrorNoHalt
-
-	local info = debug.getinfo(2, "nSl")
-	table.insert( Ananke.core.debug.data.Errors , { str , info } )
-	
-	func( str )
-	
-end
-
-function Ananke.core.debug.Print( str , type )
-
-	if type == DEBUG_PRINT then
-		print( '[Ananke] ' .. str )
-	elseif type == DEBUG_ERROR then
-		error( '[Ananke] ' .. str )
-	elseif type == DEBUG_ERRORNOHALT then
-		ErrorNoHalt( '[Ananke] ' .. str )
-	end
-	
-end
-
-function Ananke.core.debug.Log( str , push, data )
-	
-	data = data or ''
-	
-	table.insert( Ananke.core.debug.data.Logs, { str , data } )
-	
-	if push then
-		Ananke.core.debug.Print( str , push )
-	end
-	
-end
-	
+}
 	
 
