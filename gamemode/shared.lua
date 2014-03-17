@@ -10,4 +10,4 @@ include('core/core.lua')
 include('modules/modules.lua')
 include('hooks/hooks.lua')
 
-Ananke.core.Initialise()
+Ananke.core:Initialise()
