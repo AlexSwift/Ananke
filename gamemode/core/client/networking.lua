@@ -1,4 +1,4 @@
-class 'network' {
+class 'Ananke.Network' {
 
 	public {
 	

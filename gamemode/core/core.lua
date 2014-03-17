@@ -1,8 +1,3 @@
-local Loaded = {
-	['shared'] = {},
-	['client'] = {},
-	['server'] = {}
-};
 
 class 'Ananke.core' {
 	static {
@@ -18,59 +13,59 @@ class 'Ananke.core' {
 		
 		private {
 			core = {};
+			Loaded = {
+				['shared'] = {},
+				['client'] = {},
+				['server'] = {}
+			};
 		};
 	
 		public {
-			Initialise = function(self)
-				local f,d = file.Find( Ananke.Name .. "/gamemode/core/shared/*.lua", "LUA" )
-
-				Loaded['shared'] = {f,d}
-				print('Loading Shared :')
-
-				for k,v in pairs(f) do
-					if SERVER then
-						print('\tLoading ' .. v)
-						Ananke.AddCSLuaFile( Ananke.Name .. "/gamemode/core/shared/" .. v )
-						Ananke.include( Ananke.Name .. "/gamemode/core/shared/" .. v)
-					else
-						print('\tLoading ' .. v)
-						Ananke.include( Ananke.Name .. "/gamemode/core/shared/" .. v)
-					end
-				end
-
-
-				f,d = file.Find( Ananke.Name .. "/gamemode/core/client/*.lua", "LUA" )
+		
+			IncludeDir = function(self, state, dir )
+			
+				local f,d = file.Find( dir .. '/*.lua' , "LUA" )
+				self.Loaded[state] = {f,d}
 				
-				Loaded['client'] = {f,d}
-				print('Loading client :') 
-				for k,v in pairs(f) do
-					do
+				print( 'Loading ' .. state .. ' :' ) 
+				
+				if state == 'client' then
+				
+					for k,v in pairs(f) do
 						if SERVER then
-							AddCSLuaFile( Ananke.Name .. "/gamemode/core/client/" .. v)
+							Ananke.AddCSLuaFile( dir .. '/' .. v )
 						else
-							Ananke.include( Ananke.Name .. "/gamemode/core/client/" .. v)
+							Ananke.include( dir .. '/' .. v )
 						end
 					end
-				end
 					
-				if SERVER then
-
-					f,d = file.Find( Ananke.Name .. "/gamemode/core/server/*.lua", "LUA" )
-
-					Loaded['server'] = {f,d}
-					print('Loading Server :')
+				elseif state == 'shared' then
 					for k,v in pairs(f) do
-						if file.Size( Ananke.Name .. '/gamemode/core/server/'..v , "LUA") == 0 then continue end
+											
 						print('\tLoading ' .. v)
-						Ananke.include( Ananke.Name .. "/gamemode/core/server/" ..v)
+					
+						if SERVER then
+							Ananke.AddCSLuaFile( dir .. '/' .. v )
+							Ananke.include( dir .. '/' .. v )
+						else
+							Ananke.include( dir .. '/' .. v )
+						end
 					end
-
-				end
 				
-				self['Loaded'] = Loaded
+				elseif state == 'server' then
+				
+					if SERVER then
+					
+						for k,v in pairs(f) do
+							print('\tLoading ' .. v)
+							Ananke.include( dir .. '/' .. v )
+						end
+
+					end
+				
+				end
+			
 			end;
 		};
 	};
 };
-
--- Will have to rewrite for use on dedicated servers, and Client file system uses Lua_temp for file structure.
