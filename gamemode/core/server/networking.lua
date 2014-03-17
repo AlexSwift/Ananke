@@ -1,4 +1,4 @@
-util.AddNetworkString('warpac_nw')
+util.AddNetworkString('ananke_nw')
 
 class 'Ananke.Network' {
 
@@ -31,7 +31,7 @@ class 'Ananke.Network' {
 		end;
 		
 		Send = function( self )
-			net.Start('warpac_nw')
+			net.Start('ananke_nw')
 				net.WriteInt(self.PID,0x10)
 				if self.protocol.send then
 					self.protocol.send(self.Data)
@@ -62,7 +62,7 @@ class 'Ananke.Network' {
 	}
 }
 
-net.Receive('warpac_nw',function()
+net.Receive('ananke_nw',function()
 	local Datagram = Ananke.core.protocol.GetByID( net.ReadInt() )
 	local data = {}
 	
@@ -75,8 +75,8 @@ net.Receive('warpac_nw',function()
 	end
 	
 	Datagram:GetCallBack()(data)
+	
+	return
 
 end)
-
-Ananke.core.protocols.Initialise()
 

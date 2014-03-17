@@ -104,6 +104,9 @@ class 'Ananke.MathsX.Matrices' {
 		
 		end;
 		
+	};
+
+	meta {
 		__sub = function( self, b )
 
 			if self.x != b.x or self.y != b.y then

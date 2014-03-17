@@ -157,7 +157,7 @@ class 'Ananke.core.menu' {
 	
 		static {
 			
-			Initialise = function()
+			Initialize = function()
 
 				local f,d = file.Find( Ananke.Name .. "/gamemode/core/client/gui/*.lua", "LUA" )
 			
@@ -210,18 +210,4 @@ class "Ananke.core.menu.renderStack" {
 	};
 	
 };
-
-Ananke.core.menu.Initialise()
-
-
---				Usage:
--- local gui = core.menu.gui.Get( 'text' )
--- gui:AddParam( 'pos' , Vector( 50 , 50 , 0 ) )
--- gui:AddPapam( 'size' , Vector( 50 , 50 , 0 ) )
--- gui:AddParam( 'Text' , 'Main Menu' )
--- <Other params >
-
-
--- In the menu draw hook:
---  gui:Draw()
 

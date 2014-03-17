@@ -3,15 +3,18 @@ local m_addcsluafile = _G.AddCSLuaFile
 
 function Ananke.include( file )
 	do --New thread
-		m_include( file )
+		ProtectedCall( function() 
+			m_include( file )
+		end)
 	end
 end
 
 function Ananke.AddCSLuaFile( file )
 	if not SERVER then return end
 	do
-		--if !file.Exist( file ) then return end
-		m_addcsluafile( file )
+		ProtectedCall( function()
+			m_addcsluafile( file )
+		end)
 	end
 end
 

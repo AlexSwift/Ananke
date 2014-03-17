@@ -3,7 +3,7 @@ Ananke.core.serialization = {}
 Ananke.core.serialization.translations = {}
 Ananke.core.serialization.padding = 30
 
-function Ananke.core.serialization.initialize()
+function Ananke.core.serialization.Initialize()
 
 	local types = {
 	--	[id]= { types	,encode function(data),
@@ -161,5 +161,3 @@ function Ananke.core.serialization.decode(s_data)
 	-- local typ = -- Get First byte and return Key for decode function
 	return data
 end
-
-Ananke.core.serialization.initialize()

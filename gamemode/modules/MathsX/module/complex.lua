@@ -34,6 +34,39 @@ class "Ananke.MathsX.Complex" {
 			return self.imag
 		end;
 		
+		Conjugate = function( self )
+
+			local r = Ananke.MathsX.Complex()
+		
+			r:SetReal( self:GetReal() )
+			r:SetImag( -self:GEtImag() )
+		
+			return r
+		
+		end;
+		
+		Matrix = function( self )
+	
+			if !Ananke.MathsX.Matrices then return nil end
+			
+			local r = Ananke.MathsX.Matrices()
+			local real = self:GetReal()
+			local imag = self:GetImag()
+			
+			r:Setdimensions( 2 , 2 )
+			
+			r:SetData( 1 , 1 , real )
+			r:SetData( 1 , 2 , -imag )
+			r:SetData( 2 , 1 , imag )
+			r:SetData( 2 , 2 , real )
+			
+			return r
+		
+		end;
+		
+	};
+	
+	meta {
 		__add = function( self, b )
 			local r = Ananke.MathsX.Complex()
 
@@ -101,36 +134,6 @@ class "Ananke.MathsX.Complex" {
 				return r
 		
 			end
-		
-		end;
-
-		Conjugate = function( self )
-
-			local r = Ananke.MathsX.Complex()
-		
-			r:SetReal( self:GetReal() )
-			r:SetImag( -self:GEtImag() )
-		
-			return r
-		
-		end;
-		
-		Matrix = function( self )
-	
-			if !Ananke.MathsX.Matrices then return nil end
-			
-			local r = Ananke.MathsX.Matrices()
-			local real = self:GetReal()
-			local imag = self:GetImag()
-			
-			r:Setdimensions( 2 , 2 )
-			
-			r:SetData( 1 , 1 , real )
-			r:SetData( 1 , 2 , -imag )
-			r:SetData( 2 , 1 , imag )
-			r:SetData( 2 , 2 , real )
-			
-			return r
 		
 		end;
 

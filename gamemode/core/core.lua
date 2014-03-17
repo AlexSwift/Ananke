@@ -45,10 +45,10 @@ class 'Ananke.core' {
 						print('\tLoading ' .. v)
 					
 						if SERVER then
-							Ananke.AddCSLuaFile( dir .. '/' .. v )
-							Ananke.include( dir .. '/' .. v )
+							Ananke.AddCSLuaFile( dir .. '/' .. v ) 
+							Ananke.include( dir .. '/' .. v ) 
 						else
-							Ananke.include( dir .. '/' .. v )
+							Ananke.include( dir .. '/' .. v ) 
 						end
 					end
 				
@@ -58,13 +58,25 @@ class 'Ananke.core' {
 					
 						for k,v in pairs(f) do
 							print('\tLoading ' .. v)
-							Ananke.include( dir .. '/' .. v )
+							ProtectedCall( Ananke.include( dir .. '/' .. v ) 
 						end
 
 					end
 				
 				end
 			
+			end;
+			
+			AddCSLuaDir = function( dir )
+			
+				if not SERVER then return end
+			
+				local f,d = file.Find( dir .. '/*.lua' , "LUA" )
+			
+				for k,v in pairs(f) do
+					ProtectedCall( Ananke.AddCSLuaFile( dir .. '/' .. v ) )
+				end
+				
 			end;
 		};
 	};
