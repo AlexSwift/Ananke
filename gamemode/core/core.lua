@@ -58,7 +58,7 @@ class 'Ananke.core' {
 					
 						for k,v in pairs(f) do
 							print('\tLoading ' .. v)
-							ProtectedCall( Ananke.include( dir .. '/' .. v ) 
+							ProtectedCall( Ananke.include( dir .. '/' .. v ) )
 						end
 
 					end
