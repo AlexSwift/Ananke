@@ -13,7 +13,7 @@ include( 'hooks/hooks.lua' )
 Ananke.core:IncludeDir(  'shared', Ananke.Name .. '/gamemode/core/shared' )
 Ananke.core:IncludeDir(  'shared', Ananke.Name .. '/gamemode/core/shared/networking' )
 
-Ananke.core:AddCSLuaDir( 'client', Ananke.Name .. '/gamemode/core/client/gui' )
+Ananke.core:AddCSLuaDir( Ananke.Name .. '/gamemode/core/client/gui' )
 Ananke.core:IncludeDir(  'client', Ananke.Name .. '/gamemode/core/client' )
 
 Ananke.core:IncludeDir(  'server', Ananke.Name .. '/gamemode/core/server' )
