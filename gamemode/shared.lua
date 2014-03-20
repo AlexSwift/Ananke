@@ -18,7 +18,7 @@ Ananke.core:IncludeDir(  'client', Ananke.Name .. '/gamemode/core/client' )
 
 Ananke.core:IncludeDir(  'server', Ananke.Name .. '/gamemode/core/server' )
 
-Ananke.core.Protocols:Initialize()			-- SHARED
+Ananke.core.Protocol:Initialize()			-- SHARED
 Ananke.core.serialization.Initialize()		-- SHARED
 
 if CLIENT then

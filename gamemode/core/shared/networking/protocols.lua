@@ -19,7 +19,7 @@ class "Ananke.core.Protocol" {
 			_DATA = {};
 			Loaded = false;
 			
-			Initialization = function( self )
+			Initialize = function( self )
 			
 				if self.Loaded then return end
 	
@@ -97,11 +97,3 @@ class "Ananke.core.Protocol" {
 
 }
 
-function Ananke.core.protocols.Initialize()
-
-	if Ananke.core.protocols.Loaded then return end
-	
-	Ananke.core:IncludeDir( 'shared', Ananke.Name .. '/gamemode/core/shared/networking/protocols' )
-	Ananke.core.protocols.Loaded = true
-	
-end

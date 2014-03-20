@@ -29,7 +29,7 @@ class 'Ananke.core' {
 				local f,d = file.Find( dir .. '/*.lua' , "LUA" )
 				self.Loaded[state] = {f,d}
 				
-				print( string.Indentation( indentation ) ..'Loading ' .. str and str or ( state .. ' : ' .. dir ) ) 
+				print( string.Indentation( indentation ) ..'Loading ' .. ( str and str or ( state .. ' : ' .. dir ) ) ) 
 				
 				if state == 'client' then
 				
@@ -76,8 +76,11 @@ class 'Ananke.core' {
 				if not SERVER then return end
 			
 				local f,d = file.Find( dir .. '/*' , "LUA" )
-			
-				for k,v in pairs(d) do
+				
+				print( 'Sending files ' .. dir )
+				
+				for k,v in pairs(f) do
+					print( '\tSending : ' .. v )
 					ProtectedCall( Ananke.AddCSLuaFile( dir .. '/' .. v ) )
 				end
 				
