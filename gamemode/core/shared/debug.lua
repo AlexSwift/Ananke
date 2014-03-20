@@ -1,9 +1,9 @@
 
 class 'Ananke.core.debug' {
 
-	static {
+	public {
 		
-		public {
+		static {
 		
 			Add = function( self )
 
@@ -82,14 +82,15 @@ class 'Ananke.core.debug' {
 	
 	private {
 	
-		Errors = {};
-		Logs = {};
-		Stack = {};
-		
-		Enabled = false;
-		TimeStamp = os.time()
-	
-	};
+		static {
+			Errors = {};
+			Logs = {};
+			Stack = {};
+			
+			Enabled = false;
+			TimeStamp = os.time()
+		}
+	}
 
 };
 

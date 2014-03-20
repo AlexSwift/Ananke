@@ -27,14 +27,16 @@ class 'Ananke.core' {
 				local f,d = file.Find( dir .. '/*.lua' , "LUA" )
 				self.Loaded[state] = {f,d}
 				
-				print( 'Loading ' .. state .. ' :' ) 
+				print( 'Loading ' .. state .. ' : ' .. dir ) 
 				
 				if state == 'client' then
 				
 					for k,v in pairs(f) do
 						if SERVER then
+							print('\tSending ' .. v)
 							Ananke.AddCSLuaFile( dir .. '/' .. v )
 						else
+							print('\tLoading ' .. v)
 							Ananke.include( dir .. '/' .. v )
 						end
 					end
@@ -67,13 +69,13 @@ class 'Ananke.core' {
 			
 			end;
 			
-			AddCSLuaDir = function( dir )
+			AddCSLuaDir = function( self, dir )
 			
 				if not SERVER then return end
 			
-				local f,d = file.Find( dir .. '/*.lua' , "LUA" )
+				local f,d = file.Find( dir .. '/*' , "LUA" )
 			
-				for k,v in pairs(f) do
+				for k,v in pairs(d) do
 					ProtectedCall( Ananke.AddCSLuaFile( dir .. '/' .. v ) )
 				end
 				
