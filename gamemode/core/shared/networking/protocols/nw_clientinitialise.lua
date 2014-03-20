@@ -1,4 +1,4 @@
-Protocol = Ananke.core.protocol.new()
+Protocol = Ananke.core.Protocol.new()
 
 Protocol:SetName( "ananke_clientinitalise_1" )
 Protocol:SetPID( 0x04 )

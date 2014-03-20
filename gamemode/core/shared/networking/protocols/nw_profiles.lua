@@ -1,4 +1,4 @@
-Protocol = Ananke.core.protocol.new()
+Protocol = Ananke.core.Protocol.new()
 
 Protocol:SetName( "Profiles" )
 Protocol:SetPID( 0x03 )

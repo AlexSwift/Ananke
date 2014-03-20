@@ -1,5 +1,5 @@
 
-class "core.menu.gui.uiText" extends "core.menu.gui.uiBase" {
+class "Ananke.core.Menu.gui.uiText" extends "Ananke.core.menu.gui.uiBase" {
 	
 	private {
 	

@@ -22,12 +22,14 @@ class 'Ananke.core' {
 	
 		public {
 		
-			IncludeDir = function(self, state, dir )
+			IncludeDir = function(self, state, dir, indentation, str )
+			
+				local indentation = indentation or 0
 			
 				local f,d = file.Find( dir .. '/*.lua' , "LUA" )
 				self.Loaded[state] = {f,d}
 				
-				print( 'Loading ' .. state .. ' : ' .. dir ) 
+				print( string.Indentation( indentation ) ..'Loading ' .. str and str or ( state .. ' : ' .. dir ) ) 
 				
 				if state == 'client' then
 				

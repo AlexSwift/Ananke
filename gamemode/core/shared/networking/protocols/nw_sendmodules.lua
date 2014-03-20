@@ -1,4 +1,4 @@
-Protocol = Ananke.core.protocol.new()
+Protocol = Ananke.core.Protocol.new()
 
 Protocol:SetName( "ananke_setup_modules" )
 Protocol:SetPID( 0x05 )

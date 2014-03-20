@@ -1,5 +1,14 @@
 class 'Ananke.Network' {
 
+	private {
+	
+		Data 			= {};
+		protocol 		= {};
+		PID 			= 0x00;
+		Description 	= ""
+		
+	};
+
 	public {
 	
 		SetProtocol = function( self , id )
@@ -44,12 +53,7 @@ class 'Ananke.Network' {
 		end;
 				
 	};
-	private {
-		Data 			= {};
-		protocol 		= {};
-		PID 			= 0x00;
-		Description 	= ""
-	}
+	
 }
 
 net.Receive('ananke_nw',function()

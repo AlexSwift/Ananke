@@ -1,6 +1,6 @@
 local PANEL = {}
 
-class "core.menu.gui.uiModel" extends "core.menu.gui.uiBase" {
+class "Ananke.core.Menu.gui.uiModel" extends "Ananke.core.menu.gui.uiBase" {
 
 	public {
 		LayoutEntity = LayoutEntity;

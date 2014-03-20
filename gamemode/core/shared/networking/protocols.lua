@@ -1,12 +1,37 @@
-Ananke.core.protocols = {}
-Ananke.core.protocols.Loaded = false
-Ananke.core.protocols._data = {}
+class "Ananke.core.Protocol" {
 
-class "Ananke.core.protocol" {
+	private {
+	
+		Name = '';
+		PID = 0x00;
+		Type = '';
+		CallBack = function() end;
+		send = function() end;
+		receive = function() end;
+		Data = ''
+		
+	};
+
 	public {
+	
+		static {
+			
+			_DATA = {};
+			Loaded = false;
+			
+			Initialization = function( self )
+			
+				if self.Loaded then return end
+	
+				Ananke.core:IncludeDir( 'shared', Ananke.Name .. '/gamemode/core/shared/networking/protocols' )
+				self.Loaded = true
+			
+			end;
+		
+		};
+	
 		Register = function( self )
-			Ananke.core.protocols._data[self.PID] = self
-			self = nil
+			self._DATA[self.PID] = self
 		end;
 		
 		SetName = function( self , name )
@@ -65,19 +90,11 @@ class "Ananke.core.protocol" {
 			return self.PID
 		end;
 		
-		GetByID = function( PID )
-			return Ananke.core.protocols._data[PID]
+		GetByID = function( self, PID )
+			return self._DATA[PID]
 		end
 	};
-	public {
-		Name = '';
-		PID = 0x00;
-		Type = '';
-		CallBack = function() end;
-		send = function() end;
-		receive = function() end;
-		Data = ''
-	};
+
 }
 
 function Ananke.core.protocols.Initialize()

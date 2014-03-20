@@ -1,4 +1,4 @@
-class "core.menu.gui.uiBase" {
+class "Ananke.core.Menu.gui.uiBase" {
 
 	meta {
 		

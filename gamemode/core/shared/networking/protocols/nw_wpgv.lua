@@ -1,4 +1,4 @@
-Protocol = Ananke.core.protocol.new()
+Protocol = Ananke.core.Protocol.new()
 
 Protocol:SetName( "nw_wpgv" )
 Protocol:SetPID ( 0x04 )

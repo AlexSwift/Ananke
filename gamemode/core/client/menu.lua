@@ -1,112 +1,4 @@
-Ananke.core.menu = {}
-
-Ananke.core.menu.Enabled = false
-Ananke.core.menu.MousePos = { x = 0 , y = 0 }
-
-Ananke.core.menu.ActiveElements = {}
-Ananke.core.menu.Objects = {}
-
-class "Ananke.core.menu.gui" {
-
-	public {
-		OnCursorMoved = function()
-		end;
-		
-		OnCursorEntered = function()
-		end;
-		
-		OnCursorExited = function()
-		end;
-		
-		AddChild = function( obj )
-			table.insert( self.Children , obj )
-		end;
-		
-		RemoveChild = function( obj )
-			for k,v in pairs( self.Children ) do
-				if v == obj then
-					table.remove( self.Children , obj )
-				end
-			end
-		end;
-		
-		SetParent = function( parent )
-			if self['parent'] then
-				self['parent']:RemoveChild( self )
-			end
-			self['parent'] = parent
-			parent:AddChild( self )
-		end;
-		
-		GetParent = function( )
-			local parent = self['parent'] or nil
-			return parent
-		end;
-		
-		SetPos = function( x , y )
-			local parent = core.menu.gui:GetParent( )
-			if parent then
-				
-				local px , py = parent:GetPos( )
-				x = x + px
-				y = y + py
-				
-			end
-			self['x'] = x
-			self['y'] = y
-	
-		end;
-		
-		GetPos = function( real ) --Real coordinates or relative ?
-			local parent = core.menu.gui:GetParent( )
-			if real and parent then
-				local px , py = parent:GetPos( true )
-				local x = self['x']
-				local y = self['y']
-				
-				return (px + x) , (py + y)
-			else
-				return self['x'] , self['y']
-			end
-		end;
-		
-		Draw = function()
-			for k, v in pairs( self:GetChildren( ) ) do
-				if v.IsEnabled( ) then
-					v:Draw()
-				end
-			end
-
-			self:Draw()
-		end;
-		
-		Init = function()
-		end;
-		
-		GetChildren = function()
-			return self['Children']
-		end;
-		
-		Register = function()
-			local t = table.Copy(self)
-			core.menu.Objects[t.name] = t
-		end;
-		
-	};
-
-	private {
-		MouseInBounds = false;
-		parent = nil; -- <class> core.menu.gui;
-		x = 0;
-		y = 0;
-		SizeX = 0;
-		SizeY = 0;
-		Children = {}
-		
-	};
-}
-
-class 'Ananke.core.menu' {
+class 'Ananke.core.Menu' {
 	
 	private {
 	
@@ -122,33 +14,43 @@ class 'Ananke.core.menu' {
 
 		object = nil; --Insert user data type here.
 		
+		static {
+		
+			Enabled = false;
+			MousePos = { x = 0 , y = 0 };
+			ActiveElements = {};
+			Objects = {};
+			
+		};
+		
 	};
 	
 	protected {
 	
 		Create = new;
 		
-		GetElements = function( )
-			return Ananke.core.menu.Elements
+		GetObjects = function( )
+			return self.Objects 
 		end;
 		
 		GetActiveElements = function()
 			local enabled = {}
-			for k,v in pairs(Ananke.core.menu.Elements) do
-				if core.menu.Elements[k]:IsEnabled() then
-					table.insert( enabled, Ananke.core.menu.Elements )
+			for k,v in pairs(self.Objects) do
+				if self.Objects[k]:IsEnabled() then
+					table.insert( enabled, self.ActiveElements )
 				end
 			end
+			
 		end;
 		
 		Enable = function( )
 			GAMEMODE:PreDrawMenu( )
-			Ananke.core.menu.Enabled = true
+			self.Enabled = true
 		end;
 		
 		Disable = function( )
 			GAMEMODE:PostDrawMenu()
-			Ananke.core.menu.Enabled = false
+			self.Enabled = false
 		end;
 		
 	};
@@ -157,14 +59,9 @@ class 'Ananke.core.menu' {
 	
 		static {
 			
-			Initialize = function()
+			Initialize = function( self )
 
-				local f,d = file.Find( Ananke.Name .. "/gamemode/core/client/gui/*.lua", "LUA" )
-			
-				print('\tLoading Gui:')
-				for k,v in pairs(f) do
-					Ananke.include(Ananke.Name .. "/gamemode/core/client/gui/" .. v)
-				end
+				Ananke.core:IncludeDir( 'client' , Ananke.Name .. "/gamemode/core/client/gui/*.lua", "LUA" )
 			
 			end;
 			
