@@ -27,6 +27,10 @@ class "Ananke.core.Protocol" {
 				self.Loaded = true
 			
 			end;
+			
+			GetByID = function( self, PID )
+				return self._DATA[PID]
+			end
 		
 		};
 	
@@ -89,10 +93,6 @@ class "Ananke.core.Protocol" {
 		GetPID = function( self )
 			return self.PID
 		end;
-		
-		GetByID = function( self, PID )
-			return self._DATA[PID]
-		end
 	};
 
 }

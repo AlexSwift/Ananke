@@ -31,9 +31,9 @@ class "Ananke.Modules" {
 					Error( '/t/tFailed to load module ' .. name .. ' as info file was not found!' )
 					return
 					
-				elseif CLIENT and not Ananke._MODULES[ name ].INI then
+				elseif CLIENT and not (Ananke._MODULES[ name ] and Ananke._MODULES[name].INI or false) then
 				
-					local nw = network.New()
+					local nw = Ananke.Network.new()
 					nw:SetProtocol(0x04)
 					nw:SetDescription('Client Request module INI')
 					nw:PushData( name )

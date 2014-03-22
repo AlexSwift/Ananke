@@ -13,7 +13,7 @@ class 'Ananke.Network' {
 	
 		SetProtocol = function( self , id )
 			self.PID = id
-			self.protocol = Ananke.core.protocol.GetByID(id)
+			self.protocol = Ananke.core.Protocol:GetByID(id)
 		end;
 		
 		SetDescription = function( self, str )	
@@ -25,7 +25,7 @@ class 'Ananke.Network' {
 		end;
 		
 		PushData = function( self , data )
-			if self.protocol.Data == NW_CUSTOM then
+			if self.protocol:GetData() == NW_CUSTOM then
 				self.Data[#self.Data + 0x01] = data
 				return
 			end
@@ -40,7 +40,7 @@ class 'Ananke.Network' {
 		Send = function( self )
 				net.Start('ananke_nw')
 					net.WriteInt(self.PID,0x10)
-					if self.protocol.send then
+					if self.protocol:GetSend() then
 						self.protocol.send(self.Data)
 					else
 						PrintTable(self)
@@ -57,7 +57,7 @@ class 'Ananke.Network' {
 }
 
 net.Receive('ananke_nw',function()
-	local Datagram = Ananke.core.protocol.GetByID( net.ReadInt() )
+	local Datagram = Ananke.core.Protocol.GetByID( net.ReadInt() )
 	local data = {}
 	
 	if Datagram.Type == NW_CUSTOM then
