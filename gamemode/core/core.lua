@@ -35,10 +35,10 @@ class 'Ananke.core' {
 				
 					for k,v in pairs(f) do
 						if SERVER then
-							print('\tSending ' .. v)
+							print( string.Indentation( indentation + 1 ) .. 'Sending ' .. v )
 							Ananke.AddCSLuaFile( dir .. '/' .. v )
 						else
-							print('\tLoading ' .. v)
+							print( string.Indentation( indentation + 1 ) .. 'Loading ' .. v )
 							Ananke.include( dir .. '/' .. v )
 						end
 					end
@@ -46,7 +46,7 @@ class 'Ananke.core' {
 				elseif state == 'shared' then
 					for k,v in pairs(f) do
 											
-						print('\tLoading ' .. v)
+						print( string.Indentation( indentation + 1 ) .. 'Loading ' .. v )
 					
 						if SERVER then
 							Ananke.AddCSLuaFile( dir .. '/' .. v ) 
@@ -56,15 +56,11 @@ class 'Ananke.core' {
 						end
 					end
 				
-				elseif state == 'server' then
-				
-					if SERVER then
+				elseif state == 'server' and SERVER then
 					
-						for k,v in pairs(f) do
-							print('\tLoading ' .. v)
-							ProtectedCall( Ananke.include( dir .. '/' .. v ) )
-						end
-
+					for k,v in pairs(f) do
+						print( string.Indentation( indentation + 1 ) .. 'Loading ' .. v )
+						ProtectedCall( Ananke.include( dir .. '/' .. v ) )
 					end
 				
 				end
