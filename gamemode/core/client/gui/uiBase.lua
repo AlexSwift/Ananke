@@ -1,4 +1,4 @@
-class "Ananke.core.Menu.gui.uiBase" {
+class "uiBase" {
 
 	meta {
 		
@@ -139,7 +139,7 @@ class "Ananke.core.Menu.gui.uiBase" {
 	
 	public {
 	-- Initialise
-		__construct = function(self, parent)
+		__construct = function(self)
 			self:SetParent(parent)
 		end;
 		
@@ -171,9 +171,9 @@ class "Ananke.core.Menu.gui.uiBase" {
 	};
 	
 	private {
-		parent = nil
-		children = {}
-		isEnabled = false
+		parent = nil;
+		children = {};
+		isEnabled = false;
 		
 		relX = 0.0;
 		relY = 0.0;
@@ -183,3 +183,5 @@ class "Ananke.core.Menu.gui.uiBase" {
 		scaleY = 1.0;
 	};
 };
+
+Ananke.core.Menu:Register(uiBase, 'UIBase');

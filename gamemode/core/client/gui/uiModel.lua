@@ -1,6 +1,6 @@
 local PANEL = {}
 
-class "Ananke.core.Menu.gui.uiModel" extends "Ananke.core.menu.gui.uiBase" {
+class "uiModel" extends "uiBase" {
 
 	public {
 		LayoutEntity = LayoutEntity;
@@ -216,3 +216,5 @@ function PANEL.LayoutEntity( self, Entity )
 	Entity:SetAngles( Angle( 0, RealTime()*10,  0) )
 
 end
+
+Ananke.core.Menu:Register(uiModel, 'UIModel')

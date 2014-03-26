@@ -1,5 +1,5 @@
 
-class "Ananke.core.Menu.gui.uiText" extends "Ananke.core.menu.gui.uiBase" {
+class "uiText" extends "uiBase" {
 	
 	private {
 	
@@ -63,3 +63,5 @@ local Draw = function ()
 	surface.DrawText( self:GetText() )
 
 end
+
+Ananke.core.Menu:Register(uiText, 'UIText')
