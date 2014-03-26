@@ -22,24 +22,29 @@ class 'Ananke.core' {
 	
 		public {
 		
-			IncludeDir = function(self, state, dir, indentation, str )
+			IncludeDir = function(self, state, dir, indentation, str, precall, postcall )
 			
 				local indentation = indentation or 0
+				local str and str or ( state .. ' : ' .. dir )
+				local precall = precall or function() end
+				local postcall = postcall or function() end
 			
 				local f,d = file.Find( dir .. '/*.lua' , "LUA" )
 				self.Loaded[state] = {f,d}
 				
-				print( string.Indentation( indentation ) ..'Loading ' .. ( str and str or ( state .. ' : ' .. dir ) ) ) 
+				print( string.Indentation( indentation ) ..'Loading ' ..  str ) 
+				
+				ProtectedCall( function() precall() end )
 				
 				if state == 'client' then
 				
 					for k,v in pairs(f) do
 						if SERVER then
 							print( string.Indentation( indentation + 1 ) .. 'Sending ' .. v )
-							Ananke.AddCSLuaFile( dir .. '/' .. v )
+							ProtectedCall( function() Ananke.AddCSLuaFile( dir .. '/' .. v ) end )
 						else
 							print( string.Indentation( indentation + 1 ) .. 'Loading ' .. v )
-							Ananke.include( dir .. '/' .. v )
+							ProtectedCall( function() Ananke.include( dir .. '/' .. v ) end )
 						end
 					end
 					
@@ -49,10 +54,10 @@ class 'Ananke.core' {
 						print( string.Indentation( indentation + 1 ) .. 'Loading ' .. v )
 					
 						if SERVER then
-							Ananke.AddCSLuaFile( dir .. '/' .. v ) 
-							Ananke.include( dir .. '/' .. v ) 
+							ProtectedCall( function() Ananke.AddCSLuaFile( dir .. '/' .. v ) end)
+							ProtectedCall( function() Ananke.include( dir .. '/' .. v ) end )
 						else
-							Ananke.include( dir .. '/' .. v ) 
+							ProtectedCall( function() Ananke.include( dir .. '/' .. v ) end )
 						end
 					end
 				
@@ -60,10 +65,12 @@ class 'Ananke.core' {
 					
 					for k,v in pairs(f) do
 						print( string.Indentation( indentation + 1 ) .. 'Loading ' .. v )
-						ProtectedCall( Ananke.include( dir .. '/' .. v ) )
+						ProtectedCall( function() Ananke.include( dir .. '/' .. v ) end )
 					end
 				
 				end
+				
+				ProtectedCall( function() postcall() end )
 			
 			end;
 			

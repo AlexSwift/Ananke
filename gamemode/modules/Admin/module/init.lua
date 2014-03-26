@@ -36,27 +36,19 @@ class 'Ananke.Admin.plugins' {
 		
 		static {
 			Initialise = function( )
-				local f,d = file.Find( Ananke.Name .. "/gamemode/modules/Admin/plugins/*.lua", "LUA" )
-		
-				print('\t\tLoading plugins:')
 				
-				for k,v in pairs(f) do
-				
+				local precall = function()
 					PLUGIN = Ananke.Admin.plugins.new()
-					
-					if SERVER then
-						print('\t\t\tLoading ' .. v)
-						Ananke.AddCSLuaFile( Ananke.Name .. '/gamemode/modules/admin/plugins/'..v)
-						Ananke.include( Ananke.Name .. '/gamemode/modules/admin/plugins/'..v)
-					else
-						print('\t\t\tLoading ' .. v)
-						Ananke.include( Ananke.Name .. '/gamemode/modules/admin/plugins/'..v)
-					end
-					
-					PLUGIN:Register()
-					
-					PLUGIN:Load()
 				end
+				
+				local postcall = function()
+					PLUGIN:Register()
+					PLUGIN:Load()
+					PLUGIN = nil
+				end
+				
+				Ananke.core:IncludeDir( 'shared', Ananke.Name .. '/gamemode/modules/Admin/module/plugins', 2, 'Admin Modules:', precall, postcall )
+				
 			end;
 		};
 	}
