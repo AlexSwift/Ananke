@@ -1,11 +1,9 @@
-Ananke._MODULES = {}
-
 class "Ananke.Modules" {
 	
 	public {
 		static {
 			
-			LoadModules = function( tab, dir)
+			LoadModules = function( self, tab, dir)
 				
 				print( 'Loading Modules' )
 				Ananke.core.debug:Log( 'Loading Modules' )
@@ -13,12 +11,12 @@ class "Ananke.Modules" {
 				dir = dir or Ananke.Name .. "/gamemode/modules/"
 				
 				for k,v in pairs( tab ) do
-					Ananke.Modules.LoadModule( v , dir )	
+					self:LoadModule( v , dir )	
 				end	
 				
 			end;
 			
-			LoadModule = function( name, dir )
+			LoadModule = function( self, name, dir )
 			
 				print('\tLoading module : ' .. name)
 				Ananke.core.debug:Log( 'Loading module : ' .. name )
@@ -31,7 +29,7 @@ class "Ananke.Modules" {
 					Error( '/t/tFailed to load module ' .. name .. ' as info file was not found!' )
 					return
 					
-				elseif CLIENT and not (Ananke._MODULES[ name ] and Ananke._MODULES[name].INI or false) then
+				elseif CLIENT and not (self._MODULES[ name ] and self._MODULES[name].INI or false) then
 				
 					local nw = Ananke.Network.new()
 					nw:SetProtocol(0x04)
@@ -43,7 +41,7 @@ class "Ananke.Modules" {
 				end
 					
 				
-				if Ananke._MODULES[ name ] then
+				if self._MODULES[ name ] then
 				
 					Ananke.core.debug:Log( 'Failed to load module '.. name .. ' as module is already loaded ' )
 					Error( '/t/tFailed to load module '.. name .. ' as module is already loaded ' )
@@ -51,13 +49,13 @@ class "Ananke.Modules" {
 					
 				end
 				
-				MODULE = Ananke.Modules.new()
+				MODULE = self.new()
 				
 				if SERVER then
 					MODULE.INI:LoadFile( dir .. name ..'/info.ini' , 'LUA' )
 					MODULE.INI = MODULE.INI:Parse( )
 				else
-					MODULE.INI = Ananke._MODULES[ name ].INI
+					MODULE.INI = self._MODULES[ name ].INI
 				end
 				
 				MODULE:SetInfo( MODULE.INI['info'] )
@@ -98,7 +96,7 @@ class "Ananke.Modules" {
 		INI = INIParser.new();
 	
 		Register = function( self )
-			Ananke._MODULES[ self:GetInfo('name') ] = self
+			self._MODULES[ self:GetInfo('name') ] = self
 			
 			for k,v in pairs( self:GetHooks() ) do 
 			
@@ -162,6 +160,8 @@ class "Ananke.Modules" {
 	};
 	
 	private {
+	
+		_MODULES = {}
 		
 		LoadEffects = function( self, dir )
 			for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/effects/*' , 'LUA' , 'nameasc' ) ) do

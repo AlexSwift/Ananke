@@ -369,7 +369,7 @@ SIMPLOO.CLASS_MT = {
 				end
 			end
 		end
-		
+
 		return nil-- Member not found, returning nil
 	end;
 	
