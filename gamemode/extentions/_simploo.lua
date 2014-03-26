@@ -26,18 +26,18 @@ end
 local function _duplicateTable(tbl, _lookup)
 	local copy = {}
 	
-	for i, v in pairs(tbl) do
+	for k, v in pairs(tbl) do
 		if type(v) == "table" then
 			_lookup = _lookup or {}
 			_lookup[tbl] = copy
 
 			if _lookup[v] then
-				copy[i] = _lookup[v] -- we already copied this table. reuse the copy.
+				copy[k] = _lookup[v] -- we already copied this table. reuse the copy.
 			else
-				copy[i] = _duplicateTable(v,_lookup) -- not yet copied. copy it.
+				copy[k] = _duplicateTable(v,_lookup) -- not yet copied. copy it.
 			end
 		else
-			copy[i] = rawget(tbl, i)
+			copy[k] = rawget(tbl, i)
 		end
 	end
 	
@@ -71,7 +71,7 @@ local function _createClassInstance(tbl, _lookup)
 					
 					for mKey, mTbl in pairs(tblValue) do
 						copy[strKey][mKey] = {}
-						if type(copy[strKey][mKey]["value"]) == "table" then
+						if type(mTbl[mKey]["value"]) == "table" then
 							copy[strKey][mKey]["value"] = _duplicateTable(mTbl["value"], _lookup)
 						else
 							copy[strKey][mKey]["value"] = rawget(mTbl, "value")
@@ -147,7 +147,7 @@ local function _getFunctionArgs(func)
 				strargs = strargs .. debug.getlocal(func, i) .. (i < dbg.nparams and ", " or "")
 			end
 		else
-			return {"no dbg or dbg.nparams for " .. func}
+			return {"no dbg or dbg.nparams for " .. tostring(func) }
 		end
 	else
 		strargs = "unknown.. no debug library!"
@@ -219,6 +219,8 @@ SIMPLOO.CLASS_MT = {
 		-- Grap the definition string.
 		local origstr = string.format("LuaClass: %s <%s> {%s}", self:get_name(), self.___instance and "instance" or "class", tostring(self):sub(8))
 		
+		getmetatable(self).__tostring = __tostring
+		
 		-- see if we have a custom tostring, this is below the actual tostring because we wanna be able to use the original tostring inside the error
 		if self:____member_isvalid("___meta__tostring") then
 			local custstr = self:___meta__tostring(origstr)
@@ -226,9 +228,6 @@ SIMPLOO.CLASS_MT = {
 				return custstr
 			end
 		end
-		
-		-- Enable our metamethod again.
-		getmetatable(self).__tostring = __tostring
 		
 		-- Return string.
 		return origstr
@@ -743,7 +742,10 @@ do
 		
 		
 		function SIMPLOO.FUNCTIONS:____do_update_functions(_child)
-			for mKey, mTbl in pairs((self:get_class() or self).___attributes) do
+		
+			local location = self.___instance and self:get_class() or self
+		
+			for mKey, mTbl in pairs(location.___attributes) do
 				local tblProperties = mTbl["properties"]
 				
 				if tblProperties.isfunc then
