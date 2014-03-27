@@ -61,6 +61,7 @@ class "Ananke.Modules" {
 				MODULE:SetInfo( MODULE.INI['info'] )
 				MODULE:SetFiles( { ['server'] = MODULE.INI['server'], ['client'] = MODULE.INI['client'] } )
 				
+				MODULE:LoadRequirements( MODULE.INI['requirements'] or {} )
 				MODULE:LoadClient( dir, name )
 				MODULE:LoadServer( dir, name )
 				MODULE:LoadEntities( dir )
@@ -221,6 +222,14 @@ class "Ananke.Modules" {
 				Ananke.Include( dir .. name .. '/' .. v )
 			end
 		end;
+		
+		LoadRequirements = function( self, tbl )
+			tabl = tabl and tabl or {}
+			for k,v in pairs( tbl ) do
+				self:LoadModule( v )
+			end
+		end;
+		
 	}
 }
 

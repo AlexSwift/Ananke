@@ -3,7 +3,7 @@ AddCSLuaFile( )
 ENT.Name		= 'ananke_trigger'
 ENT.Author		= 'Alex Swift'
 ENT.Contact		= 'WARPAC DevTeam'
-ENT.Type 		= 'brush'
+ENT.Type 		= 'base_brush'
 
 function ENT:StartTouch( ent )
 
