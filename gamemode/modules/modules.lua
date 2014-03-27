@@ -67,6 +67,7 @@ class "Ananke.Modules" {
 				MODULE:LoadEntities( dir )
 				MODULE:LoadWeapons( dir )
 				MODULE:LoadEffects( dir )
+				MODULE:LoadHooks()
 				
 				MODULE:Register()
 				
@@ -74,9 +75,9 @@ class "Ananke.Modules" {
 				
 			end;
 			
-			Get = function( name )
-				if Ananke._MODULES[ name ] then 
-					return Ananke._MODULES[ name ]
+			Get = function( self, name )
+				if self._MODULES[ name ] then 
+					return self._MODULES[ name ]
 				else
 					Ananke.core.debug:Error( 'Module not found', false )
 				end
@@ -94,22 +95,12 @@ class "Ananke.Modules" {
 		Info = {};
 		Files = {};
 		Hooks = {};
+		Function = {};
+		_Data = {}
 		INI = INIParser.new();
 	
 		Register = function( self )
 			self._MODULES[ self:GetInfo('name') ] = self
-			
-			for k,v in pairs( self:GetHooks() ) do 
-			
-				hook.Add( k , self.Info.Name ..':' .. k , function( ... )
-					local args = {...}
-					v( unpack( args ) )
-				end)
-				
-				print('\t\tRegistered Hook : ' .. k )
-				Ananke.core.debug:Error( 'Registered Hook : ' .. k )
-				
-			end
 
 		end;
 		
@@ -229,6 +220,22 @@ class "Ananke.Modules" {
 				self:LoadModule( v )
 			end
 		end;
+		
+		LoadHooks = function( self )
+		
+			for k,v in pairs( self:GetHooks() ) do 
+			
+				hook.Add( k , self.Info.Name ..':' .. k , function( ... )
+					local args = {...}
+					v( unpack( args ) )
+				end)
+				
+				print('\t\tRegistered Hook : ' .. k )
+				Ananke.core.debug:Error( 'Registered Hook : ' .. k )
+				
+			end
+			
+		end
 		
 	}
 }
