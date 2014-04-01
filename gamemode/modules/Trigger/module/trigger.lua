@@ -11,14 +11,14 @@ function MODULE.Functions.AddCallback( id , StartTouch , EndTouch )
 	
 end
 
-function MODULE.RemoveCallback( id )
+function MODULE.Functions.RemoveCallback( id )
 	
 	MODULE._Data.CallBacks[id] = nil
 	
 end
 
 
-function MODULE.StartTouch( trigger , ent )
+function MODULE.Functions.StartTouch( trigger , ent )
 
 	local m_callback = trigger:GetKeyValues().m_callback
 	if not MODULE._Data.CallBacks[m_callback]['start'] then return end

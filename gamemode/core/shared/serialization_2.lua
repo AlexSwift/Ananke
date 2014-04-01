@@ -1,0 +1,216 @@
+
+class 'Ananke.core.serialization'{
+
+	static {
+	
+		private {
+		
+			Translation = {}
+		
+		};
+		
+		public {
+		
+			AddTranslation = function( self, tabl )
+			
+				if self.Translation[ typ ] then 
+					Ananke.core.debug:Log( 'Type ' .. typ .. ' already exists in translation db!! Expect serialization errors' )
+					Error( 'Type ' .. typ .. ' already exists in translation db!! Expect serialization errors' )
+				end
+			
+				self.Translation[ tabl['type'] ] = {ID = tabl['ID'], 
+													Encode = tabl['Encode'],
+													Decode = tabl['Decode'], 
+													Size = tabl['Size'] } --This seems pretty pointless, but it's more to to with idiotproofing the code.
+			
+			end;
+			
+			GetTranslation = function( self, typ )
+			
+				if type( typ ) == 'number' then
+					return self.Translation[ typ ]
+				elseif type( typ ) = 'string' then
+					local k = self:GetTypeFromByte( typ )
+					return self.Translation[ k ]
+				else
+					return { nil, nil, nil, nil } --NIL THE FUCK OUT OF SHITTY CODER
+				end
+			
+			end;
+			
+			GetTranslationTable = function( self )
+				
+				return self.Tranlsation
+				
+			end;
+			
+			GetTypeFromByte = function( self, byte )
+				for typ,translation in pairs( self:GetTranlsationsTable() ) do
+					if translation[1] == byte then
+						return k
+					end
+				end
+			end;
+			
+			Encode  = function( self, data )
+				local typ = type( data )
+				local s_data = ''
+				s_data = s_data .. string.char( self:GetTranslation( typ )['ID'] ) --types
+				s_data = s_data .. self:GetTranslation( typ )['Size']( self, data ) -- size of Bytes to write 
+				s_data = s_data .. self:GetTranslation( typ )['Encode'](  self, s_data) --Data -> s_data
+
+				return s_data
+			end;
+			
+			Decode = function( self, s_data )
+				local data = ''
+				-- local typ = -- Get First byte and return Key for decode function
+				return data
+			end
+		
+		};
+	
+	};
+	
+};
+
+Ananke.core.serialization:AddTranslation( 
+{	['ID']		= 1,
+	['type']	= 'string',
+	['Encode']	= function( self, data )
+		return data
+	end,
+	['Decode']	= function( self, s_data )
+		return s_data
+	end,
+	['Size']	= function( self, data )
+		return string.len( data )
+	end})
+	
+Ananke.core.serialization:AddTranslation( 
+{	['ID'] 		= 2,
+	['type'] 	= 'table',
+	['Encode'] 	= function( self, data )
+		local s_data = ''
+		for k,v in ipairs( data ) do
+	
+			s_data = s_data .. self:Encode(k)
+			s_data = s_data .. self:Encode(v)
+	
+		end
+		return s_data
+	end,
+	['Decode'] 	= function( self, s_data )
+
+		local data = {}
+
+		local tabl = string.explode( '' , s_data ) --Expensive, I will implement a stack for this
+		for i = 1 , #tabl do
+			local typ = string.GetChar( i )
+			local bytes = string.byte(string.GetChar( i + 1 ))
+
+			local key = self:GetTranslation( typ )['Decode']( string.sub( s_data, i + 3, i + 2 + bytes ) )
+
+			typ = string.GetChar( i + 3 + bytes )
+			local bytes2 = string.byte(string.GetChar( i + 4 + bytes))
+
+			local value =  self:GetTranslation( typ )['Decode'](string.sub( s_data, i + 4 + bytes, i + 3 + bytes + bytes2))
+
+			data[key] = value
+			i = i + 4 + bytes + bytes2
+		end
+		return data
+
+	end,
+	['size']	= function( self, data )
+		return table.Count( data )
+	end})
+	
+Ananke.core.serialization:AddTranslation( 
+{	['ID']		= 3,
+	['type']	= 'number', 
+	['Encode']	= function( self, data )
+		local s_data = ''
+	
+		for i = math.ceil(math.log( data ) / math.log( 256 )), 0, -1 do
+			if 256^i <= data then
+				s_data = s_data .. string.char(math.floor(data/(256^i)))
+				data = data - math.floor(data/(256^i))*256^i --Remainder
+			end
+		end
+	
+		return s_data
+	end,
+	['Decode']	= function( self, s_data )
+		local tabl = string.explode( '' , s_data )
+		local data = 0
+		for i = #tabl,0,-1 do
+			data = data + string.byte(tabl[1])*(256^i)
+		end
+
+		return data
+	end,
+	['Size']	= function( self, data )
+		return math.floor(math.log( data ) / math.log( 256 ))
+	end})
+	
+Ananke.core.serialization:AddTranslation(
+{	['ID']		= 4,
+	['type'] 	= 'Angle',
+	['Encode'] 	= function( self, data )
+		local r = ''
+		r = r .. self:GetTranslation('number')['Encode'](data.p)
+		r = r .. self:GetTranslation('number')['Encode'](data.y)
+		r = r .. self:GetTranslation('number')['Encode'](data.r)
+		return r
+	end,
+	['Decode']	= function( s_data )
+		local t = string.Explode('' , s_data )
+		local tabl = {}
+		for i = 1,6,2 do
+			local num = t[i] .. t[i+1]
+			tabl[i] = (self:GetTranslation('number')['Decode'](num) <= 0) and ((self:GetTranslation('number')['Decode'](num) + 255) or (self:GetTranslation('number')['Decode'](num)
+		end
+		local ang = Angle( unpack(tabl) )
+		return ang
+	end,
+	['Size']	= function( data )
+		return 3
+	end}
+	
+Ananke.core.serialization:AddTranslation( 
+{	['ID'] 		= 6,
+	['type'] 	= 'boolean',
+	['Encode'] 	= function( data )
+		return string.char( data == true and 2 or 1 )
+	end
+	['Decode']	= function( s_data )
+		return string.byte(s_data) == 2 and true or false
+	end,
+	['Size']	= function( data )
+		return 1
+	end})
+	
+	--[[
+		[5] = {'Vector'	,function( data )
+							local r = ''
+							r = r .. Ananke.core.serialization.translations['number'][2](data.x)
+							r = r .. Ananke.core.serialization.translations['number'][2](data.y)
+							r = r .. Ananke.core.serialization.translations['number'][2](data.z)
+							return r
+						end
+						,function( s_data )
+							local t = string.Explode( '' , s_data )
+							local tabl = {}
+							for i = 1,6,2 do
+								local num = t[i] .. t[i+1]
+								tabl[i] = (Ananke.core.serialization.translations['number'][3](num) <= 0) and (Ananke.core.serialization.translations['number'][3](num) + 255) or (Ananke.core.serialization.translations['number'][3](num))
+							end
+							local vec = Vector( unpack(tabl) )
+							return vec
+						end,
+						function( data )
+							return 6
+						end}
+		}
+]]--

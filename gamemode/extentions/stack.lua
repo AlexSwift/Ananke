@@ -41,6 +41,8 @@ class 'stack' {
 				table.insert( ret, string.byte( self.data , p_start + i ) )
 			end
 			
+			self:AdvancePointer( num )
+			
 			return ret
 		end;
 		
