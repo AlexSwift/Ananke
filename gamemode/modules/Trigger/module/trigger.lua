@@ -1,9 +1,3 @@
-MODULE.Name = 'Trigger'
-MODULE.Author = 'WARPAC Studios';
-MODULE.Contact = 'n/a';
-MODULE.Website = 'www.warpac-rp.com';
-MODULE.Description = 'Module designed for brush_trigger lua callbacks'
-
 function MODULE.Functions.AddCallback( id , StartTouch , EndTouch )
 	
 	MODULE._Data.CallBacks[id] = 	{ 	['start'] 	= StartTouch,
