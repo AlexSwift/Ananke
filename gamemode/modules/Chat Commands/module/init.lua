@@ -112,4 +112,4 @@ function MODULE.Hooks.PlayerSay( ply, text, b_team )
 
 	Ananke.ChatCommands.PlayerSay( ply, text, b_team )
 	
-end)
+end

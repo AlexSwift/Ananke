@@ -197,7 +197,7 @@ class "Ananke.Modules" {
 		end;
 		
 		LoadClient = function( self, dir, name )
-			for k,v in ipairs( MODULE:GetFiles( 'client' ) ) do				
+			for k,v in pairs( MODULE:GetFiles( 'client' ) ) do				
 				if CLIENT then
 					Ananke.Include( dir .. name .. '/' .. v )
 				else
@@ -209,7 +209,7 @@ class "Ananke.Modules" {
 		
 		LoadServer = function( self, dir, name )
 			if !SERVER then return end
-			for k,v in ipairs( MODULE:GetFiles( 'server' ) ) do
+			for k,v in pairs( MODULE:GetFiles( 'server' ) ) do
 				Ananke.Include( dir .. name .. '/' .. v )
 			end
 		end;

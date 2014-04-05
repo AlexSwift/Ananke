@@ -98,16 +98,16 @@ enum
 
 #define net_LastControlMessage 2
 
-#define net_Tick			3			// send last world tick
-#define net_StringCmd		4			// a string command
-#define net_SetConVar		5			// sends one/multiple convar settings
-#define	net_SignonState		6			// signals current signon state
+#define net_Tick			4			// send last world tick
+#define net_StringCmd		5			// a string command
+#define net_SetConVar		6			// sends one/multiple convar settings
+#define	net_SignonState		7			// signals current signon state
 
 //
 // server to client
 //
 
-#define	svc_Print			7		// print text to console
+#define	svc_Print			16		// print text to console
 #define	svc_ServerInfo		8		// first message from server about game, map etc
 #define svc_SendTable		9		// sends a sendtable description for a game class
 #define svc_ClassInfo		10		// Info about classes (first byte is a CLASSINFO_ define).							
