@@ -96,7 +96,7 @@ class "Ananke.Modules" {
 		Files = {};
 		Hooks = {};
 		Function = {};
-		_Data = {}
+		_Data = {};
 		INI = INIParser.new();
 	
 		Register = function( self )
@@ -153,7 +153,7 @@ class "Ananke.Modules" {
 	
 	private {
 	
-		_MODULES = {}
+		_MODULES = {};
 		
 		LoadEffects = function( self, dir )
 			for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/effects/*' , 'LUA' , 'nameasc' ) ) do
@@ -235,10 +235,10 @@ class "Ananke.Modules" {
 				
 			end
 			
-		end
+		end;
 		
-	}
-}
+	};
+};
 
 
 		

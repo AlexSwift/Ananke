@@ -25,7 +25,7 @@ class 'Ananke.core' {
 			IncludeDir = function(self, state, dir, indentation, str, precall, postcall )
 			
 				local indentation = indentation or 0
-				local str and str or ( state .. ' : ' .. dir )
+				local str = str or ( state .. ' : ' .. dir )
 				local precall = precall or function() end
 				local postcall = postcall or function() end
 			
