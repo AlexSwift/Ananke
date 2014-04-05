@@ -169,48 +169,49 @@ Ananke.core.serialization:AddTranslation(
 		local tabl = {}
 		for i = 1,6,2 do
 			local num = t[i] .. t[i+1]
-			tabl[i] = (self:GetTranslation('number')['Decode'](num) <= 0) and ((self:GetTranslation('number')['Decode'](num) + 255) or (self:GetTranslation('number')['Decode'](num)
+			tabl[i] = (self:GetTranslation('number')['Decode'](num) <= 0) and ((self:GetTranslation('number')['Decode'](num) + 255) or (self:GetTranslation('number')['Decode'](num)))
 		end
 		local ang = Angle( unpack(tabl) )
 		return ang
 	end,
 	['Size']	= function( data )
 		return 3
-	end}
+	end})
+	
+Ananke.core.serialization:AddTranslation(
+{	['ID']		= 5,
+	['type']	= 'Vector',
+	['Encode']	= function( data )
+		local r = ''
+		r = r .. self:GetTranslation('number')['Encode'](data.x)
+		r = r .. self:GetTranslation('number')['Encode'](data.y)
+		r = r .. self:GetTranslation('number')['Encode'](data.z)
+		return r
+	end,
+	['Decode']	= function( s_data )
+		local t = string.Explode( '' , s_data )
+		local tabl = {}
+		for i = 1,6,2 do
+			local num = t[i] .. t[i+1]
+			tabl[i] = (self:GetTranslation('number')['Decode'](num) <= 0) and (self:GetTranslation('number')['Encode'](num) + 255) or (self:GetTranslation('number')['Decode'](num))
+		end
+		local vec = Vector( unpack(tabl) )
+		return vec
+	end,
+	['Size']	= function( self, data )
+		return 6
+	end})
 	
 Ananke.core.serialization:AddTranslation( 
 {	['ID'] 		= 6,
 	['type'] 	= 'boolean',
-	['Encode'] 	= function( data )
+	['Encode'] 	= function( self, data )
 		return string.char( data == true and 2 or 1 )
 	end
-	['Decode']	= function( s_data )
+	['Decode']	= function( self, s_data )
 		return string.byte(s_data) == 2 and true or false
 	end,
-	['Size']	= function( data )
+	['Size']	= function( self, data )
 		return 1
 	end})
-	
-	--[[
-		[5] = {'Vector'	,function( data )
-							local r = ''
-							r = r .. Ananke.core.serialization.translations['number'][2](data.x)
-							r = r .. Ananke.core.serialization.translations['number'][2](data.y)
-							r = r .. Ananke.core.serialization.translations['number'][2](data.z)
-							return r
-						end
-						,function( s_data )
-							local t = string.Explode( '' , s_data )
-							local tabl = {}
-							for i = 1,6,2 do
-								local num = t[i] .. t[i+1]
-								tabl[i] = (Ananke.core.serialization.translations['number'][3](num) <= 0) and (Ananke.core.serialization.translations['number'][3](num) + 255) or (Ananke.core.serialization.translations['number'][3](num))
-							end
-							local vec = Vector( unpack(tabl) )
-							return vec
-						end,
-						function( data )
-							return 6
-						end}
-		}
-]]--
+
