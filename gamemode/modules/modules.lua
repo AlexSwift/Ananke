@@ -17,9 +17,7 @@ class "Ananke.Modules" {
 			end;
 			
 			LoadModule = function( self, name, dir )
-				if name == 'SourceNet' then
-					print( name.name )
-				end
+
 				print('\tLoading module : ' .. name)
 				Ananke.core.debug:Log( 'Loading module : ' .. name )
 				
@@ -213,6 +211,8 @@ class "Ananke.Modules" {
 					
 				end
 			end;
+<<<<<<< HEAD
+=======
 			
 			LoadServer = function( self, dir, name )
 				if !SERVER then return end
@@ -227,9 +227,32 @@ class "Ananke.Modules" {
 					self:LoadModule( v )
 				end
 			end;
+>>>>>>> c38fbbce19a7f3b4605406d81cc1d80c72c9381c
+			
+			LoadServer = function( self, dir, name )
+				if !SERVER then return end
+				for k,v in pairs( MODULE:GetFiles( 'server' ) ) do
+					Ananke.include( dir .. name .. '/' .. v )
+				end
+			end;
+			
+			LoadRequirements = function( self, tbl )
+<<<<<<< HEAD
+				tbl = tbl and tbl or {}
+=======
+				tabl = tabl and tabl or {}
+>>>>>>> c38fbbce19a7f3b4605406d81cc1d80c72c9381c
+				for k,v in pairs( tbl ) do
+					self:LoadModule( v )
+				end
+			end;
 			
 			LoadHooks = function( self )
+<<<<<<< HEAD
 			
+=======
+		
+>>>>>>> c38fbbce19a7f3b4605406d81cc1d80c72c9381c
 				for k,v in pairs( self:GetHooks() ) do
 				
 					hook.Add( k , self.Info.name ..':' .. k , function( ... )
