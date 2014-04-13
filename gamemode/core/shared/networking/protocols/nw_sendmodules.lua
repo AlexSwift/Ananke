@@ -9,11 +9,12 @@ Protocol:SetData( {
 } )
 
 Protocol:SetCallBack( function(data)
+	print( 'hmmmmmmm' )
 	if not Ananke._MODULES[ data[1] ] then
 		Ananke._MODULES[ data[1] ] = Ananke._MODULES[ data[1] ] or {}
 	end
 	Ananke._MODULES[ data[1] ].INI = data[2]
-	Ananke.Modules.LoadModule( data[1] , Ananke.Name .. "/gamemode/modules/" )
+	Ananke.Modules:LoadModule( data[1] )
 end )
 
 Protocol:Register()

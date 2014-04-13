@@ -5,9 +5,9 @@ class "Ananke.core.Protocol" {
 		Name = '';
 		PID = 0x00;
 		Type = '';
-		CallBack = function() end;
-		send = function() end;
-		receive = function() end;
+		CallBack = null;
+		send = null;
+		receive = null;
 		Data = '';
 	
 		static {
@@ -47,6 +47,9 @@ class "Ananke.core.Protocol" {
 		end;
 		
 		GetSend = function( self )
+			if self.send != null then
+				return false
+			end
 			return self.send
 		end;
 		

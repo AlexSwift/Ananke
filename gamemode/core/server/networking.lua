@@ -42,8 +42,12 @@ class 'Ananke.Network' {
 		
 		Send = function( self )
 			net.Start('ananke_nw')
+			
+				print('Sending Message')
+			
 				net.WriteInt(self.PID,0x10)
 				if self.protocol.send then
+					print( self.protocol.send and true )
 					self.protocol.send(self.Data)
 				else
 					PrintTable(self)
@@ -53,6 +57,7 @@ class 'Ananke.Network' {
 				end
 		
 				if self.Recipiants then
+					PrintTable( self.Recipiants )
 					net.Send(self.Recipiants)
 					return
 				end
@@ -67,6 +72,8 @@ class 'Ananke.Network' {
 }
 
 net.Receive('ananke_nw',function()
+
+	print( 'LALALALA' )
 	local Datagram = Ananke.core.protocol.GetByID( net.ReadInt() )
 	local data = {}
 	
@@ -78,9 +85,10 @@ net.Receive('ananke_nw',function()
 		end
 	end
 	
+	print( 'Message Received' )
+	
 	Datagram:GetCallBack()(data)
 	
 	return
 
 end)
-

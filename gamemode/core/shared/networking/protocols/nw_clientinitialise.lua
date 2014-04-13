@@ -1,7 +1,7 @@
 Protocol = Ananke.core.Protocol.new()
 
 Protocol:SetName( "ananke_clientinitalise_1" )
-Protocol:SetPID( 0x04 )
+Protocol:SetPID( 0x06 )
 Protocol:SetType( CLIENT_TO_SERVER )
 Protocol:SetData( {[1] = 'string'} )
 
