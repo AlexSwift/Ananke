@@ -49,7 +49,8 @@ class 'Ananke.Network' {
 						end
 					end
 			
-				net.Send()
+				net.SendToServer()
+				
 		end;
 				
 	};

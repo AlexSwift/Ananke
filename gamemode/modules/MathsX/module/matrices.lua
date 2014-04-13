@@ -164,7 +164,7 @@ class 'Ananke.MathsX.Matrices' {
 			for j = 1,self.y do
 				for z = 1,b.y do
 					local s = 0
-					for i = self.y do
+					for i = 1,self.y do
 						s = s + self[i][j] * b[i][z]
 					end
 					r:SetData( i , j , s)

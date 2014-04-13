@@ -23,6 +23,14 @@ class 'Ananke.core' {
 	
 		public {
 		
+			SetDirectory = function( self, dir )
+				self.LoadDirectory = dir
+			end;
+			
+			GetDirectory = function( self )
+				return self.LoadDirectory
+			end;
+		
 			IncludeDir = function(self, state, dir, indentation, str, precall, postcall )
 			
 				local indentation = indentation or 0
@@ -38,7 +46,7 @@ class 'Ananke.core' {
 				
 				ProtectedCall( function() precall() end )
 				
-				if state == 'client' then
+				if state == 'Client' then
 				
 					for k,v in pairs(f) do
 						if SERVER then
@@ -50,7 +58,7 @@ class 'Ananke.core' {
 						end
 					end
 					
-				elseif state == 'shared' then
+				elseif state == 'Shared' then
 					for k,v in pairs(f) do
 											
 						print( string.Indentation( indentation + 1 ) .. 'Loading ' .. v )
@@ -63,7 +71,7 @@ class 'Ananke.core' {
 						end
 					end
 				
-				elseif state == 'server' and SERVER then
+				elseif state == 'Server' and SERVER then
 					
 					for k,v in pairs(f) do
 						print( string.Indentation( indentation + 1 ) .. 'Loading ' .. v )
@@ -80,13 +88,13 @@ class 'Ananke.core' {
 			
 				if not SERVER then return end
 			
-				local f,d = file.Find( dir .. '/*' , "LUA" )
+				local f,d = file.Find( self:GetDirectory() .. '/' .. dir .. '/*' , "LUA" )
 				
 				print( 'Sending files ' .. dir )
 				
 				for k,v in pairs(f) do
 					print( '\tSending : ' .. v )
-					ProtectedCall( Ananke.AddCSLuaFile( dir .. '/' .. v ) )
+					ProtectedCall( Ananke.AddCSLuaFile( self:GetDirectory() .. '/' .. dir .. '/' .. v ) )
 				end
 				
 			end;
@@ -98,14 +106,6 @@ class 'Ananke.core' {
 				return f,d
 				
 			end;
-			
-			SetDirectory = function( self, dir )
-				self.LoadDirectory = dir
-			end;
-			
-			GetDirectory = function( self )
-				return self.LoadDirectory
-			end
 			
 		};
 	};

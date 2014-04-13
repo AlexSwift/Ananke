@@ -17,7 +17,9 @@ class "Ananke.Modules" {
 			end;
 			
 			LoadModule = function( self, name, dir )
-			
+				if name == 'SourceNet' then
+					print( name.name )
+				end
 				print('\tLoading module : ' .. name)
 				Ananke.core.debug:Log( 'Loading module : ' .. name )
 				
@@ -26,13 +28,13 @@ class "Ananke.Modules" {
 				if not file.Exists( dir .. name ..'/info.ini' , 'LUA' ) and SERVER then
 				
 					Ananke.core.debug:Log( 'Failed to load module ' .. name .. ' as info file was not found!' )
-					Error( '/t/tFailed to load module ' .. name .. ' as info file was not found!' )
+					Ananke.core.debug:Error( 'Failed to load module ' .. name .. ' as info file was not found!\n' )
 					return
 					
 				elseif CLIENT and not (self._MODULES[ name ] and self._MODULES[name].INI or false) then
 				
 					local nw = Ananke.Network.new()
-					nw:SetProtocol(0x04)
+					nw:SetProtocol(0x05)
 					nw:SetDescription('Client Request module INI')
 					nw:PushData( name )
 					nw:Send()
@@ -95,11 +97,12 @@ class "Ananke.Modules" {
 		Info = {};
 		Files = {};
 		Hooks = {};
-		Function = {};
+		Functions = {};
 		_Data = {};
 		INI = INIParser.new();
 	
 		Register = function( self )
+			if not self.Info then return end
 			self._MODULES[ self:GetInfo('name') ] = self
 
 		end;
@@ -152,90 +155,96 @@ class "Ananke.Modules" {
 	};
 	
 	private {
+		static {
 	
-		_MODULES = {};
-		
-		LoadEffects = function( self, dir )
-			for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/effects/*' , 'LUA' , 'nameasc' ) ) do
-				EFFECT = {}
-				if CLIENT then
-					Ananke.Include( dir .. self:GetInfo('name') .. '/effects/' .. v .. '/init.lua' )
-				else
-					Ananke.AddCSLuaFile( dir .. self:GetInfo('name') .. '/effects/' .. v .. '/init.lua' )
-				end
-				effects.Register( EFFECT, v )
-				EFFECT = nil
-			end
-		end;
-		
-		LoadWeapons = function( self, dir )
-			for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/weapons/*' , 'LUA' , 'nameasc' ) ) do
-				SWEP = {}
-				if CLIENT then
-					Ananke.Include( dir .. self:GetInfo('name') .. '/weapons/' .. v .. '/cl_init.lua' )
-				else
-					Ananke.Include( dir .. self:GetInfo('name') .. '/weapons/' .. v .. '/init.lua' )
-					Ananke.AddCSLuaFile( dir .. self:GetInfo('name') .. '/weapons/' .. v .. '/cl_init.lua' )
-				end
-				weapons.Register( SWEP, v )
-				SWEP = nil
-			end
-		end;
-		
-		LoadEntities = function( self, dir )
-			for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/entities/*' , 'LUA' , 'nameasc' ) ) do
-				ENT = {}
-				if CLIENT then
-					Ananke.Include( dir .. self:GetInfo('name') .. '/entities/' .. v .. '/cl_init.lua' )
-				else
-					Ananke.Include( dir .. self:GetInfo('name') .. '/entities/' .. v .. '/init.lua' )
-					Ananke.AddCSLuaFile( dir .. self:GetInfo('name') .. '/entities/' .. v .. '/cl_init.lua' )
-				end
-				scripted_ents.Register( ENT, v )
-				ENT = nil
-			end
-		end;
-		
-		LoadClient = function( self, dir, name )
-			for k,v in pairs( MODULE:GetFiles( 'client' ) ) do				
-				if CLIENT then
-					Ananke.Include( dir .. name .. '/' .. v )
-				else
-					Ananke.AddCSLuaFile(  dir .. name .. '/' .. v )
-				end
-				
-			end
-		end;
-		
-		LoadServer = function( self, dir, name )
-			if !SERVER then return end
-			for k,v in pairs( MODULE:GetFiles( 'server' ) ) do
-				Ananke.Include( dir .. name .. '/' .. v )
-			end
-		end;
-		
-		LoadRequirements = function( self, tbl )
-			tabl = tabl and tabl or {}
-			for k,v in pairs( tbl ) do
-				self:LoadModule( v )
-			end
-		end;
-		
-		LoadHooks = function( self )
-		
-			for k,v in pairs( self:GetHooks() ) do 
+			_MODULES = {};
 			
-				hook.Add( k , self.Info.Name ..':' .. k , function( ... )
-					local args = {...}
-					v( unpack( args ) )
-				end)
-				
-				print('\t\tRegistered Hook : ' .. k )
-				Ananke.core.debug:Error( 'Registered Hook : ' .. k )
-				
-			end
+			LoadEffects = function( self, dir )
+				if not self.Info then return end
+				for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/effects/*' , 'LUA' , 'nameasc' ) ) do
+					EFFECT = {}
+					if CLIENT then
+						Ananke.include( dir .. self:GetInfo('name') .. '/effects/' .. v .. '/init.lua' )
+					else
+						Ananke.AddCSLuaFile( dir .. self:GetInfo('name') .. '/effects/' .. v .. '/init.lua' )
+					end
+					effects.Register( EFFECT, v )
+					EFFECT = nil
+				end
+			end;
 			
-		end;
+			LoadWeapons = function( self, dir )
+				if not self.Info then return end
+				for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/weapons/*' , 'LUA' , 'nameasc' ) ) do
+					SWEP = {}
+					if CLIENT then
+						Ananke.include( dir .. self:GetInfo('name') .. '/weapons/' .. v .. '/cl_init.lua' )
+					else
+						Ananke.include( dir .. self:GetInfo('name') .. '/weapons/' .. v .. '/init.lua' )
+						Ananke.AddCSLuaFile( dir .. self:GetInfo('name') .. '/weapons/' .. v .. '/cl_init.lua' )
+					end
+					weapons.Register( SWEP, v )
+					SWEP = nil
+				end
+			end;
+			
+			LoadEntities = function( self, dir )
+				if not self.Info then return end
+				for k,v in pairs( file.Find( dir .. self:GetInfo('name') .. '/entities/*' , 'LUA' , 'nameasc' ) ) do
+					ENT = {}
+					if CLIENT then
+						Ananke.include( dir .. self:GetInfo('name') .. '/entities/' .. v .. '/cl_init.lua' )
+					else
+						Ananke.include( dir .. self:GetInfo('name') .. '/entities/' .. v .. '/init.lua' )
+						Ananke.AddCSLuaFile( dir .. self:GetInfo('name') .. '/entities/' .. v .. '/cl_init.lua' )
+					end
+					scripted_ents.Register( ENT, v )
+					ENT = nil
+				end
+			end;
+			
+			LoadClient = function( self, dir, name )
+				for k,v in pairs( MODULE:GetFiles( 'client' ) ) do				
+					if CLIENT then
+						Ananke.include( dir .. name .. '/' .. v )
+					else
+						Ananke.AddCSLuaFile(  dir .. name .. '/' .. v )
+					end
+					
+				end
+			end;
+			
+			LoadServer = function( self, dir, name )
+				if !SERVER then return end
+				for k,v in pairs( MODULE:GetFiles( 'server' ) ) do
+					Ananke.include( dir .. name .. '/' .. v )
+				end
+			end;
+			
+			LoadRequirements = function( self, tbl )
+				tbl = tbl and tbl or {}
+				for k,v in pairs( tbl ) do
+					self:LoadModule( v )
+				end
+			end;
+			
+			LoadHooks = function( self )
+			
+				for k,v in pairs( self:GetHooks() ) do
+				
+					hook.Add( k , self.Info.name ..':' .. k , function( ... )
+						local args = {...}
+						v( unpack( args ) )
+					end)
+					
+					print('\t\tRegistered Hook : ' .. k )
+					Ananke.core.debug:Log( 'Registered Hook : ' .. k )
+					
+				end
+				
+			end;
+			
+		};
 		
 	};
 };

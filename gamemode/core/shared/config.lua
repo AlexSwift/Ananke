@@ -14,7 +14,7 @@ class 'Ananke.core.config' {
 		
 		public {
 		
-			LoadConfigDirectory = funciton( self, dir )
+			LoadConfigDirectory = function( self, dir )
 				
 				local files = Ananke.core:SearchDirectory( )
 				

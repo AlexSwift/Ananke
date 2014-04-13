@@ -12,17 +12,17 @@ include( 'modules/modules.lua' )
 function Ananke.Initialise()
 
 	Ananke.core:SetDirectory( 'Ananke/gamemode' )
-	Ananke.core:IncludeDir(  'shared', 'core/shared', 0, 'Core' )
-	Ananke.core:IncludeDir(  'shared', 'core/shared/networking', 1, 'Core::Networking' )
-	Ananke.core:IncludeDir(  'shared', '/hooks', 0, 'Hooks' )
+	Ananke.core:IncludeDir(  'Shared', 'core/shared', 0, 'Core::Shared' )
+	Ananke.core:IncludeDir(  'Shared', 'core/shared/networking', 1, 'Core::Shared::Networking' )
+	Ananke.core:IncludeDir(  'Shared', 'hooks', 0, 'Hooks' )
 
 	Ananke.core:AddCSLuaDir( 'core/client/gui' )
-	Ananke.core:IncludeDir(  'client', '/core/client' )
+	Ananke.core:IncludeDir(  'Client', 'core/client', 0 , 'Core::Client' )
 
-	Ananke.core:IncludeDir(  'server', '/core/server' )
+	Ananke.core:IncludeDir(  'Server', 'core/server', 0 , 'Core::Server' )
 
 	Ananke.core.Protocol:Initialize()			-- SHARED
-	Ananke.core.serialization.Initialize()		-- SHARED
+	Ananke.core.serialization:Initialize()		-- SHARED
 
 	if CLIENT then
 

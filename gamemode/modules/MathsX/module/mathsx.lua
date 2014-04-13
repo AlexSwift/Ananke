@@ -2,16 +2,16 @@ Ananke.MathsX = {}
 
 function Ananke.MathsX.Initialise()
 
-	f,d = file.Find( Ananke.Name .. "/gamemode/module/MathsX/module/*.lua", "LUA" )
+	local f,d = file.Find( Ananke.Name .. "/gamemode/modules/MathsX/module/*.lua", "LUA" )
 
-	print('\t\t\tLoading MathsX Extentions :')
+	print('\t\tLoading MathsX Extentions :')
 	
 	for k,v in pairs(f) do
 		if v == 'mathsx.lua' then continue end
-		print('\t\t\t\tLoading ' .. v)
-		include( v )
+		print('\t\t\tLoading ' .. v)
+		Ananke.include( Ananke.Name .. '/gamemode/modules/MathsX/module/' .. v )
 		if SERVER then 
-			AddCSLuaFile( v )
+			Ananke.AddCSLuaFile( Ananke.Name .. '/gamemode/modules/MathsX/module/' .. v )
 		end
 	end
 	

@@ -11,7 +11,7 @@ Protocol:SetCallBack( function(data)
 end )
 
 Protocol:SetSend( function(data)
-	net.WriteUInt(data[1])
+	net.WriteUInt(data[1], 16 )
 	net.WriteString(data[2])
 	net['Write' .. data[2]](data[3])
 end )

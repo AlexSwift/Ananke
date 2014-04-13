@@ -1,6 +1,6 @@
 class "Ananke.core.Protocol" {
 
-	private {
+	public {
 	
 		Name = '';
 		PID = 0x00;
@@ -8,11 +8,7 @@ class "Ananke.core.Protocol" {
 		CallBack = function() end;
 		send = function() end;
 		receive = function() end;
-		Data = ''
-		
-	};
-
-	public {
+		Data = '';
 	
 		static {
 			
@@ -23,7 +19,7 @@ class "Ananke.core.Protocol" {
 			
 				if self.Loaded then return end
 	
-				Ananke.core:IncludeDir( 'shared', Ananke.Name .. '/gamemode/core/shared/networking/protocols' )
+				Ananke.core:IncludeDir( 'Shared', 'core/shared/networking/protocols' )
 				self.Loaded = true
 			
 			end;
