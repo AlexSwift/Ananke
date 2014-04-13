@@ -5,7 +5,7 @@ Protocol:SetPID( 0x05 )
 Protocol:SetType( SERVER_TO_CLIENT )
 Protocol:SetData( {
 	[1] = 'string',
-	[2] = 'string'
+	[2] = 'table'
 } )
 
 Protocol:SetCallBack( function(data)

@@ -16,7 +16,7 @@ class 'Ananke.Network' {
 	
 		SetProtocol = function( self , id )
 			self.PID = id
-			self.protocol = Ananke.core.protocol.GetByID(id)
+			self.protocol = Ananke.core.Protocol:GetByID(id)
 		end;
 		
 		SetDescription = function( self, str )	
@@ -34,6 +34,7 @@ class 'Ananke.Network' {
 			end
 
 			local Datagram = self.protocol
+			
 			if Datagram.Data[#self.Data + 0x01] != type(data) then
 				error('Data type MisMatch : ' .. self.Description)
 			end
@@ -41,26 +42,25 @@ class 'Ananke.Network' {
 		end;
 		
 		Send = function( self )
+		
 			net.Start('ananke_nw')
 			
-				print('Sending Message')
-			
 				net.WriteInt(self.PID,0x10)
-				if self.protocol.send then
-					print( self.protocol.send and true )
+				if self.protocol.send != null then
 					self.protocol.send(self.Data)
 				else
-					PrintTable(self)
 					for k,v in ipairs(self.Data) do
 						net['Write'..NW_TRANSLAITON[type(v)]()](v)
 					end
 				end
 		
 				if self.Recipiants then
-					PrintTable( self.Recipiants )
 					net.Send(self.Recipiants)
 					return
 				end
+				
+				print( 'Sending MSG ' )
+				PrintTable( self.Data )
 		
 			net.Send()
 		
@@ -70,25 +70,3 @@ class 'Ananke.Network' {
 	};
 
 }
-
-net.Receive('ananke_nw',function()
-
-	print( 'LALALALA' )
-	local Datagram = Ananke.core.protocol.GetByID( net.ReadInt() )
-	local data = {}
-	
-	if Datagram.Type == NW_CUSTOM then
-		data = Datagram.Receive()
-	else
-		for k,v in ipairs(Datagram.Data) do
-			table.insert( data , net['Read'..NW_TRANSLATION[v]()]() )
-		end
-	end
-	
-	print( 'Message Received' )
-	
-	Datagram:GetCallBack()(data)
-	
-	return
-
-end)

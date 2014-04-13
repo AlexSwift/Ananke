@@ -38,14 +38,15 @@ class 'Ananke.Network' {
 		end;
 		
 		Send = function( self )
+		
 				net.Start('ananke_nw')
-				
+			
 					print( 'Sending Message: Client' )
+					
 					net.WriteInt(self.PID,0x10)
 					if self.protocol:GetSend() != null then
 						self.protocol.send(self.Data)
 					else
-						PrintTable(self.Data)
 						for k,v in ipairs(self.Data) do
 							net['Write' .. NW_TRANSLAITON[type(v)]() ](v)
 						end
@@ -54,30 +55,8 @@ class 'Ananke.Network' {
 					print( 'Message Sent' )
 			
 				net.SendToServer()
-				
 		end;
 				
 	};
 	
 }
-
-net.Receive('ananke_nw',function()
-
-	local Datagram = Ananke.core.Protocol.GetByID( net.ReadInt() )
-	local data = {}
-	
-	if Datagram.Type == NW_CUSTOM then
-		data = Datagram.Receive()
-	else
-		for k,v in ipairs(Datagram.Data) do
-			table.insert( data , net['Read'..v] )
-		end
-	end
-	
-	print( 'Message Received' )
-	
-	Datagram:GetCallBack()(data)
-
-	return
-
-end)
