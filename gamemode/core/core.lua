@@ -23,6 +23,14 @@ class 'Ananke.core' {
 	
 		public {
 		
+			SetDirectory = function( self, dir )
+				self.LoadDirectory = dir
+			end;
+			
+			GetDirectory = function( self )
+				return self.LoadDirectory
+			end;
+		
 			IncludeDir = function(self, state, dir, indentation, str, precall, postcall )
 			
 				local indentation = indentation or 0
@@ -98,14 +106,6 @@ class 'Ananke.core' {
 				return f,d
 				
 			end;
-			
-			SetDirectory = function( self, dir )
-				self.LoadDirectory = dir
-			end;
-			
-			GetDirectory = function( self )
-				return self.LoadDirectory
-			end
 			
 		};
 	};

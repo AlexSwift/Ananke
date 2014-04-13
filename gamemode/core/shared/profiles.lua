@@ -1,11 +1,11 @@
-class 'Ananke.core.profiles' {
+class 'Ananke.core.profiles.shared' {
 	
 	static {
 	
 		private {
 		
-			profiles = {}
-			DataTypes = {}
+			profiles = {};
+			DataTypes = {};
 			
 		};
 		
