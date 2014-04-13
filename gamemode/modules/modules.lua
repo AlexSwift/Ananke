@@ -213,6 +213,7 @@ class "Ananke.Modules" {
 					
 				end
 			end;
+<<<<<<< HEAD
 			
 			LoadServer = function( self, dir, name )
 				if !SERVER then return end
@@ -228,8 +229,22 @@ class "Ananke.Modules" {
 				end
 			end;
 			
-			LoadHooks = function( self )
+			LoadServer = function( self, dir, name )
+				if !SERVER then return end
+				for k,v in pairs( MODULE:GetFiles( 'server' ) ) do
+					Ananke.include( dir .. name .. '/' .. v )
+				end
+			end;
 			
+			LoadRequirements = function( self, tbl )
+				tabl = tabl and tabl or {}
+				for k,v in pairs( tbl ) do
+					self:LoadModule( v )
+				end
+			end;
+			
+			LoadHooks = function( self )
+		
 				for k,v in pairs( self:GetHooks() ) do
 				
 					hook.Add( k , self.Info.name ..':' .. k , function( ... )

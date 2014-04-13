@@ -12,6 +12,7 @@ include( 'modules/modules.lua' )
 function Ananke.Initialise()
 
 	Ananke.core:SetDirectory( 'Ananke/gamemode' )
+
 	Ananke.core:IncludeDir(  'Shared', 'core/shared', 0, 'Core::Shared' )
 	Ananke.core:IncludeDir(  'Shared', 'core/shared/networking', 1, 'Core::Shared::Networking' )
 	Ananke.core:IncludeDir(  'Shared', 'hooks', 0, 'Hooks' )
