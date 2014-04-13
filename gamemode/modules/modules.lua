@@ -17,9 +17,7 @@ class "Ananke.Modules" {
 			end;
 			
 			LoadModule = function( self, name, dir )
-				if name == 'SourceNet' then
-					print( name.name )
-				end
+
 				print('\tLoading module : ' .. name)
 				Ananke.core.debug:Log( 'Loading module : ' .. name )
 				
@@ -213,7 +211,6 @@ class "Ananke.Modules" {
 					
 				end
 			end;
-<<<<<<< HEAD
 			
 			LoadServer = function( self, dir, name )
 				if !SERVER then return end
