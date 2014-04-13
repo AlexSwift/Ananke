@@ -36,7 +36,7 @@ SWEP.Primary.Sound.channel = CHAN_AUTO
 SWEP.Primary.Sound.volume = 1
 SWEP.Primary.Sound.pitchstart = 100
 SWEP.Primary.Sound.pitchend = 100
-SWEP.Primary.Sound.sound = "weapons/anankeak47/prim.wav"
+SWEP.Primary.Sound.sound = "weapons/ak47/ak47-1.wav"
 sound.Add(SWEP.Primary.Sound)
 
 function SWEP:Precache()
