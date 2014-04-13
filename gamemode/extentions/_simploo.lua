@@ -24,6 +24,7 @@ function isclass(v)
 end
 
 local function _duplicateTable(tbl, _lookup)
+
 	local copy = {}
 	
 	for k, v in pairs(tbl) do
@@ -37,7 +38,7 @@ local function _duplicateTable(tbl, _lookup)
 				copy[k] = _duplicateTable(v,_lookup) -- not yet copied. copy it.
 			end
 		else
-			copy[k] = rawget(tbl, i)
+			copy[k] = rawget(tbl, k)
 		end
 	end
 	
@@ -54,6 +55,7 @@ local function _duplicateTable(tbl, _lookup)
 	end
 
 	return copy
+
 end
 
 local function _createClassInstance(tbl, _lookup)
@@ -71,7 +73,14 @@ local function _createClassInstance(tbl, _lookup)
 					
 					for mKey, mTbl in pairs(tblValue) do
 						copy[strKey][mKey] = {}
+						--[[
 						if type(mTbl[mKey]["value"]) == "table" then
+							copy[strKey][mKey]["value"] = _duplicateTable(mTbl["value"], _lookup)
+						else
+							copy[strKey][mKey]["value"] = rawget(mTbl, "value")
+						end
+						]]
+						if type(mTbl["value"]) == "table" then
 							copy[strKey][mKey]["value"] = _duplicateTable(mTbl["value"], _lookup)
 						else
 							copy[strKey][mKey]["value"] = rawget(mTbl, "value")
@@ -930,6 +939,7 @@ do
 end
 
 local function _setupClass(creatorInfo, creatorMembers)
+
 	local className = creatorInfo["name"]
 	local extendingClasses = creatorInfo["extends"] or {}
 	
@@ -1156,7 +1166,8 @@ do
 
 	local classSetupObject = setmetatable({
 			register = function()
-				-- We copy our tables
+				-- We copy our table
+				
 				local _creatorInfo = _duplicateTable(creatorInfo)
 				local _creatorMembers = _duplicateTable(creatorMembers)
 
@@ -1168,6 +1179,7 @@ do
 			end
 		}, {
 			__call = function(self, data)
+				
 				if data then
 					local wrapper = pushMembersModifier(data, {})
 
@@ -1208,11 +1220,13 @@ do
 			creatorActive = true
 			creatorInfo["name"] = newClassName
 
+			
 			-- Parse options for alternative syntax
 			if opt then
 				options(opt)
 			end
 
+			
 			return classSetupObject
 		end
 

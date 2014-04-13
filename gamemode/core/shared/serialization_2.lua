@@ -11,6 +11,10 @@ class 'Ananke.core.serialization'{
 		
 		public {
 		
+			Initialize = function( self )
+				--http://puu.sh/7LP2Q
+			end;
+		
 			AddTranslation = function( self, tabl )
 			
 				if self.Translation[ typ ] then 
@@ -29,7 +33,7 @@ class 'Ananke.core.serialization'{
 			
 				if type( typ ) == 'number' then
 					return self.Translation[ typ ]
-				elseif type( typ ) = 'string' then
+				elseif type( typ ) == 'string' then
 					local k = self:GetTypeFromByte( typ )
 					return self.Translation[ k ]
 				else
@@ -207,7 +211,7 @@ Ananke.core.serialization:AddTranslation(
 	['type'] 	= 'boolean',
 	['Encode'] 	= function( self, data )
 		return string.char( data == true and 2 or 1 )
-	end
+	end,
 	['Decode']	= function( self, s_data )
 		return string.byte(s_data) == 2 and true or false
 	end,

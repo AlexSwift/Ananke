@@ -23,7 +23,7 @@ class "Ananke.core.Protocol" {
 			
 				if self.Loaded then return end
 	
-				Ananke.core:IncludeDir( 'shared', Ananke.Name .. '/gamemode/core/shared/networking/protocols' )
+				Ananke.core:IncludeDir( 'Shared', 'core/shared/networking/protocols' )
 				self.Loaded = true
 			
 			end;

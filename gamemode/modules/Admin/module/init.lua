@@ -3,25 +3,6 @@ Ananke.Admin._PLUGINS = {}
 
 class 'Ananke.Admin.plugins' {
 	
-	protected {
-
-		Get = function( name )
-			if !Ananke.Admin._PLUGINS[ name ] then
-				Ananke.debug.Error( 'ADMIN: Could not load plugin: ' .. name , false )
-			else
-				return Ananke.Admin._PLUGINS[ name ]
-			end
-		end;
-		
-		Register = function( self )
-			Ananke.Admin._PLUGINS[ self.Name ] = self
-		end;
-		
-		Load = function() end;
-		Unload = function() end;
-		
-	};
-	
 	public {
 	
 		Name = 'plugin_name';
@@ -33,6 +14,9 @@ class 'Ananke.Admin.plugins' {
 		Functions = {};
 		Data = {};
 		args = {};
+		
+		Load = function() end;
+		Unload = function() end;
 		
 		static {
 			Initialise = function( )
@@ -50,6 +34,19 @@ class 'Ananke.Admin.plugins' {
 				Ananke.core:IncludeDir( 'shared', Ananke.Name .. '/gamemode/modules/Admin/module/plugins', 2, 'Admin Modules:', precall, postcall )
 				
 			end;
+			
+			Register = function( self )
+				Ananke.Admin._PLUGINS[ self.Name ] = self
+			end;
+			
+			Get = function( name )
+				if !Ananke.Admin._PLUGINS[ name ] then
+					Ananke.debug.Error( 'ADMIN: Could not load plugin: ' .. name , false )
+				else
+					return Ananke.Admin._PLUGINS[ name ]
+				end
+			end;
+			
 		};
 	}
 }
