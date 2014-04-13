@@ -18,6 +18,7 @@ class 'Ananke.core' {
 				['client'] = {},
 				['server'] = {}
 			};
+			LoadDirectory = Ananke.Name .. '/gamemode/'
 		};
 	
 		public {
@@ -28,6 +29,7 @@ class 'Ananke.core' {
 				local str = str or ( state .. ' : ' .. dir )
 				local precall = precall or function() end
 				local postcall = postcall or function() end
+				local dir = self:GetDirectory() .. '/' .. dir
 			
 				local f,d = file.Find( dir .. '/*.lua' , "LUA" )
 				self.Loaded[state] = {f,d}
@@ -88,6 +90,23 @@ class 'Ananke.core' {
 				end
 				
 			end;
+			
+			SearchDirectory = function( self, dir )
+			
+				local f,d = file.Find( self:GetDirectory() .. '/' .. dir .. '/*' ,'LUA' )
+				
+				return f,d
+				
+			end;
+			
+			SetDirectory = function( self, dir )
+				self.LoadDirectory = dir
+			end;
+			
+			GetDirectory = function( self )
+				return self.LoadDirectory
+			end
+			
 		};
 	};
 };

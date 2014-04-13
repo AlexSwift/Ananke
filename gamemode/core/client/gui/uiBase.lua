@@ -5,6 +5,20 @@ class "uiBase" {
 	};
 
 	protected {
+	
+		SetLayer = function( self, layer )
+			
+			return self.Layer
+		
+		end;
+		
+		GetLayer = function( self, layer )
+			
+			--Check if layer is valid or it won't get drawn
+			self.Layer = layer
+			
+		end
+			
 		SetParent = function(self, parent)
 			if self['parent'] then
 				self['parent']:RemoveChild(self)
@@ -171,7 +185,9 @@ class "uiBase" {
 	};
 	
 	private {
-		parent = nil;
+		
+		layer = "NullVariable";
+		parent = "NullVariable";
 		children = {};
 		isEnabled = false;
 		

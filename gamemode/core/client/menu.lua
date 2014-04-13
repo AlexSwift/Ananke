@@ -32,16 +32,24 @@ class 'Ananke.core.Menu' {
 				self.Objects[name] = obj
 			end;
 			
-			Create = function(self, name, parent)
+			Create = function(self, name, parent, layer)
+			
 				if !self.Objects[name] then return nil end
 				
-				local obj = self.Objects[name].new()
+				if parent then
+					layer = parent:GetLayer()
+				end
 				
-				obj:Init()
+				local obj = self.Objects[name].new()
 				
 				if parent then 
 					obj:SetParent(parent)
 				end
+				
+				obj:SetLayer( layer )
+				obj:Init()
+				
+				self.RenderStack:Add( obj, layer )
 				
 				return obj
 			end;
