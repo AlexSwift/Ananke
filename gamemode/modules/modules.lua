@@ -23,19 +23,10 @@ class "Ananke.Modules" {
 				
 				local dir = dir or Ananke.Name .. "/gamemode/modules/"
 				
-				if not file.Exists( dir .. name ..'/info.ini' , 'LUA' ) and SERVER then
+				if not file.Exists( dir .. name ..'/info.lua' , 'LUA' ) and SERVER then
 				
 					Ananke.core.debug:Log( 'Failed to load module ' .. name .. ' as info file was not found!' )
 					Ananke.core.debug:Error( 'Failed to load module ' .. name .. ' as info file was not found!\n' )
-					return
-					
-				elseif CLIENT and not (self._MODULES[ name ] and self._MODULES[name].INI or false) then
-				
-					local nw = Ananke.Network.new()
-					nw:SetProtocol(0x05)
-					nw:SetDescription('Client Request module INI')
-					nw:PushData( name )
-					nw:Send()
 					return
 					
 				end
@@ -52,8 +43,12 @@ class "Ananke.Modules" {
 				MODULE = self.new()
 				
 				if SERVER then
-					MODULE.INI:LoadFile( dir .. name ..'/info.ini' , 'LUA' )
+				
+					MODULE.INI:LoadFile( dir .. name ..'/info.lua' , 'LUA' )
 					MODULE.INI = MODULE.INI:Parse( )
+					
+					Ananke.AddCSLuaFile( dir .. name ..'/info.lua' )
+					
 				else
 					MODULE.INI = self._MODULES[ name ].INI
 				end
