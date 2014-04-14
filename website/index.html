@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lewis White</title>
+  <meta charset="utf-8">
+  <meta content="Lewis White" name="author">
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="favicon.png">
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+
+  <div id="wrapper">
+
+    <header>
+      <h1>The Ananke Dev Team</h1>
+      <h2> We code shit. </h2>
+    </header>
+
+    <div id="about">
+      <h1>About us</h1>
+      <p>
+       We are a team of unique and skilled individuals, all bringing invaluable knowledge. 
+      </p>
+      <hr>
+      <p>
+        Feel free to email us with any requests
+        ideas and design requirements,
+        <br>
+        We'll get back to you as soon as possible.
+      </p>
+      <a href="mailto:support@ananke.me" class="magic">
+        Talk to us.
+      </a>
+    </div>
+
+    <div id="portfolio">
+      <h1>Projects</h1>
+      <h2>2014</h2>
+      <hr>
+      <h3>Ananke</h3>
+      <p>
+        Information is not currently public. For more information, please contact us via our support email, and we will be sure to get back to you as soon as possible.
+      </p>
+      <img class="thumb" src="res/anankeLogo.png">
+    </div>
+
+    <footer>
+      <address>
+        <span id="a">
+          <a href="mailto:support@ananke.me">email</a>
+        </span>
+        <span id="b">
+          <a href="http://github.com/"
+          target="blank">github</a>
+        </span>
+      </address>
+    </footer>
+
+  </div>
+  <script>
+$( ".thumb" ).click(function() {
+  $( this ).toggleClass( "active" );
+});
+</script>
+</body>
+</html>
