@@ -156,7 +156,7 @@ function MODULE.Functions.GetBinds( key )
 	
 end
 
-function MODULE.Functions.AddBind( key , identifier , callback )
+function MODULE.Functions.AddBind( key , identifier , callback , ply )
 
 	if not key or not identifier or not callback then 
 		return
@@ -178,25 +178,21 @@ function MODULE.Functions.AddBind( key , identifier , callback )
 		return
 	end
 	
-	MODULE.Functions.GetBinds( key )[identifier] = callback
+	MODULE.Functions.GetBinds( key )[key .. identifier .. ply] = callback
+	numpad.Register( key .. identifier .. ply , callback )
+	numpad.OnDown( ply , key , key .. identifier .. ply )
 
 end
 
-function MODULE.Functions.RemoveBind( key , identifier )
+function MODULE.Functions.RemoveBind( key , identifier , ply )
 
 	for k,v in pairs( Ananke.binds.GetBinds( key ) ) do 
-		if k == identifier then
+		if k == ( key .. identifier .. ply ) then
 			v = nil
 		end
 	end
 	
+	numpad.Remove( key .. identifier .. ply )
+	
 end
-
-function MODULE.Hooks.PlayerButtonDown( ply, key )
-	
-	for k,callback in pairs( Ananke.binds.GetBinds( key ) ) do
-		callback( )
-	end
-	
-end)
 	
