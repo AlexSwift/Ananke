@@ -125,22 +125,22 @@ class "uiBase" {
 	
 	public {
 		abstract {
-			OnCursorMoved = function()
+			OnCursorMoved = function(self)
 			end;
 			
-			OnCursorEntered = function()
+			OnCursorEntered = function(self)
 			end;
 			
-			OnCursorExited = function()
+			OnCursorExited = function(self)
 			end;
 			
-			OnMousePressed = function()
+			OnMousePressed = function(self)
 			end;
 			
-			OnMouseReleased = function()
+			OnMouseReleased = function(self)
 			end;
 			
-			OnMouseWheeled = function()
+			OnMouseWheeled = function(self)
 			end;
 		};
 	};
