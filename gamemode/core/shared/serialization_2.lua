@@ -49,7 +49,7 @@ class 'Ananke.core.serialization'{
 			end;
 			
 			GetTypeFromByte = function( self, byte )
-				for typ,translation in pairs( self:GetTranlsationsTable() ) do
+				for typ,translation in pairs( self:GetTranslationTable() ) do
 					if translation[1] == byte then
 						return k
 					end
@@ -67,8 +67,19 @@ class 'Ananke.core.serialization'{
 			end;
 			
 			Decode = function( self, s_data )
+			
 				local data = ''
-				-- local typ = -- Get First byte and return Key for decode function
+				local data_raw = ''
+				
+				local translation = self:GetTranslation( s_data[1] )
+				local size = s_data[2]
+				
+				for i = 3, size do
+					data_raw = data_raw .. s_data[i]
+				end
+				
+				data = translation:Decode( data_raw )
+				
 				return data
 			end
 		
