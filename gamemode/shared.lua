@@ -17,9 +17,8 @@ function Ananke.Initialise()
 	Ananke.core:IncludeDir(  'Shared', 'core/shared/networking', 1, 'Core::Shared::Networking' )
 	Ananke.core:IncludeDir(  'Shared', 'hooks', 0, 'Hooks' )
 
-	Ananke.core:AddCSLuaDir( 'core/client/gui' )
 	Ananke.core:IncludeDir(  'Client', 'core/client', 0 , 'Core::Client' )
-
+	--Ananke.core:IncludeDir(  'Client', 'core/client/gui', 0, 'Core::Client::Gui')
 	Ananke.core:IncludeDir(  'Server', 'core/server', 0 , 'Core::Server' )
 
 	Ananke.core.Protocol:Initialize()			-- SHARED

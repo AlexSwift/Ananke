@@ -1,23 +1,18 @@
-class "uiBase" {
+-- Abstract class that defines all basic data
+-- members and related behaviour for UIObjects.
 
-	meta {
-		
-	};
+class "uiBase" {
 
 	protected {
 	
 		SetLayer = function( self, layer )
-			
 			return self.Layer
-		
 		end;
 		
 		GetLayer = function( self, layer )
-			
 			--Check if layer is valid or it won't get drawn
 			self.Layer = layer
-			
-		end
+		end;
 			
 		SetParent = function(self, parent)
 			if self['parent'] then
@@ -113,24 +108,6 @@ class "uiBase" {
 			return self['scaleX'], self['scaleY']
 		end;
 		
-		AddChild = function(self, obj)
-			if obj == nil then return end
-			
-			table.insert(self['children'], obj)
-		end;
-		
-		RemoveChild = function(self, obj)
-			for k, v in pairs(self['children']) do
-				if v == obj then
-					table.remove(self['children'], obj)
-				end
-			end
-		end;
-		
-		GetChildren = function(self)
-			return self['children']
-		end;
-		
 		IsEnabled = function(self)
 			return self['isEnabled']
 		end;
@@ -146,49 +123,31 @@ class "uiBase" {
 		end;
 	};
 	
-	abstract {
-		Draw = function(self)
-		end;
-	};
-	
 	public {
-	-- Initialise
-		__construct = function(self)
-			self:SetParent(parent)
-		end;
-		
-		__finalize = function(self)
-		
-		end;
-		
-		Init = function(self)
-		
-		end;
-		
-		OnCursorMoved = function()
-		end;
-		
-		OnCursorEntered = function()
-		end;
-		
-		OnCursorExited = function()
-		end;
-		
-		OnMousePressed = function()
-		end;
-		
-		OnMouseReleased = function()
-		end;
-		
-		OnMouseWheeled = function()
-		end;
+		abstract {
+			OnCursorMoved = function()
+			end;
+			
+			OnCursorEntered = function()
+			end;
+			
+			OnCursorExited = function()
+			end;
+			
+			OnMousePressed = function()
+			end;
+			
+			OnMouseReleased = function()
+			end;
+			
+			OnMouseWheeled = function()
+			end;
+		};
 	};
 	
 	private {
-		
 		layer = "NullVariable";
 		parent = "NullVariable";
-		children = {};
 		isEnabled = false;
 		
 		relX = 0.0;
@@ -199,5 +158,3 @@ class "uiBase" {
 		scaleY = 1.0;
 	};
 };
-
-Ananke.core.Menu:Register(uiBase, 'UIBase');

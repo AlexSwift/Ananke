@@ -25,15 +25,16 @@ class 'Ananke.core.Menu' {
 			Initialize = function( self )
 				self.RenderStack = RenderStack.new()
 				
-				Ananke.core:IncludeDir( 'client' , Ananke.Name .. "/gamemode/core/client/gui")
+				Ananke.core:IncludeDir('Client', 'core/client/gui', 0, 'Core::Client::Gui')
 			end;
 			
 			Register = function(self, obj, name)
+				if type(obj) ~= "table" or type(name) ~= "string" then return end
+				
 				self.Objects[name] = obj
 			end;
 			
 			Create = function(self, name, parent, layer)
-			
 				if !self.Objects[name] then return nil end
 				
 				if parent then
@@ -80,6 +81,15 @@ class 'Ananke.core.Menu' {
 		
 			IsEnabled = function(self)
 				return self.Enabled
+			end;
+			
+			PrintObjects = function(self)
+				print("OBJECTS SIZE: " .. #self.Objects)
+				
+				PrintTable(self.Objects)
+				for k,v in pairs(self.Objects) do
+					print("MENU: " .. k .. " as " .. v)
+				end
 			end;
 		};
 	};
