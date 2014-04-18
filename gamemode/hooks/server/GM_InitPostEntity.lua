@@ -1,0 +1,3 @@
+function GM:InitPostEntity( )	
+
+end

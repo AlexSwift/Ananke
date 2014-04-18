@@ -1,0 +1,3 @@
+function GM:Think( )
+
+end

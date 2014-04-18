@@ -15,7 +15,10 @@ function Ananke.Initialise()
 
 	Ananke.core:IncludeDir(  'Shared', 'core/shared', 0, 'Core::Shared' )
 	Ananke.core:IncludeDir(  'Shared', 'core/shared/networking', 1, 'Core::Shared::Networking' )
-	Ananke.core:IncludeDir(  'Shared', 'hooks', 0, 'Hooks' )
+	
+	Ananke.core:IncludeDir(  'Shared', 'hooks/shared', 0, 'Hooks::Shared' )
+	Ananke.core:IncludeDir(  'Shared', 'hooks/server', 0, 'Hooks::Server' )
+	Ananke.core:IncludeDir(  'Shared', 'hooks/client', 0, 'Hooks::Client' )
 
 	Ananke.core:IncludeDir(  'Client', 'core/client', 0 , 'Core::Client' )
 	--Ananke.core:IncludeDir(  'Client', 'core/client/gui', 0, 'Core::Client::Gui')
