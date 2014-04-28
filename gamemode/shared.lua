@@ -9,6 +9,9 @@ include( 'extentions/extentions.lua' )
 include( 'core/core.lua' )
 include( 'modules/modules.lua' )
 
+Ananke._PLAYER = FindMetaTable( 'Player' )
+Ananke._ENTITY = FindMetaTable( 'Entity' )
+
 function Ananke.Initialise()
 
 	Ananke.core:SetDirectory( 'Ananke/gamemode' )
