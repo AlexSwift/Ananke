@@ -1,30 +1,9 @@
-class 'Ananke.core.profiles' {
-	
-	private {
-	
-		Owner = Entity( 0 );
-		Data = {};
-		ID = 000000001;
-		
-	};
+
+class 'Ananke.core.Profiles' extends 'Ananke.core.Profiles' {
 	
 	protected {
-	
-		SetOwner = function( self, ent )
-			self.Owner = ent
-		end;
-		
-		Set = function( self, key , value, Send, SendToAll )
-		
-			if !Ananke.core.profiles['types'][key] then return end
-			self.Data[key] = value
-			
-			if not Send then return end
-			
-			self:Network( SendToAll and player.GetAll() or self.Owner )
-		
-		end;
-		
+
+		/*
 		Network = function( self, rf )
 		
 			local rf = rf and rf or self.Owner
@@ -42,48 +21,59 @@ class 'Ananke.core.profiles' {
 			end
 			
 		end;
+		*/
 		
-		Get = function( self, key )
-		
-			if !Ananke.core.profiles['types'][key] then return end
-			return self.Data[key] or nil
-			
-		end;
+		--Needs improving
 	
+		/*
 		Load = function( self, id , ... )
 		
 			local args = {...}
 			local q = "SELECT * WHERE `id` = `" .. id .. "`;"
 			
-			core.MySQL.Query( q, function(data)
+			Ananke.core.MySQL.Query( q, function(data)
 				local d = Ananke.core.serialization.decode(data[1])
 				for k,v in pairs( d ) do
-					self:Set( k, v, unpack(args) )
+					self:SetValue( k, v, unpack(args) )
 				end
 			end)
 			
 			self.ID = id
 			
 		end;
+		*/
 		
+		--Needs redoing
+		
+		
+		
+		/*
 		Save = function( self )
 
 			local s_data = Ananke.core.serialization.encode( self.Data )
 
-			local q = "UPDATE 'wp_profiles' SET `s_data`=`" .. s_data .. "` WHERE `id` =`" .. self.ID .."`;"
+			local q = "UPDATE 'ananke_profiles' SET `s_data`=`" .. s_data .. "` WHERE `id` =`" .. self.ID .."`;"
 			Ananke.core.MySQL.Query( q )
 
 		end;
+		*/
+		
+		--Needs redoing
 	
 		static {
+			/*
 			LoadPlayer = function (ply)
 			
-				local profile = Ananke.core.profiles.New()
+				local profile = Ananke.core.Profiles.New()
 				profile:Load(ply:SteamID())
 				profile:SetOwner(ply)
 				profile:Network()
-
+				
 			end;
+			*/
+			
+			--Needs redoing
+			
 		};
 	};
 };

@@ -14,7 +14,7 @@ Ananke._ENTITY = FindMetaTable( 'Entity' )
 
 function Ananke.Initialise()
 
-	Ananke.core:SetDirectory( 'Ananke/gamemode' )
+	Ananke.core:SetDirectory( 'gamemodes/Ananke/gamemode' )
 
 	Ananke.core:IncludeDir(  'Shared', 'core/shared', 0, 'Core::Shared' )
 	Ananke.core:IncludeDir(  'Shared', 'core/shared/networking', 1, 'Core::Shared::Networking' )
@@ -24,7 +24,6 @@ function Ananke.Initialise()
 	Ananke.core:IncludeDir(  'Shared', 'hooks/client', 0, 'Hooks::Client' )
 
 	Ananke.core:IncludeDir(  'Client', 'core/client', 0 , 'Core::Client' )
-	--Ananke.core:IncludeDir(  'Client', 'core/client/gui', 0, 'Core::Client::Gui')
 	Ananke.core:IncludeDir(  'Server', 'core/server', 0 , 'Core::Server' )
 
 	Ananke.core.Protocol:Initialize()			-- SHARED
@@ -35,6 +34,8 @@ function Ananke.Initialise()
 		Ananke.core.Menu:Initialize()			-- CLIENT
 		
 	end
+	
+	Ananke.core.EventManager:Call( 'AnankeInitlialized' )
 
 end
 	

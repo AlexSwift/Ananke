@@ -36,7 +36,12 @@ class 'Ananke.core.EventManager' {
 				end
 			
 				if not self.Events[ m_name ] then
+				
 					-- Never mind, Event might not be registered, however this will not cause any errors, only broken code HEHEHE
+					-- On second, though, I might as well just add it anyway, no harm done.
+					
+					self:RegisterEvent( m_name )
+					
 				end
 				
 				if self.Events[ m_name ][ m_identifier ] then
@@ -83,7 +88,7 @@ class 'Ananke.core.EventManager' {
 			end;
 				
 			
-			CallEvent = function( self, m_name, ... )
+			Call = function( self, m_name, ... )
 				
 				for k,v in pairs( self:ListEventsCallbacks( m_name ) ) do
 					v( ... )

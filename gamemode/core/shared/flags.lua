@@ -6,7 +6,7 @@ without the hastle of modifying the actual class it's self.
 
 ]]
 
-class 'Ananke.Flags' {
+class 'Ananke.core.Flags' {
 
 	static {
 	
@@ -42,7 +42,7 @@ class 'Ananke.Flags' {
 					return false
 				end
 				
-				self._FLAGS[ class ][ id ] = { FL_ID = id , FL_NAME = name }
+				self._FLAGS[ class ][ id ] = { FL_NAME = name, FL_ID = id }
 				
 				return true
 				
@@ -101,7 +101,17 @@ class 'Ananke.Flags' {
 		Class = ''
 		
 		__construct = function( self, class )
+		
+			-- class might not be initialised in terms of flags.
+			
+			if not self._FLAGS[ class ] then
+				Ananke.core.Debug:Error( 'Class has not yet been initialised ' .. class )
+				return nil
+			end
+			
 			self.Class = class
+			
+			
 		end
 	
 	},

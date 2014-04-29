@@ -1,81 +1,125 @@
-class 'Ananke.core.profiles.shared' {
+Ananke.core.EventManager:HookEvent( 'AnankeInitialize' , 'Ananke.core.Profiles_Flags_Class' , function( )
+
+	Ananke.core.Flags:CreateClass( 'player' )
 	
-	static {
+	Ananke.core.Flags:CreateFlag( 'player', 'b_isAdmin', 0 )
+	Ananke.core.Flags:CreateFlag( 'player', 'b_isAlex', 1 )
 	
-		private {
-		
-			profiles = {};
-			DataTypes = {};
-			
-		};
-		
-		protected {
-		
-			GetByID = function( self, ID )
-				
-				for k,v in pairs( self.profiles ) do
-					if ID == v['ID'] then
-						return v
-					end
-				end
-			
-			end;
-			
-			AddDataType = function( self, ... )
-			
-				local args = {...}
-				DataTypes[ args['Name'] ] = args
-				
-			end
-			
-		};
-	};
+end)
+
+
+class 'Ananke.core.Profile' {
 	
 	private {
-		
-		Data = {}
-		
+	
+		Data = {};	
+		Player = null;
+		Flags = Ananke.core.Flags( 'player' );
+	
 	};
 	
 	protected {
-		
-		SetData = function( self, key, value )
-		
-			if not self.DataTypes[ key ] then 
+	
+		SetValue = function( self, key, value )
+				 
+			if not self.DataTypes[ key ] then
+				Ananke.core.Debug:Error( 'Invalid key to profile data table' )
 				return nil
 			end
 			
-			if SERVER then
-				self.Data[ key ] = value
-				self.DataTypes[ key ]:Network( value )
-			elseif CLIENT then
-				self.Data[ key ] = value 
-			end
+			self.Data[ key ] = value
 			
+			if self.Network then
+				self:Network( key )
+			end
+				
 		end;
-		
-		GetData = function( self, key )
+			
+		GetValue = function( self, key )
 			
 			if not self.DataTypes[ key ] then
+				Ananke.core.Debug:Error( 'Invalid key to profile data table' )
 				return nil
 			end
 			
-			if not self.Data[ key ] then
-				return self.DataTypes[ key ].Default
+			if self.Data[ key ] then
+				return self.Data[ key ]
+			else
+				return self.DataTypes[ key ].d_default
 			end
 			
-			return self.Data[ key ]
-		
 		end;
 		
-		GetDataTypes = function( self )
+		SetOwner = function( self, Player )
 			
-			return self.DataTypes
+			if not player:IsPlayer() then
+				Ananke.core.Debug:Error( 'Attempted to create profuile class for non player entity' )
+				return nil
+			end
 			
+			self.Player = Player
 		end;
+	
+	};
+	
+	public {
+	
+	};
+	
+	static {
+	
+		protected {
 		
+			RegisterDataType = function( self , d_name, d_type, d_default )
+			
+				if self.DataTypes[ d_name ] then
+					Ananke.core.Debug:Error( 'Attemted to overwrite preexisting data type ' .. d_name )
+					return nil
+				end
+				
+				if not self:IsValidDataType( d_type ) then
+					Ananke.cire.Debug:Error( 'Invalide data type ' .. d_type )
+					return nil
+				end
+				
+				self.DataTypes[ d_name ] = { d_name = d_name, d_type = d_type, d_default = d_default or nil }
+			
+				return true
+				
+			end;
+		
+		};
+		
+		private {
+		
+			Profiles = {};
+			DataTypes = {};
+			
+			IsValidDataType = function( self , d_type )
+				
+				local types = {
+					'string',
+					'number',
+					'table',
+					'Angle',
+					'Colour'
+				}
+				
+				for k,v in pairs( types ) do
+					if v ~= d_type then
+						continue
+					else
+						return true
+					end
+				end
+				
+				return false
+			
+			end;
+		
+		};
+	
 	};
 	
 };
-	
 	
