@@ -1,5 +1,5 @@
 
-class 'Ananke.core.debug' {
+class 'Ananke.core.Debug' {
 
 	public {
 		

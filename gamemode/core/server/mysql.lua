@@ -1,98 +1,147 @@
-require('tmysql4')
 
-Ananke.core.MySQL = {}
-Ananke.core.MySQL.Database = nil
-Ananke.core.MySQL.Authentication = {}
-Ananke.core.MySQL.Queries = {}
-Ananke.core.MySQL.Loaded = false
-Ananke.core.MySQL.InProg = false
-
-function Ananke.core.MySQL.Initialize()
-	local host = Ananke.core.MySQL.Authentication['host'] or '127.0.0.1'
-	local user = Ananke.core.MySQL.Authentication['user'] or 'root'
-	local pass = Ananke.core.MySQL.Authentication['pass'] or ''
-	local daba = Ananke.core.MySQL.Authentication['daba'] or 'main'
-	local port = Ananke.core.MySQL.Authentication['port'] or 3306
-
-	local Database, err = tmysql.initialize(host, user, pass, daba, port)
-
-	if Database then
-		print('[Ananke] Connected to the Mysql Database')
-		Ananke.core.MySQL.Loaded = true
-		Ananke.core.MySQL.Database = Database
-	else
-		Ananke.core.Debug.Error( 'Unabled to connect to the Database!' )
-	end
-end
-
-function Ananke.core.MySQL.Query( q, callback, ...)
-
-	local args = {...}
-	local flags, vargs =(args[1] or nil),(args[2] or nil)
-	table.insert(Ananke.core.MySQL.Queries, {q, callback, flags, vargs})
-	if not Ananke.core.MySQL.InProg then
-		Ananke.core.MySQL.Process()
-	end
-end
-
-function Ananke.core.MySQL.Process()
-
-	if not Ananke.core.MySQL.Loaded then
-		--Do a retry timer
-		return
-	end
-
-	local function callback(...)
-		local tabl = {...}
-		Ananke.core.MySQL.Queries[1][2](unpack(tabl))
-		Ananke.core.MySQL.Queries[1] = nil
-		table.shift( Ananke.core.MySQL.Queries , 1)
-		if Ananke.core.MySQL.Queries[1] != nil then
-			Ananke.core.MySQL.Process()
-		else
-			Ananke.core.MySQL.InProg = false
-		end
-	end
-	Ananke.core.MySQL.Database:Query(Ananke.core.MySQL.Queries[1][1], callback, Ananke.core.MySQL.Queries[1][3], Ananke.core.MySQL.Queries[1][4])
-	Ananke.core.MySQL.InProg = true
-end
-
-function Ananke.core.MySQL.CollumnNames(DB,tabl,callback)
-	local q = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='"..DB.."' AND `TABLE_NAME`='"..tabl.."';"
-	Ananke.core.MySQL.Query( q, function(data)
-		callback(data)
-	end)
-end
-
-function Ananke.core.MySQL.Insert( name , keys , values )
-	local str = "INSERT INTO " .. name
-	local str2 = " ( "
+class 'Ananke.core.MySQL' {
 	
-	for k,v in ipairs( keys ) do
-		if k == 1 then str2 = str2 .. v 
-		else str2 = str2 .. "," .. v end
-	end
+	static {
 	
-	str2 = str2 .. " ) VALUES( "
-
-	for k,v in ipairs( values ) do
-		if type( v ) == "number" then
-			if k == 1 then str2 = str2 .. " " .. v .. ""
-			else str2 = str2 .. ", " .. v .. "" end
-		else
-			if k == 1 then str2 = str2 .. " '" .. tmysql.escape(v) .. "'"
-			else
-				if ( !tmysql.escape(v) ) then print( "NIL VALUE IN " .. k .. " POSITION", name )
-					PrintTable( keys )
-					PrintTable( values )
+		public {
+		
+			Initialize = function( self )
+			
+				if not tmysql then
+					require( 'tmysql' )
 				end
-				str2 = str2 .. ", '" .. tmysql.escape(v) .. "'"
+			
+				local host = self.Host or '127.0.0.1'
+				local user = self.Username or 'root'
+				local pass = self.Password or ''
+				local daba = self.Database or 'main'
+				local port = self.Port or 3306 
+				
+				local Database, err = tmysql.initialize( host, user, pass, daba, port )
+				
+				if not Database then
+				
+					Ananke.core.Debug:Error( 'Unabled to connect to the Database!' )
+					
+				else
+				
+					Ananke.core.Debug:Log( '[Ananke] Connected to the Mysql Database')
+					
+					self.Loaded = true
+					self.Database = Database
+					
+				end
+				
+			end;
+			
+			SetCredentials = function( self, host, user, pass, daba, port )
+				
+				self.Host = host or '127.0.0.1'
+				self.Username = user or 'root'
+				self.Password = pass or ''
+				self.Database = daba or 'main'
+				self.Port = port or 3306
+				
+			end;
+			
+			Query = function( self, q, callback, ...)
+
+				local args = {...}
+				local flags, vargs = (args[1] or nil),(args[2] or nil)
+				
+				table.insert( self.Queries, { q, callback, flags, vargs } )
+				if self.InProg ~= true then
+					self:Process()
+				end
+			end;
+			
+			Process = function( self )
+
+				if not Ananke.core.MySQL.Loaded then
+					--Do a retry timer
+					return
+				end
+
+				local function callback( self, ... )
+				
+					self.Queries[1][2]( ... )
+					self.Queries[1] = nil
+					
+					table.shift( self.Queries , 1)
+					
+					if self.Queries[1] ~= nil then
+						self:Process()
+					else
+						self.InProg = false
+					end
+				end
+				
+				self.Database:Query( unpack( self.Queries[1] ) )
+				self.InProg = true
+				
+			end;
+			
+			Insert = function( self, name , keys , values )
+			
+				local str = "INSERT INTO " .. name
+				local str2 = " ( "
+				
+				for k,v in ipairs( keys ) do
+					if k == 1 then str2 = str2 .. v 
+					else str2 = str2 .. "," .. v end
+				end
+				
+				str2 = str2 .. " ) VALUES( "
+
+				for k,v in ipairs( values ) do
+					if type( v ) == "number" then
+						if k == 1 then str2 = str2 .. " " .. v .. ""
+						else str2 = str2 .. ", " .. v .. "" end
+					else
+						if k == 1 then str2 = str2 .. " '" .. tmysql.escape(v) .. "'"
+						else
+							if ( !tmysql.escape(v) ) then print( "NIL VALUE IN " .. k .. " POSITION", name )
+								PrintTable( keys )
+								PrintTable( values )
+							end
+							str2 = str2 .. ", '" .. tmysql.escape(v) .. "'"
+						end
+					end
+				end
+				str = str .. str2 .. " )" 
+				
+				self:Query( str )
 			end
-		end
-	end
-	str = str .. str2 .. " )" 
+		
+		};
+		
+		protected {
+		
+			CollumnNames = function( self, DB ,tabl,callback)
+				local q = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='" .. DB .. "' AND `TABLE_NAME`='" .. tabl .. "';"
+				self.Query( q, function(data)
+					callback( data )
+				end)
+			end;
+		
+		};
+		
+		private {
+		
+			Host = '127.0.0.1';
+			Username = 'root';
+			Password = '';
+			Database = 'main';
+			Port = 3306;
+			
+			Loaded = false;
+			InProg = false;
+			
+			Database = null;
+			Queries = {};
+		
+		};
+		
+	};
 	
-	Ananke.core.MySQL.Query( str , function(data)
-		--callback(data)
-	end)
-end
+};

@@ -2,7 +2,7 @@ class 'Ananke.core.Network' {
 
 	private {
 	
-		Data 			= {};
+		Data 			= {}; --Stack = util.Stack()
 		protocol 		= {};
 		PID 			= 0x00;
 		Description 	= ""
@@ -27,15 +27,18 @@ class 'Ananke.core.Network' {
 		PushData = function( self , data )
 			if self.protocol.Data == NW_CUSTOM then
 				self.Data[#self.Data + 0x01] = data
+				--self.Stack:Push( data )
 				return
 			end
 
 			local Datagram = self.protocol
 			
 			if Datagram.Data[#self.Data + 0x01] != type(data) then
+				-- stack problem with stack count
 				error('Data type MisMatch : ' .. self.Description)
 			end
 			self.Data[#self.Data + 0x01] = data
+			--self.Stack:Push( data )
 		end;
 		
 		Receive = function( )
@@ -51,10 +54,9 @@ class 'Ananke.core.Network' {
 				end
 			end
 
-			
 			Datagram:GetCallBack()( data )
 			
-			return
+			return nil
 			
 		end
 				
