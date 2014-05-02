@@ -6,7 +6,7 @@ class "Ananke.Modules" {
 			LoadModules = function( self, tab, dir)
 				
 				print( 'Loading Modules' )
-				Ananke.core.debug:Log( 'Loading Modules' )
+				Ananke.core.Debug:Log( 'Loading Modules' )
 				
 				dir = dir or Ananke.Name .. "/gamemode/modules/"
 				
@@ -19,14 +19,14 @@ class "Ananke.Modules" {
 			LoadModule = function( self, name, dir )
 
 				print('\tLoading module : ' .. name)
-				Ananke.core.debug:Log( 'Loading module : ' .. name )
+				Ananke.core.Debug:Log( 'Loading module : ' .. name )
 				
 				local dir = dir or Ananke.Name .. "/gamemode/modules/"
 				
 				if not file.Exists( dir .. name ..'/info.lua' , 'LUA' ) and SERVER then
 				
-					Ananke.core.debug:Log( 'Failed to load module ' .. name .. ' as info file was not found!' )
-					Ananke.core.debug:Error( 'Failed to load module ' .. name .. ' as info file was not found!\n' )
+					Ananke.core.Debug:Log( 'Failed to load module ' .. name .. ' as info file was not found!' )
+					Ananke.core.Debug:Error( 'Failed to load module ' .. name .. ' as info file was not found!\n' )
 					return
 					
 				end
@@ -34,7 +34,7 @@ class "Ananke.Modules" {
 				
 				if self._MODULES[ name ] then
 				
-					Ananke.core.debug:Log( 'Failed to load module '.. name .. ' as module is already loaded ' )
+					Ananke.core.Debug:Log( 'Failed to load module '.. name .. ' as module is already loaded ' )
 					Error( '/t/tFailed to load module '.. name .. ' as module is already loaded ' )
 					return 
 					
@@ -74,7 +74,7 @@ class "Ananke.Modules" {
 				if self._MODULES[ name ] then 
 					return self._MODULES[ name ]
 				else
-					Ananke.core.debug:Error( 'Module not found', false )
+					Ananke.core.Debug:Error( 'Module not found', false )
 				end
 			end;
 			
@@ -250,7 +250,7 @@ class "Ananke.Modules" {
 					end)
 					
 					print('\t\tRegistered Hook : ' .. k )
-					Ananke.core.debug:Log( 'Registered Hook : ' .. k )
+					Ananke.core.Debug:Log( 'Registered Hook : ' .. k )
 					
 				end
 				

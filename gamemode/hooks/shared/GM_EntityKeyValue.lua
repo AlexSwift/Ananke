@@ -8,7 +8,7 @@ function GM:EntityKeyValue( ent, key, value )
 
 end
 
-function FindMetaTable( 'Entity' ):GetKeyValue( key )
+function Ananke._ENTITY:GetKeyValue( key )
 
 	if not KeyValues[ self ] then
 		return nil
@@ -20,7 +20,7 @@ function FindMetaTable( 'Entity' ):GetKeyValue( key )
 	
 end
 
-function FindMetaTable( 'Entity' ):GetKeyValues( )
+function Ananke._ENTITY:GetKeyValues( )
 	
 	if not KeyValues[ self ] then
 		return { }

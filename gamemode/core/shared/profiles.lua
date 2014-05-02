@@ -8,13 +8,13 @@ Ananke.core.EventManager:HookEvent( 'AnankeInitialize' , 'Ananke.core.Profiles_F
 end)
 
 
-class 'Ananke.core.Profile' {
+class 'Ananke.core.Profile_shared' {
 	
 	private {
 	
 		Data = {};	
 		Player = null;
-		Flags = Ananke.core.Flags( 'player' );
+		Flags = Ananke.core.Flags.new( 'player' );
 	
 	};
 	

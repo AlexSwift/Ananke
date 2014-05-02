@@ -1,6 +1,6 @@
 util.AddNetworkString('ananke_nw')
 
-class 'Ananke.core.Network' extends 'Ananke.core.Network' {
+class 'Ananke.core.Network' extends 'Ananke.core.Network_shared' {
 
 	private {
 	

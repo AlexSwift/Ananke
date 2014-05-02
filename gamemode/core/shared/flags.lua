@@ -8,6 +8,24 @@ without the hastle of modifying the actual class it's self.
 
 class 'Ananke.core.Flags' {
 
+	meta {
+		
+		__construct = function( self, class )
+		
+			-- class might not be initialised in terms of flags.
+			
+			if not self._FLAGS[ class ] then
+				Ananke.core.Debug:Error( 'Class has not yet been initialised ' .. class )
+				return nil
+			end
+			
+			self.Class = class
+			
+			
+		end;
+		
+	},
+
 	static {
 	
 		private {
@@ -97,22 +115,9 @@ class 'Ananke.core.Flags' {
 
 	private {
 	
-		Flags = 0 --I will try this as a number first, should be ok.
+		Flags = 0; --I will try this as a number first, should be ok.
 		Class = ''
 		
-		__construct = function( self, class )
-		
-			-- class might not be initialised in terms of flags.
-			
-			if not self._FLAGS[ class ] then
-				Ananke.core.Debug:Error( 'Class has not yet been initialised ' .. class )
-				return nil
-			end
-			
-			self.Class = class
-			
-			
-		end
 	
 	},
 	

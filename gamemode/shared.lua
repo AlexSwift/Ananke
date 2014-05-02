@@ -14,7 +14,7 @@ Ananke._ENTITY = FindMetaTable( 'Entity' )
 
 function Ananke.Initialise()
 
-	Ananke.core:SetDirectory( 'gamemodes/Ananke/gamemode' )
+	Ananke.core:SetDirectory( 'Ananke/gamemode' )
 
 	Ananke.core:IncludeDir(  'Shared', 'core/shared', 0, 'Core::Shared' )
 	Ananke.core:IncludeDir(  'Shared', 'core/shared/networking', 1, 'Core::Shared::Networking' )

@@ -1,5 +1,5 @@
 
-class 'Ananke.core.Profiles' extends 'Ananke.core.Profiles' {
+class 'Ananke.core.Profile' extends 'Ananke.core.Profile_shared' {
 	
 	protected {
 

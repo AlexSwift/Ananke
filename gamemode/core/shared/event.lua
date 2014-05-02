@@ -19,7 +19,7 @@ class 'Ananke.core.EventManager' {
 				
 				if self.Events[ m_name ] then
 					Ananke.core.Debug:Log( 'EventManager: Conflicting event names! ' .. m_name )
-					Ananke.core.Debug:Error( 'EventManage: You have a conflicting even name, this will cause errors' _
+					Ananke.core.Debug:Error( 'EventManage: You have a conflicting even name, this will cause errors' )
 					return nil
 				end
 				
@@ -28,8 +28,8 @@ class 'Ananke.core.EventManager' {
 			end;
 			
 			HookEvent = function( self, m_name, m_identifier, m_callback )
-			
-				if not m_name or not m_identidier or not m_callback then
+				
+				if not m_name or not m_identifier or not m_callback then
 					Ananke.core.Debug:Log( 'EventManager: Invalid arguments! ' )
 					Ananke.core.Debug:Error( 'EventManager: Invalid arguments! code execution has stoped!' )
 					return nil
@@ -79,7 +79,7 @@ class 'Ananke.core.EventManager' {
 			
 				local callbacks = {}
 				
-				for k,v in pairs( self:GetEventsTable()[m_name] ) do
+				for k,v in pairs( self:GetEventsTable()[m_name] and self:GetEventsTable()[m_name] or {} ) do
 					callbacks[ #callbacks > 1 and ( #callbacks + 1 ) or 1 ] = v
 				end
 				
@@ -90,7 +90,7 @@ class 'Ananke.core.EventManager' {
 			
 			Call = function( self, m_name, ... )
 				
-				for k,v in pairs( self:ListEventsCallbacks( m_name ) ) do
+				for k,v in pairs( self:ListEventCallbacks( m_name ) ) do
 					v( ... )
 				end
 				

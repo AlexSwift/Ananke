@@ -1,4 +1,4 @@
-class 'Ananke.core.Network' {
+class 'Ananke.core.Network_shared' {
 
 	private {
 	
