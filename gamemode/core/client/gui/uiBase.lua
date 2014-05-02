@@ -4,14 +4,8 @@
 class "uiBase" {
 
 	protected {
-	
 		SetLayer = function( self, layer )
 			return self.Layer
-		end;
-		
-		GetLayer = function( self, layer )
-			--Check if layer is valid or it won't get drawn
-			self.Layer = layer
 		end;
 			
 		SetParent = function(self, parent)
@@ -21,11 +15,6 @@ class "uiBase" {
 			
 			self['parent'] = parent
 			parent:AddChild(self)
-		end;
-		
-		GetParent = function(self)
-			local ret = self['parent'] or nil -- Is this necessary?
-			return ret
 		end;
 	
 		SetPosition = function(self, x, y)
@@ -38,34 +27,26 @@ class "uiBase" {
 			self:AlignTop(y)
 		end;
 		
-		-- Always returns absolute screen coordinates
-		GetPosition = function(self)
-			local pX, pY = self['parent'] and self['parent']:GetPosition() or 0.0, 0.0
-			local pW, pH = self['parent'] and self['parent']:GetSize() or surface.ScreenWidth, surface.ScreenHeight
-			
-			return (self['relX'] * pW) + pX, (self['relY'] * pH) + pY
-		end;
-		
 		AlignTop = function(self, offset)
-			local _, pH = self['parent'] and self['parent']:GetSize() or 0.0, surface.ScreenHeight
+			local pH = self['parent'] and self['parent']:GetHeight() or surface.ScreenHeight()
 			
 			self['relY'] = offset / pH
 		end;
 		
 		AlignBottom = function(self, offset)
-			local _, pH = self['parent'] and self['parent']:GetSize() or 0.0, surface.ScreenHeight
+			local pH = self['parent'] and self['parent']:GetHeight() or surface.ScreenHeight()
 			
 			self['relY'] = 1.0 - (offset + self['height']) / pH
 		end;
 		
 		AlignLeft = function(self, offset)
-			local pW = self['parent'] and self['parent']:GetSize() or surface.ScreenWidth
+			local pW = self['parent'] and self['parent']:GetWidth() or surface.ScreenWidth()
 		
 			self['relX'] = offset / pW
 		end;
 		
 		AlignRight = function(self, offset)
-			local pW = self['parent'] and self['parent']:GetSize() or surface.ScreenWidth
+			local pW = self['parent'] and self['parent']:GetWidth() or surface.ScreenWidth()
 		
 			self['relX'] = 1.0 - (offset + self['width']) / pW
 		end;
@@ -87,25 +68,17 @@ class "uiBase" {
 			self:SetHeight(h)
 		end;
 		
-		GetSize = function(self)
-			return self['width'] * self['scaleX'], self['height'] * self['scaleY']
-		end;
-		
 		-- Sets the scale of itself and all children objects
 		-- given the individual axis scales
 		SetScale = function(self, x, y)
 			self['scaleX'] = x
 			self['scaleY'] = y
 			
-			if #self['children'] > 0 then
+			if #self:GetChildren() > 0 then
 				for k, v in pairs(self['children']) do
 					self['children'][k]:SetScale(x, y)
 				end
 			end
-		end;
-		
-		GetScale = function(self)
-			return self['scaleX'], self['scaleY']
 		end;
 		
 		IsEnabled = function(self)
@@ -143,11 +116,45 @@ class "uiBase" {
 			OnMouseWheeled = function(self)
 			end;
 		};
+		
+		-- Always returns absolute screen coordinates
+		GetPosition = function(self)
+			local pX, pY = self['parent'] and self['parent']:GetPosition() or 0.0, 0.0
+			local pW, pH = self['parent'] and self['parent']:GetSize() or surface.ScreenWidth(), surface.ScreenHeight()
+			
+			return (self['relX'] * pW) + pX, (self['relY'] * pH) + pY
+		end;
+		
+		GetParent = function(self)
+			local ret = self['parent'] or nil -- Is this necessary?
+			return ret
+		end;
+		
+		GetLayer = function( self, layer )
+			--Check if layer is valid or it won't get drawn
+			self.Layer = layer
+		end;
+		
+		GetScale = function(self)
+			return self['scaleX'], self['scaleY']
+		end;
+		
+		GetWidth = function(self)
+			return self['width'] * self['scaleX']
+		end;
+		
+		GetHeight = function(self)
+			return self['width'] * self['scaleY']
+		end;
+		
+		GetSize = function(self)
+			return self['width'] * self['scaleX'], self['height'] * self['scaleY']
+		end;
 	};
 	
 	private {
 		layer = "NullVariable";
-		parent = "NullVariable";
+		parent = nil;
 		isEnabled = false;
 		
 		relX = 0.0;

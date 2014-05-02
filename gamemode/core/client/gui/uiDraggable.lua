@@ -4,11 +4,10 @@
 class "uiDraggable" {
 
 	private {
-	
+		isDraggable = true;
 	};
 	
 	protected {
-	
 	};
 	
 	public {
@@ -19,6 +18,10 @@ class "uiDraggable" {
 			OnDragReleased = function(self)
 			end;
 		};
+		
+		SetDraggable = function(self, state)
+			isDraggable = state
+		end;
 	};
 
 };

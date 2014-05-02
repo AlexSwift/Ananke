@@ -8,7 +8,7 @@ class 'Ananke.core.Menu' {
 			Enabled = false;
 			
 			Objects = {};
-			RenderStack = {};
+			
 		};
 		
 	};
@@ -20,12 +20,12 @@ class 'Ananke.core.Menu' {
 	public {
 	
 		static {
+			RenderStack = {}; -- TEMP
 			MousePos = { x = 0 , y = 0 };
 		
 			Initialize = function( self )
 				self.RenderStack = RenderStack.new()
-				
-				Ananke.core:IncludeDir('Client', 'core/client/gui', 0, 'Core::Client::Gui')
+				self.RenderStack:Init()
 			end;
 			
 			Register = function(self, obj, name)
@@ -47,7 +47,7 @@ class 'Ananke.core.Menu' {
 					obj:SetParent(parent)
 				end
 				
-				obj:SetLayer( layer )
+				--obj:SetLayer( layer )
 				obj:Init()
 				
 				self.RenderStack:Add( obj, layer )
@@ -62,7 +62,7 @@ class 'Ananke.core.Menu' {
 			GetActiveMenus = function(self)
 				local menus = {}
 				
-				for k,v in RenderStack do
+				for k,v in self.RenderStack do
 					table.insert(menus, v)
 				end
 				
@@ -70,12 +70,12 @@ class 'Ananke.core.Menu' {
 			end;
 			
 			Enable = function( )
-				GAMEMODE:PreDrawMenu( )
+				GAMEMODE:PreDrawHUD( )
 				self.Enabled = true
 			end;
 			
 			Disable = function( )
-				GAMEMODE:PostDrawMenu()
+				GAMEMODE:PostDrawHUD()
 				self.Enabled = false
 			end;
 		
@@ -98,26 +98,37 @@ class 'Ananke.core.Menu' {
 class "RenderStack" {
 	
 	private {
-		layers = {}
+		layerEnum = {
+			[1] = 'OVERLAY',
+			[2] = 'FOREGROUND',
+			[3] = 'MAIN',
+			[4] = 'BACKGROUND'
+		};
 	};
 	
 	public {
-		__constructor = function(self)
-			for i = 1, 4 do
-				layers[i] = LinkedList.new()
+		layers = {};
+		
+		Init = function(self)
+			for i = 1, #self.layerEnum do
+				self.layers[self.layerEnum[i]] = LinkedList.new()
 			end
 		end;
 		
 		Draw = function(self)
+			print('RENDERSTACK.DRAW EXECUTING')
 			for i = 1, 4 do
-				for node in layers[i]:Iterate() do
+				if self.layers[self.layerEnum[i]]:IsEmpty() then continue end
+				
+				for node in self.layers[self.layerEnum[i]]:Iterate() do
 					node:Draw()
 				end
 			end
 		end;
 		
 		Add = function(self, obj, layer)
-			if Enums['UILAYERS'][layer] == nil then return end
+			if Enums['UILAYERS'][layer] == nil then  return end
+			print('RENDERSTACK.ADD layer = ' .. layer)
 			
 			self['layers'][layer]:AddHead(obj)
 		end;

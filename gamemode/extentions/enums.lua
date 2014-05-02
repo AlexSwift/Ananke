@@ -53,4 +53,4 @@ class 'Enums' {
 	};
 };
 
---Enums['UILAYERS'] = UILAYERS
+Enums['UILAYERS'] = UILAYERS

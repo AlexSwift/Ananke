@@ -10,13 +10,13 @@ class 'uiComponent' {
 			Draw = function(self)
 			end;
 			
-			AddChild = function(self, obj)
+			AddChild = function(self, obj, id)
 			end;
 			
 			RemoveChild = function(self, obj)
 			end;
 			
-			GetChildren = function(self)
+			GetChild = function(self, obj)
 			end;
 		};
 	};
