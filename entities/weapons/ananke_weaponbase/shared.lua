@@ -358,24 +358,9 @@ function SWEP:ViewModelDrawn()
 	cam.End3D2D()
 end
 
-
-local sin,cos,rad = math.sin,math.cos,math.rad
-local function GeneratePoly(x,y,radius,quality)
-    local circle = {};
-    local tmp = 0;
-	local s,c;
-    for i=1,quality do
-        tmp = rad(i*360)/quality;
-		s = sin(tmp);
-		c = cos(tmp);
-        circle[i] = {x = x + c*radius,y = y + s*radius,u = (c+1)/2,v = (s+1)/2};
-    end
-    return circle;
-end
-
 function SWEP:DrawHUD()
 	if !self.InIronsights then return end
-	/*local centerx, centery = ScrW()*.5, ScrH()*.5
+	local centerx, centery = ScrW()*.5, ScrH()*.5
 
 	local CamData = {}
 	CamData.angles = self.Owner:GetAimVector():Angle()
@@ -390,13 +375,9 @@ function SWEP:DrawHUD()
 	local oldrt = render.GetRenderTarget()
 	local newrt = GetRenderTargetEx("rtScope", 256, 256, RT_SIZE_DEFAULT, MATERIAL_RT_DEPTH_SEPARATE, 1, CREATERENDERTARGETFLAGS_HDR, IMAGE_FORMAT_DEFAULT )
 	render.SetRenderTarget(newrt)
-		--render.SetViewPort( 0, 0, 512, 512 )
+		render.SetViewPort( 0, 0, 512, 512 )
 		render.RenderView(CamData)
 	render.SetRenderTarget(oldrt)
-
-	surface.SetTexture()
-	surface.SetDrawColor(Color(255, 0, 0, 100))
-	surface.DrawPoly(GeneratePoly(centerx, centery, 256, 20))*/
 	
 end
 
