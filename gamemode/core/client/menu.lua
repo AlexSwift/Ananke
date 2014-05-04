@@ -25,6 +25,7 @@ class 'Ananke.core.Menu' {
 		
 			Initialize = function( self )
 				self.RenderStack = RenderStack.new()
+				
 				self.RenderStack:Init()
 			end;
 			
@@ -37,19 +38,15 @@ class 'Ananke.core.Menu' {
 			Create = function(self, name, parent, layer)
 				if !self.Objects[name] then return nil end
 				
-				if parent then
-					layer = parent:GetLayer()
-				end
-				
 				local obj = self.Objects[name].new()
 				
-				if parent then 
+				if parent then
+					layer = parent:GetLayer()
 					obj:SetParent(parent)
 				end
 				
-				--obj:SetLayer( layer )
 				obj:Init()
-				
+				obj:SetLayer(layer)
 				self.RenderStack:Add( obj, layer )
 				
 				return obj
@@ -98,45 +95,48 @@ class 'Ananke.core.Menu' {
 class "RenderStack" {
 	
 	private {
-		layerEnum = {
-			[1] = 'OVERLAY',
-			[2] = 'FOREGROUND',
-			[3] = 'MAIN',
-			[4] = 'BACKGROUND'
-		};
+		layers = {};
+	
+		numLayers = 4;
 	};
 	
 	public {
-		layers = {};
 		
 		Init = function(self)
-			for i = 1, #self.layerEnum do
-				self.layers[self.layerEnum[i]] = LinkedList.new()
+			for i = 1, self.numLayers do
+				self.layers[i] = LinkedList.new()
 			end
 		end;
 		
 		Draw = function(self)
-			print('RENDERSTACK.DRAW EXECUTING')
-			for i = 1, 4 do
-				if self.layers[self.layerEnum[i]]:IsEmpty() then continue end
+			surface.SetDrawColor(0, 0, 0, 255)
+		
+			for i = 1, self.numLayers do
+				if self.layers[i]:IsEmpty() then continue end
 				
-				for node in self.layers[self.layerEnum[i]]:Iterate() do
-					node:Draw()
+				for node in self.layers[i]:Iterate() do
+					if node.IsEnabled(node.value) then
+						node.Draw(node.value)
+					end
 				end
 			end
 		end;
 		
 		Add = function(self, obj, layer)
-			if Enums['UILAYERS'][layer] == nil then  return end
-			print('RENDERSTACK.ADD layer = ' .. layer)
+			local val = Enums['UILAYERS'][layer]
 			
-			self['layers'][layer]:AddHead(obj)
+			if val == nil then  return end
+			print('RENDERSTACK.ADD layer = ' .. layer .. ' val = ' .. val)
+			
+			self['layers'][val]:AddHead(obj)
 		end;
 		
 		Remove = function(self, obj, layer)
-			if Enums['UILAYERS'][layer] == nil then return end
+			local val = Enums['UILAYERS'][layer]
+			
+			if val == nil then return end
 		
-			self['layers'][layer]:RemoveByValue(obj)
+			self['layers'][val]:RemoveByValue(obj)
 		end;
 	};
 	

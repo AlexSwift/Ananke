@@ -4,19 +4,6 @@
 class "uiBase" {
 
 	protected {
-		SetLayer = function( self, layer )
-			return self.Layer
-		end;
-			
-		SetParent = function(self, parent)
-			if self['parent'] then
-				self['parent']:RemoveChild(self)
-			end
-			
-			self['parent'] = parent
-			parent:AddChild(self)
-		end;
-	
 		SetPosition = function(self, x, y)
 			local pX, pY = self['parent'] and self['parent']:GetPosition() or 0.0, 0.0 -- if no parent, we default to screen coordinates
 			
@@ -74,23 +61,9 @@ class "uiBase" {
 			self['scaleX'] = x
 			self['scaleY'] = y
 			
-			if #self:GetChildren() > 0 then
-				for k, v in pairs(self['children']) do
-					self['children'][k]:SetScale(x, y)
-				end
-			end
-		end;
-		
-		IsEnabled = function(self)
-			return self['isEnabled']
-		end;
-		
-		ToggleEnabled = function(self)
-			self['isEnabled'] = !self['isEnabled']
-			
 			if #self['children'] > 0 then
 				for k, v in pairs(self['children']) do
-					self['children'][k]:ToggleEnabled()
+					self['children'][k]:SetScale(x, y)
 				end
 			end
 		end;
@@ -98,6 +71,9 @@ class "uiBase" {
 	
 	public {
 		abstract {
+			Init = function(self)
+			end;
+		
 			OnCursorMoved = function(self)
 			end;
 			
@@ -125,14 +101,27 @@ class "uiBase" {
 			return (self['relX'] * pW) + pX, (self['relY'] * pH) + pY
 		end;
 		
+		SetParent = function(self, parent)
+			if self['parent'] then
+				self['parent']:RemoveChild(self)
+			end
+			
+			self['parent'] = parent
+			parent:AddChild(self)
+		end;
+		
+		SetLayer = function( self, layer )
+			self.layer = layer
+		end;
+		
 		GetParent = function(self)
 			local ret = self['parent'] or nil -- Is this necessary?
 			return ret
 		end;
 		
-		GetLayer = function( self, layer )
+		GetLayer = function( self )
 			--Check if layer is valid or it won't get drawn
-			self.Layer = layer
+			return self.layer
 		end;
 		
 		GetScale = function(self)
@@ -144,17 +133,32 @@ class "uiBase" {
 		end;
 		
 		GetHeight = function(self)
-			return self['width'] * self['scaleY']
+			return self['height'] * self['scaleY']
 		end;
 		
 		GetSize = function(self)
 			return self['width'] * self['scaleX'], self['height'] * self['scaleY']
+		end;
+		
+		IsEnabled = function(self)
+			return self['isEnabled']
+		end;
+		
+		ToggleEnabled = function(self)
+			self['isEnabled'] = !self['isEnabled']
+			
+			if #self['children'] > 0 then
+				for k, v in pairs(self['children']) do
+					self['children'][k]:ToggleEnabled()
+				end
+			end
 		end;
 	};
 	
 	private {
 		layer = "NullVariable";
 		parent = nil;
+		children = {};
 		isEnabled = false;
 		
 		relX = 0.0;

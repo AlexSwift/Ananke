@@ -24,6 +24,7 @@ function Ananke.Initialise()
 	Ananke.core:IncludeDir(  'Shared', 'hooks/client', 0, 'Hooks::Client' )
 
 	Ananke.core:IncludeDir(  'Client', 'core/client', 0 , 'Core::Client' )
+	Ananke.core:IncludeDir( 'Client', 'core/client/gui', 0, 'Core::Client::GUI')
 	Ananke.core:IncludeDir(  'Server', 'core/server', 0 , 'Core::Server' )
 
 	Ananke.core.Protocol:Initialize()			-- SHARED
@@ -38,4 +39,3 @@ function Ananke.Initialise()
 	Ananke.core.EventManager:Call( 'AnankeInitlialized' )
 
 end
-	

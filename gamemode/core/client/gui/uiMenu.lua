@@ -1,7 +1,6 @@
 class "uiMenu" extends "uiBase, uiComponent, uiDraggable" {
 
 	private {
-		children = {};
 	};
 	
 	protected {
@@ -13,15 +12,17 @@ class "uiMenu" extends "uiBase, uiComponent, uiDraggable" {
 			self:SetLayer(1)
 			self:SetSize(100, 50)
 			self:SetScale(1.0, 1.0)
-			self:AlignTop(surface.ScreenWidth() * 0.5)
-			self:AlignLeft(surface.ScreenHeight() * 0.5)
+			self:AlignTop(surface.ScreenHeight() * 0.5)
+			self:AlignLeft(surface.ScreenWidth() * 0.5)
 		end;
 		
 		Draw = function(self)
-			print("DRAWING UIMENU OBJECT!")
 			local x, y = self:GetPosition()
-			local color = Color(0, 0, 0, 1)
-			render.DrawQuadEasy(Vector(x, y, 0), Vector(0, 0, 1), self:GetWidth(), self:GetHeight(), color, 0)
+			local color = Color(0, 0, 0, 255)
+			
+			print('UIMENU.DRAW: x - ' .. x .. ' y - ' .. y .. ' w - ' .. self:GetWidth() .. ' h - ' .. self:GetHeight())
+			
+			surface.DrawRect(x, y, self:GetWidth(), self:GetHeight())
 		end;
 		
 		AddChild = function(self, obj, id)
