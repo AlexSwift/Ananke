@@ -1,28 +1,28 @@
-local KeyValues = {} -- [ent] = { key = value }
+Ananke.KeyValues = {} -- [ent] = { key = value }
 
-function GM:EntityKeyValue( ent, key, value )
+function Ananke:EntityKeyValue( ent, key, value )
 	
-	if not KeyValues[ ent ] then KeyValues[ ent ] = {} end
+	if not self.KeyValues[ ent ] then self.KeyValues[ ent ] = {} end
 	
-	KeyValues[ ent ][ key ] = value
+	self.KeyValues[ ent ][ key ] = value
 
 end
 
 function Ananke._ENTITY:GetKeyValue( key )
 
-	if not KeyValues[ self ] then
+	if not Ananke.KeyValues[ self ] then
 		return nil
-	elseif not KeyValues[ self ][ key ] then
+	elseif not Ananke.KeyValues[ self ][ key ] then
 		return nil
 	end
 	
-	return KeyValues[ self ][ key ]
+	return Ananke.KeyValues[ self ][ key ]
 	
 end
 
 function Ananke._ENTITY:GetKeyValues( )
 	
-	if not KeyValues[ self ] then
+	if not Ananke.KeyValues[ self ] then
 		return { }
 	end
 	

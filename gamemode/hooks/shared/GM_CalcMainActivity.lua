@@ -1,4 +1,6 @@
-function GM:CalcMainActivity( ply, velocity )	
+function GM:CalcMainActivity( ply, velocity )
+
+	local len2d = velocity:Length2D()
 
 	ply.CalcIdeal = ACT_MP_STAND_IDLE
 	ply.CalcSeqOverride = -1
@@ -11,11 +13,16 @@ function GM:CalcMainActivity( ply, velocity )
 		self:HandlePlayerJumping( ply, velocity ) ||
 		self:HandlePlayerDucking( ply, velocity ) ||
 		self:HandlePlayerSwimming( ply, velocity ) ) then
+		
+		-- Activities already done here
 
-	else
-
-		local len2d = velocity:Length2D()
-		if ( len2d > 150 ) then ply.CalcIdeal = ACT_MP_RUN elseif ( len2d > 0.5 ) then ply.CalcIdeal = ACT_MP_WALK end
+	elseif ( len2d > 150 ) then 
+	
+		ply.CalcIdeal = ACT_MP_RUN 
+		
+	elseif ( len2d > 0.5 ) then 
+	
+		ply.CalcIdeal = ACT_MP_WALK
 
 	end
 

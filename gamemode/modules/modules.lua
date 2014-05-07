@@ -59,6 +59,7 @@ class "Ananke.Modules" {
 				MODULE:LoadRequirements( MODULE.INI['requirements'] or {} )
 				MODULE:LoadClient( dir, name )
 				MODULE:LoadServer( dir, name )
+				MDOULE:LoadBinaryModules( dir, name )
 				MODULE:LoadEntities( dir )
 				MODULE:LoadWeapons( dir )
 				MODULE:LoadEffects( dir )
@@ -202,6 +203,17 @@ class "Ananke.Modules" {
 						Ananke.include( dir .. name .. '/' .. v )
 					else
 						Ananke.AddCSLuaFile(  dir .. name .. '/' .. v )
+					end
+					
+				end
+			end;
+			
+			LoadBinaryModules = function( self, dir, name )
+				for k,v in pairs( MODULE:GetFiles( 'binary_modules' ) ) do				
+					if CLIENT then
+						return false
+					else
+						require( '../../gamemodes/' .. dir .. name .. '/' .. v )
 					end
 					
 				end

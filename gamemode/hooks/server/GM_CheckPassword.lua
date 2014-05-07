@@ -1,5 +1,7 @@
 function GM:CheckPassword( steamid, networkid, server_password, password, name )
 
+	-- We could check for banned users here and kick them using a new message upon join.
+
 	-- The server has sv_password set
 	if ( server_password != "" ) then
 

@@ -1,4 +1,4 @@
-function GM:DoAnimationEvent( ply, event, data )
+function Ananke:DoAnimationEvent( ply, event, data )
 	if event == PLAYERANIMEVENT_ATTACK_PRIMARY then
 	
 		if ply:Crouching() then
@@ -43,3 +43,4 @@ function GM:DoAnimationEvent( ply, event, data )
 
 	return nil
 end
+
