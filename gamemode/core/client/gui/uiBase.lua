@@ -153,12 +153,40 @@ class "uiBase" {
 				end
 			end
 		end;
+		
+		TriggerEvent = function( self, name, ... )
+			
+			self:GetEventCallback( name )( self, ... )
+			
+		end;
+		
+		GetEventCallback = function( self, name )
+			
+			if not self.events[ name ] then
+				Ananke.core.Debug:Error( 'Invalid trigger call' )
+			end
+			
+			return self.events[ name ]
+			
+		end;
+		
+		ProccessTrigger = function( self, name, func )
+		
+			if self.events[ name ] then
+				Ananke.core.Debug:Error( 'Invalid attempt to overwrite trigger' )
+			end
+			
+			self.events[ name ] = func
+			
+		end;
+		
 	};
 	
 	private {
 		layer = "NullVariable";
 		parent = nil;
 		children = {};
+		events = {};
 		isEnabled = false;
 		
 		relX = 0.0;
