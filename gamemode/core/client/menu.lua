@@ -1,3 +1,7 @@
+function GM:GUIMousePressed(mc, vec)
+	print('GUIMousePressed: vec = ' .. vec)
+end;
+
 class 'Ananke.core.Menu' {
 	private {
 	
@@ -8,7 +12,7 @@ class 'Ananke.core.Menu' {
 			Enabled = false;
 			
 			Objects = {};
-			
+			RenderStack = {};
 		};
 		
 	};
@@ -20,7 +24,6 @@ class 'Ananke.core.Menu' {
 	public {
 	
 		static {
-			RenderStack = {}; -- TEMP
 			MousePos = { x = 0 , y = 0 };
 		
 			Initialize = function( self )
@@ -109,7 +112,7 @@ class "RenderStack" {
 		end;
 		
 		Draw = function(self)
-			surface.SetDrawColor(0, 0, 0, 255)
+			surface.SetDrawColor(255,255,255,255)
 		
 			for i = 1, self.numLayers do
 				if self.layers[i]:IsEmpty() then continue end
