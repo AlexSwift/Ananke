@@ -14,11 +14,11 @@ class 'Ananke.core' {
 		private {
 			core = {};
 			Loaded = {
-				['shared'] = {},
-				['client'] = {},
-				['server'] = {}
+				shared = {},
+				client = {},
+				server = {}
 			};
-			LoadDirectory = Ananke.Name .. '/gamemode/'
+			LoadDirectory = Ananke.Folder .. '/gamemode/'
 		};
 	
 		public {

@@ -1,4 +1,4 @@
-utils = {}
+utils = utils or {}
 
 function utils.FindPlayersByName(name)
 	local results = {}

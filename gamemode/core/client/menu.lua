@@ -109,7 +109,7 @@ class "RenderStack" {
 		end;
 		
 		Draw = function(self)
-			surface.SetDrawColor(0, 0, 0, 255)
+			surface.SetDrawColor(255, 255, 255, 255) -- BAD MATTHEW
 		
 			for i = 1, self.numLayers do
 				if self.layers[i]:IsEmpty() then continue end

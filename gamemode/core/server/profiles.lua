@@ -3,29 +3,24 @@ class 'Ananke.core.Profile' extends 'Ananke.core.Profile_shared' {
 	
 	protected {
 
-		/*
 		Network = function( self, rf )
 		
 			local rf = rf and rf or self.Owner
 			
-			for k,v in pairs(self['data']) do
+			for k,v in pairs( self.Data ) do
 				local nw = Ananke.Network.new()
-				nw:SetProtocol(0x03)
-				nw:SetDescription('Sending player variables')
-				nw:SetRecipients(rf)
-				nw:PushData(self.Owner:EntIndex())
-				nw:PushData(key)
-				nw:PushData(type(value))
-				nw:PushData(value)
+					nw:SetProtocol(0x03)
+					nw:SetDescription('Sending player variables')
+					nw:SetRecipients(rf)
+					nw:PushData(self.Owner:EntIndex())
+					nw:PushData(key)
+					nw:PushData(type(value))
+					nw:PushData(value)
 				nw:Send()
 			end
 			
 		end;
-		*/
-		
-		--Needs improving
-	
-		/*
+
 		Load = function( self, id , ... )
 		
 			local args = {...}
@@ -41,13 +36,7 @@ class 'Ananke.core.Profile' extends 'Ananke.core.Profile_shared' {
 			self.ID = id
 			
 		end;
-		*/
 		
-		--Needs redoing
-		
-		
-		
-		/*
 		Save = function( self )
 
 			local s_data = Ananke.core.serialization.encode( self.Data )
@@ -56,12 +45,10 @@ class 'Ananke.core.Profile' extends 'Ananke.core.Profile_shared' {
 			Ananke.core.MySQL.Query( q )
 
 		end;
-		*/
 		
-		--Needs redoing
 	
 		static {
-			/*
+
 			LoadPlayer = function (ply)
 			
 				local profile = Ananke.core.Profiles.New()
@@ -70,9 +57,6 @@ class 'Ananke.core.Profile' extends 'Ananke.core.Profile_shared' {
 				profile:Network()
 				
 			end;
-			*/
-			
-			--Needs redoing
 			
 		};
 	};

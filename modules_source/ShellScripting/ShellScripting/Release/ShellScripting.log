@@ -1,0 +1,23 @@
+﻿Build started 23/05/2014 00:44:28.
+     1>Project "D:\modules\ShellScripting\ShellScripting\ShellScripting.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\ShellScripting.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D SHELLSCRIPTING_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Modules\ShellScripting\Release\gmsv_ShellScripting_win32.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\gmsv_ShellScripting_win32.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\Modules\ShellScripting\Release\gmsv_ShellScripting_win32.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Modules\ShellScripting\Release\gmsv_ShellScripting_win32.lib" /MACHINE:X86 /DLL Release\main.obj
+            Creating library D:\Modules\ShellScripting\Release\gmsv_ShellScripting_win32.lib and object D:\Modules\ShellScripting\Release\gmsv_ShellScripting_win32.exp
+         Generating code
+         Finished generating code
+         ShellScripting.vcxproj -> D:\Modules\ShellScripting\Release\gmsv_ShellScripting_win32.dll
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\Modules\ShellScripting\Release\gmsv_ShellScripting_win32.dll;#2" /manifest Release\gmsv_ShellScripting_win32.dll.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\ShellScripting.unsuccessfulbuild".
+         Touching "Release\ShellScripting.lastbuildstate".
+     1>Done Building Project "D:\modules\ShellScripting\ShellScripting\ShellScripting.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.19
