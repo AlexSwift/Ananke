@@ -1,4 +1,3 @@
-
 class 'Ananke.MathsX.Matrices' {
 
 	public {
@@ -16,17 +15,22 @@ class 'Ananke.MathsX.Matrices' {
 		
 		end;
 		
-		IdentityMatrix = function( m , n )
-
+		LaplaceCofactor = function( m )
+			
 			local r = Ananke.MathsX.Matrices()
-			r:SetDimentsions( m , m )
-		
-			for i = 1, m do
-				r:SetData( i , i , n )
+			r:SetDimensions( m , m )
+			
+			for i = 1, m^2 do
+			
+				local x = i%m
+				local y = (i - i%m)/i
+				
+				r:SetData( x, y, (-1)^(i - 1) )
+				
 			end
-		
+			
 			return r
-		
+				
 		end;
 		
 	};
@@ -103,6 +107,58 @@ class 'Ananke.MathsX.Matrices' {
 			return n
 		
 		end;
+		
+		Square = function( self )
+			
+			return self.x == self.y and true or false
+			
+		end;
+		
+		SubMatrix = function( self, x, y )
+		
+			local r = Ananke.MathsX.Matrices()
+			r:SetDimensions( self.x - 1, self.y - 1 )
+		
+			local j = 1
+			local k = 1
+		
+			for i = 1, x*y do
+				
+				local t_x = i%x
+				local t_y = (i- i%x)/i
+				
+				if t_x == x or t_y == y then continue end
+				
+				r:SetData( j, k, self:GetData( t_x, t_y ) )
+				
+				if i < ( self.x - 1 ) then
+					j = j + 1
+				else 
+					j = 1
+					k = k + 1
+				end
+				
+			end
+			
+			return r
+			
+		end;
+				
+		
+		Determinant = function( self )
+			
+			if not self:Square() then return end
+			
+			local lpcf = Ananke.MathsX.Matrices.LaplaceCofactor( self.x )
+			local detm = 0
+			
+			for i = 1, self.x do
+				detm = detm + ((-1)^(i - 1))*self:SubMatrix( i, 1 ):Determinant() 
+			end
+			
+			return detm
+			
+		end;	
 		
 	};
 
