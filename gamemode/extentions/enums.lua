@@ -16,10 +16,12 @@ class 'Enums' {
 				self:Add(key, value)
 			end;
 		};
+		
+		private {
+			ENUMS = {};
+		};
 	
 		public {
-			ENUMS = {};
-			
 			Add = function(self, name, enum)
 				if type(name) ~= "string" then return end
 				if type(enum) ~= "table" then return end

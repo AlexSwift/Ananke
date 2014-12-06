@@ -1,10 +1,12 @@
-class "uiMenu" extends "uiBase, uiComponent, uiDraggable" {
+class "uiMenu" extends "uiBase, uiDraggable" {
 
 	private {
+	
+		backgroundImgID = 'NullObject';
+	
 	};
 	
 	protected {
-	
 	};
 	
 	public {
@@ -14,33 +16,33 @@ class "uiMenu" extends "uiBase, uiComponent, uiDraggable" {
 			self:SetScale(1.0, 1.0)
 			self:AlignTop(surface.ScreenHeight() * 0.5)
 			self:AlignLeft(surface.ScreenWidth() * 0.5)
+			
+			local closeBtn = Ananke.core.Menu:Create('UIButton', self, 'FOREGROUND')
+			
+			self.backgroundImgID = surface.GetTextureID('warpac/testBox.vmt')
 		end;
 		
 		Draw = function(self)
 			local x, y = self:GetPosition()
-			local color = Color(0, 0, 0, 255)
 			
-			print('UIMENU.DRAW: x - ' .. x .. ' y - ' .. y .. ' w - ' .. self:GetWidth() .. ' h - ' .. self:GetHeight())
+			surface.SetTexture(self.backgroundImgID)
+			surface.DrawTexturedRect(x, y, self:GetWidth(), self:GetHeight())
 			
-			surface.DrawRect(x, y, self:GetWidth(), self:GetHeight())
+			for k,v in pairs(self.children) do
+				self.children[k]:Draw()
+			end
 		end;
 		
 		AddChild = function(self, obj, id)
-			id = id or tostring(obj)
 			
-			self.children[id] = obj
 		end;
 		
 		RemoveChild = function(self, id)
-			if type(id) != "string" then id = tostring(id) end;
 			
-			self.children[id] = nil
 		end;
 		
 		GetChild = function(self, id)
-			if type(id) != "string" then id = tostring(id) end;
 			
-			return self.children[id]
 		end;
 		
 		GetChildren = function(self)
